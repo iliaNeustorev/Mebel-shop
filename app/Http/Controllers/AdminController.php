@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ExportCategories;
+use App\Jobs\ImportCategories;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
@@ -25,6 +27,20 @@ class AdminController extends Controller
         Auth::loginUsingId($userId);
         session()->flash('another_user');
         return redirect()->route('home');
+    }
+
+    public function exportCategories() 
+    {
+        ExportCategories::dispatch();
+        session()->flash('startexportCategories');
+        return back();
+    }
+
+    public function importCategories() 
+    {
+        ImportCategories::dispatch();
+        session()->flash('startimportCategories');
+        return back();
     }
 
     public function get_categories()
