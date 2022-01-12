@@ -115,29 +115,6 @@ Artisan::command('parseEkatalog', function() {
    
 });
 
-   
-
-Artisan::command('export_cat', function() {
-
-    $categories = ModelsCategory::get()->toArray();
-   
-    $file = fopen('exportCategories', 'w');
-    $columns = [
-       'id',
-       'name',
-       'description',
-       'picture',
-       'created_at',
-       'updated_at' 
-    ];
-        fputcsv($file, $columns, ';');
-    foreach ($categories as $category) {
-        $category['name']  = iconv('utf-8', 'windows-1251//IGNORE', $category['name']);
-        fputcsv($file,$category, ';');
-    }
-    
-});
-
 Artisan::command('import_categories', function(){
     $file_name ='categories.csv';
     $file = fopen($file_name, 'r');
@@ -160,7 +137,6 @@ Artisan::command('import_categories', function(){
        ];
     }
      ModelsCategory::insert($insert);
-
 });
 
 Artisan::command('del_cat', function() {

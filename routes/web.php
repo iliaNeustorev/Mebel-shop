@@ -57,6 +57,8 @@ Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function()
     Route::get('/', [AdminController::class, 'index'])->name('admin');
     
     Route::get('/enterAsUser/{userId}', [AdminController::class, 'enterAsUser'])->name('enterAsUser');
+    Route::post('/exportCategories', [AdminController::class, 'exportCategories'])->name('exportCategories');
+    Route::post('/importCategories', [AdminController::class, 'importCategories'])->name('importCategories');
 
     Route::prefix('/categories')->group(function() {
         Route::get('/', [AdminController::class, 'get_categories'])->name('admin_categories');
