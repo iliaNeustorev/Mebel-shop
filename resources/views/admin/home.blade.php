@@ -7,20 +7,12 @@
 @section('content')
 
     <div class = 'container'>
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+        
         
 
-        @if (session()->has('category_updated'))
-        <div class="alert alert-info text-center">
-                Профиль успешно обновлен
+        @if (session()->has('startexportCategories'))
+        <div class="alert alert-success text-center">
+                Выгрузка списка категорий запущена
             </div>
         @endif
 
@@ -46,6 +38,14 @@
             <div class="d-grid gap-2 d-md-block">
                 <a href="{{ route('admin_categories') }}"><button class = "btn btn-success btn-lg">Посмотреть список категорий</button></a>
                 <a href="{{ route('admin_products') }}"><button class = "btn btn-success btn-lg">Посмотреть список продуктов</button></a>
+                <form action="{{ route('exportCategories') }}" method="post">
+                    @csrf
+                    <button type="submit" class="btn btn-link btn-lg">Выгрузить список категорий</button>
+                </form>
+                <form action="{{ route('importCategories') }}" method="post">
+                    @csrf
+                    <button type="submit" class="btn btn-link btn-lg">Загрузить список категорий</button>
+                </form>
             </div>        
     </div>
 @endsection    
