@@ -42,10 +42,10 @@
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('basket') }}">
-                                @if (session('products') != 0)
+                                @if (session('products') > 0)
                                 Корзина ({{ array_sum(session('products')) }})
                                 @else
-                                Корзина ()
+                                
                                 @endif
                             </a>  
                         </li>
