@@ -74,7 +74,7 @@ class HomeController extends Controller
 
 
             $user = User::find(auth()->id());
-            
+
             $file = $request->file('picture');
             $input = $request->all();
            if ($input['password']) {
@@ -87,6 +87,7 @@ class HomeController extends Controller
                    $user->save();
                 }
            }
+
             if($file) {
             $ext = $file->getClientOriginalExtension();
             $file_name = time(). mt_rand(1000, 9999) . '.' . $ext;
@@ -94,24 +95,43 @@ class HomeController extends Controller
             
             $user->picture = $file_name;
             }
-
-            $main_address = $input['flexRadioDefault'];
-            $old = Address::where('main', true)->first();
-                if (isset($old) && $old->address != $main_address) {
-                    $old->main = false;
-                    $old->save();
-                }
-                Address::where('address', $main_address)->update(['main' => true]);
-
+            if (isset($input['main_address'])) {
+            
+                $address = Address::find($input['main_address']);
+                $address->main = true;
+                $address->save();
+    
+                Address::where('user_id', $user->id)->where('id', '!=' , $address->id)->update([
+                    'main' => false
+                ]);
+            }
+           
             if ($input['new_address']) {
+                if (Address::where(['user_id' => $user->id])->pluck('address')->contains($input['new_address'])) {
+                    session()->flash('repeatAddressError');
+                    return back();
+                }
+                
+                if (isset($input['main_new_address'])) {
+                    Address::where('user_id', $user->id)->update([
+                        'main' => false
+                    ]);
+                    $main_address = true;
+                } else {
+                    $main_address = !$user->addresses->contains(function($address) {
+                        return $address->main == true;
+                    });
+                }
+
+               
 
                 $address = new Address();
                 $address->user_id = $user->id;
                 $address->address = $input['new_address'];
-                $address->main = false;
+                $address->main = $main_address;
                 $address->save();
+            
             }
-
             $user->name = $input['name'];
             $user->email = $input['email'];
             $user->save();
@@ -119,10 +139,9 @@ class HomeController extends Controller
             return back();
     }
 
-    public function del_address (Request $request) 
+    public function del_address () 
     {
-        $address_id = $request->input('address_id');
-        Address::find($address_id)->delete();
+        Address::find(request('address_id'))->delete();
         return back();
     }
     
