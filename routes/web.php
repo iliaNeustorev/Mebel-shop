@@ -25,6 +25,7 @@ Route::get('/', function () {
 
 Route::prefix('basket')->group(function () {
     Route::get('/', [BasketController::class, 'index'])->name('basket');
+    Route::post('/create_order', [BasketController::class, 'create_order'])->name('create_order');
     Route::prefix('product')->group(function () {
         Route::post('/add', [BasketController::class, 'add'])->name('addProduct');
         Route::post('/remove', [BasketController::class, 'remove'])->name('removeProduct');
@@ -37,14 +38,11 @@ Route::prefix('home')->group(function() {
         Route::prefix('profile')->middleware('auth')->group(function() {
             Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
             Route::post('/profile/update', [HomeController::class, 'profile_update'])->name('profile_update');  
-                Route::prefix('address')->group(function() {
-                    Route::post('/add_address', [HomeController::class, 'add_address'])->name('add_address');
-                    Route::post('/del_address', [HomeController::class, 'del_address'])->name('del_address');   
-                    }); 
-            });
-    });
+            Route::post('/del_address', [HomeController::class, 'del_address'])->name('del_address');   
+        });
+            
+});
    
-
 
 Auth::routes();
 
@@ -63,6 +61,7 @@ Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function()
     Route::prefix('/categories')->group(function() {
         Route::get('/', [AdminController::class, 'get_categories'])->name('admin_categories');
         Route::post('/add_category', [AdminController::class, 'add_category'])->name('add_and_upd_category');
+        Route::post('/del_category', [AdminController::class, 'del_category'])->name('del_category');
         Route::get('/add_category/{category}', [AdminController::class, 'get_category'])->name('admin_category');
     });
 
