@@ -30,12 +30,12 @@
                 </ul>
             </div>
         @endif
-        
+
         @if (session()->has('status_product'))
-        <div class="alert alert-info text-center">
+             <div class="alert alert-info text-center">
                 {{ session('status_product') }}
             </div>
-        @endif
+        @endif   
 
         <form enctype="multipart/form-data" action="{{ route('upd_product') }}" method="post">
             @csrf
@@ -89,6 +89,7 @@
             </div>
             <button type="submit" class='btn btn-success w-100 mb-3'>{{ $button }}</button>
         </form>
+        
         @if($category->products->count() != 0)
        <form action="{{ route('delete_product') }}" method="post">
             @csrf

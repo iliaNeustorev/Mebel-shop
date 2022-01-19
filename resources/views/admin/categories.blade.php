@@ -36,6 +36,12 @@
                Категория с таким именем уже существует
             </div>
         @endif
+
+        @if (session()->has('del_category'))
+        <div class="alert alert-info text-center">
+               Категория успешно удалена
+            </div>
+        @endif
         
         <form enctype="multipart/form-data" action="{{ route('add_and_upd_category') }}" method="post">
             @csrf
@@ -87,7 +93,16 @@
                     @foreach ($categories as $category) 
                         <tr>
                         <td><a href="{{ route('admin_get_product', $category->id) }}" title="Вывести список продуктов">{{ $category->name }}</a></td>
-                        <td> <a href="{{ route('admin_category', $category->id) }}" title="Редактировать категорию"><button class="btn btn-info btn-sm">Edit</button></a></td>
+                        <td> 
+                            <a href="{{ route('admin_category', $category->id) }}" title="Редактировать категорию"><button class="btn btn-info btn-sm mb-1">Edit</button></a>
+                            @if ($category->products->count() == 0)
+                                <form action="{{ route('del_category') }}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="id" value="{{ $category->id }}">
+                                    <button class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            @endif
+                        </td>
                         <td>{{ $category->description }}</td>
                         <td>
                             <img class="avatar" src="{{ asset('storage/img/categories') }}/{{ $category->picture }}">

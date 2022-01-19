@@ -56,9 +56,9 @@
                     </div>
                 @endif
 
-                @if (session()->has('errorDeleteAddress'))
+                @if (session()->has('repeatAddressError'))
                     <div class="alert alert-danger text-center">
-                      Нельзя удалять активный адрес
+                      Такой адрес уже есть
                     </div>
                 @endif
 
@@ -106,57 +106,51 @@
                             <img class="avatar" src="{{ asset('storage/img/users/') }}/{{$user->picture}}">
                             <input type="file" class="form-control" name="picture">
                         </div>
+                        
                         <div class="container addressess">
-                        <form action="{{ route('add_address') }}" method="post">
-                            @csrf
-                            <div class="mb-3">
                             <label class="form-lable">
                             Список адресов
                             </label>
-                            <br>   
+                            <br>  
                             @foreach ($user->addresses as $address)                         
-                            @if ( $address->main )
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault" value="{{ $address->address }}" id="flexRadioDefault2" checked>
-                                    <label class="form-check-label" for="flexRadioDefault2">
+                                @if ( $address->main )
+                                    <input id="{{$address->id}}" type="radio" name="main_address" value="{{ $address->id }}" checked>
+                                   
+                                    <label for="{{$address->id}}">
                                         {{ $address->address }}
                                     </label>
                                     <form action="{{ route('del_address') }}" method="post">
                                         @csrf
-                                    <input hidden name="address_id" value=" {{ $address->id }}">
-                                        <button disabled title="Удалить адрес" type="submit" class="btn-del-address btn btn-danger btn-sm">X</button>
+                                        <input hidden name="address_id" value=" {{ $address->id }}">
                                     </form>
-                                </div>
-                            @else
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault" value=" {{ $address->address }}" id="flexRadioDefault1">
-                                    <label class="form-check-label" for="flexRadioDefault1">
+                                    @else
+                                    <input id="{{$address->id}}" type="radio" name="main_address" value=" {{ $address->id }}">
+                                    
+                                    <label for="{{ $address->id }}">
                                         {{ $address->address }}   
                                     </label>
-                                    <form action="{{ route('del_address') }}" method="post">
-                                        @csrf
-                                    <input hidden name="address_id" value=" {{ $address->id }}">
-                                        <button title="Удалить адрес" type="submit" class="btn-del-address btn btn-danger btn-sm">X</button>
-                                    </form>
-                                </div>
-                                
-                            @endif
+                                        <form action="{{ route('del_address') }}" method="post">
+                                            @csrf
+                                            <input hidden name="address_id" value=" {{ $address->id }}">
+                                            <button title="Удалить адрес" type="submit" class="btn-del-address btn btn-danger btn-sm">X</button>
+                                        </form>
+                                @endif
+                                <br>
                             @endforeach
-                            
-                                <div class="mb-3">
-                                    <label class="form-lable">
+                            <div class="mb-3">
+                                <label class="form-lable">
                                     Новый адрес
-                                    </label>
-                                    <input name="new_address" class="form-control w-50">
-                                </div>
-                                <button type="submit" class="btn btn-success">Добавить адрес</button>
-                            </form>
+                                </label>
+                                <input name="new_address" class="form-control w-50">
+                                <label>Сделать основным</label>
+                                <input type="checkbox" name='main_new_address'>
+                            </div>
                         </div>
-                        </div>
-                        <div>
-                            <button type="submit" class="btn btn-primary btn-lg mt-2">Сохранить</button>
-                    </form>
-
+                            
+                            <button class="btn btn-primary btn-lg mt-2">Сохранить</button>
+                        </form>
+                </div>
             </div>
         </div>
+    
 @endsection
