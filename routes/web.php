@@ -6,7 +6,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Category;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +34,7 @@ Route::prefix('basket')->group(function () {
     });
 });
 
+Route::get('/orders', [OrderController::class, 'index'])->name('orders');
 
 Route::prefix('home')->group(function() {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -45,6 +48,15 @@ Route::prefix('home')->group(function() {
    
 
 Auth::routes();
+
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect('/home');
+})->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::get('/categories/{category}', [Category::class, 'category'])->name('category');
 

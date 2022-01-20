@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderCreated;
+use App\Mail\WelcomeToRegistration;
 use App\Models\Address;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class BasketController extends Controller
 {
@@ -88,9 +92,16 @@ class BasketController extends Controller
 
     }
 
-    public function create_order()
+    public function create_order (Request $request)
     {
         $user = Auth::user();
+        $unique_rule = $user ? "unique:users,email,{$user->id}" : "unique:users" ;
+        $request->validate([
+            'name' => 'required',
+            'address' => 'required',
+            'email' => "required|email|$unique_rule",
+        ]);
+
         if(!$user) {
             $password = $this->generate_password(4,8);
             $name = request('name');
@@ -103,9 +114,15 @@ class BasketController extends Controller
             Address::create([
                 'user_id' => $user->id,
                 'address' => request('address'),
-                'main' => 1
+                'main' => 1,
             ]);
+            
             Auth::loginUsingId($user->id);
+            $data = [
+                'user' => $user,
+            ];
+
+            Mail::to($email)->send(new WelcomeToRegistration($data));
         }
 
         $address = Address::where([
@@ -117,14 +134,38 @@ class BasketController extends Controller
             'user_id' => $user->id,
             'address_id' => $address->id,
         ]);
-
-        collect(session('products'))->each(function($quantity, $id) use ($order){
+        $products = collect();
+        
+        collect(session('products'))->each(function($quantity, $id) use ($order, $products){
             $product = Product::find($id);
             $order->products()->attach($product, [
                 'quantity' => $quantity,
                 'price' => $product->price,
             ]);
+
+            $products->push([
+                'name' => $product->name,
+                'price' => $product->price,
+                'quantity' => $quantity,
+                ]);
         });
+
+        $sum_order =  $products->map( function ($product) {
+            return $product['price'] * $product['quantity'];     
+        })->sum();
+       
+        $email =  $user ? $user->email : $request['email'];
+        $data = [
+            'user' => [
+                'email' => $email,
+                'name' => $user ? $user->name : $request['name'],
+            ],
+            'products' => $products,
+            'sum_order' => $sum_order,
+        ];
+
+        Mail::to($email)->send(new OrderCreated($data));
+
         session()->forget('products');
         return back();
     }

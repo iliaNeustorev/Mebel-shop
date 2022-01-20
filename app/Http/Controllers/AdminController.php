@@ -65,7 +65,7 @@ class AdminController extends Controller
 
         $request->validate([
             'picture' => 'image',
-            'name' => 'required|max:255|alpha_num',
+            'name' => 'required|max:255|alpha_num|unique:categories,name',
             'description' => 'required|max:1000'
         ]);
 
@@ -80,10 +80,6 @@ class AdminController extends Controller
 
         if ($request->input('id') == NULL) {
 
-        if ($categories->contains('name', $input['name'])) {
-            session()->flash('error_updated_category');
-            return back();
-        }
             $category = new Category();
 
             if(isset($file_name)) 
@@ -285,13 +281,13 @@ class AdminController extends Controller
         return back();
     }
 
-    public function del_product(Request $request) {
+    public function del_product (Request $request) 
+    {
         $res = $request->input('check_delete',[]);
         $product = Product::whereIn("id",$res);
         $name = $product->pluck('name');
         $product->delete();
         session()->flash('status_product', "Продукт $name удален");
-        // return redirect('admin/products');
         return back();
     }
         

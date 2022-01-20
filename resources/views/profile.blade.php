@@ -55,13 +55,7 @@
                        Неверный текущий пароль
                     </div>
                 @endif
-
-                @if (session()->has('repeatAddressError'))
-                    <div class="alert alert-danger text-center">
-                      Такой адрес уже есть
-                    </div>
-                @endif
-
+                    
                     <form class="w-50" method="POST" action="{{ route('profile_update') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
@@ -145,8 +139,7 @@
                                 <label>Сделать основным</label>
                                 <input type="checkbox" name='main_new_address'>
                             </div>
-                        </div>
-                            
+                        </div>   
                             <button class="btn btn-primary btn-lg mt-2">Сохранить</button>
                         </form>
                 </div>

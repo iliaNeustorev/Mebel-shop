@@ -52,7 +52,6 @@ class HomeController extends Controller
 
     public function profile_update (Request $request)
     {
-        
         // $validator = Validator::make($request->all(), [
         //     'picture' => 'required|mimes:jpg,bmp,png'
         // ]);
@@ -69,7 +68,8 @@ class HomeController extends Controller
                 'picture' => 'image',
                 'name' => 'max:255|alpha_num',
                 'email' => 'email',
-                'password' => 'confirmed',
+                'password' => 'nullable|confirmed|min:8',
+                'new_address' => 'unique:addresses,address',
             ]);
 
 
@@ -107,10 +107,6 @@ class HomeController extends Controller
             }
            
             if ($input['new_address']) {
-                if (Address::where(['user_id' => $user->id])->pluck('address')->contains($input['new_address'])) {
-                    session()->flash('repeatAddressError');
-                    return back();
-                }
                 
                 if (isset($input['main_new_address'])) {
                     Address::where('user_id', $user->id)->update([
@@ -122,8 +118,6 @@ class HomeController extends Controller
                         return $address->main == true;
                     });
                 }
-
-               
 
                 $address = new Address();
                 $address->user_id = $user->id;
@@ -145,5 +139,4 @@ class HomeController extends Controller
         return back();
     }
     
-
 }

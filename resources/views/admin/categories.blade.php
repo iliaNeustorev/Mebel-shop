@@ -31,11 +31,6 @@
             </div>
         @endif
 
-        @if (session()->has('error_updated_category'))
-        <div class="alert alert-info text-center">
-               Категория с таким именем уже существует
-            </div>
-        @endif
 
         @if (session()->has('del_category'))
         <div class="alert alert-info text-center">
