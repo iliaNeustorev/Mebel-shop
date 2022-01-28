@@ -206,6 +206,49 @@ Artisan::command('test', function(){
     // dd($ids);
 });
 
+Artisan::command('test', function () {
+    
+    //     $file_name ='Products.csv';
+    //     $file = fopen($file_name, 'r');
+
+    //     $carbon = new Carbon();
+
+    //     $time = $carbon->now()->toDateTimeString();
+
+    //     $i = 0;
+    //     $insert = [];
+    //     while($data = fgetcsv($file, 1000, ';'))
+    //     {
+    //     if($i++ == 0) continue;
+    //     $id = $data[0];
+    //         if (empty($data[0])) {
+    //             $id = null;
+    //         }
+    //     $insert[] = [
+    //         'id' => $id,
+    //         'name' => $data[1],
+    //         'description' => $data[2],
+    //         'price' => $data[3],
+    //         'picture' => $data[4],
+    //         'category_id' => $data[5],
+    //         'created_at' => $time,
+    //         'updated_at' => $time
+    //     ];
+    //     }
+        
+    //     Product::upsert($insert,['id'],['name','description','price','picture','category_id']);
+    // }
+    $products = Product::get()->toArray();
+    // $products->transform(function($product) {
+    //     $product->category_id = $product->category()->pluck('name')->toArray();
+    //     return $product;
+    // });
+    // $products = $products->toArray();
+    dd($products);
+   
+   
+});
+
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');

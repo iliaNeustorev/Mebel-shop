@@ -42,15 +42,22 @@ class ImportCategories implements ShouldQueue
         $insert = [];
         while($data = fgetcsv($file, 1000, ';'))
         {
-        if($i++ == 0) continue;
-        $insert[] = [
-            'name' => $data[0],
-            'description' => $data[1],
-            'picture' => $data[2],
-            'created_at' => $time,
-            'updated_at' => $time
-        ];
+            if($i++ == 0) continue;
+            $id = $data[0];
+                if (empty($data[0])) {
+                    $id = null;
+                }
+            $insert[] = [
+                'id'=> $id,
+                'name' => $data[1],
+                'description' => $data[2],
+                'picture' => $data[3],
+                'created_at' => $time,
+                'updated_at' => $time
+            ];
         }
-        Category::insert($insert);
+        
+        Category::upsert($insert,['id'],['name','description','picture']);
+        fclose($file);
     }
 }

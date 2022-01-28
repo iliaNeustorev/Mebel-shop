@@ -35,6 +35,7 @@ Route::prefix('basket')->group(function () {
 });
 
 Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+Route::get('/orders/repeatOrder{orderId}', [OrderController::class, 'repeatOrder'])->name('repeatOrder');
 
 Route::prefix('home')->group(function() {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -59,16 +60,18 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::get('/categories/{category}', [Category::class, 'category'])->name('category');
-
+Route::get('/categories/{category}/getProducts', [ProductController::class, 'getProducts']);
 
 Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function()
 {
     // Route::redirect('/', '/admin/categories')->name('edit_categories');
     Route::get('/', [AdminController::class, 'index'])->name('admin');
-    
+    Route::get('/showRegUsers', [AdminController::class, 'showRegUsers'])->name('showRegUsers');
     Route::get('/enterAsUser/{userId}', [AdminController::class, 'enterAsUser'])->name('enterAsUser');
     Route::post('/exportCategories', [AdminController::class, 'exportCategories'])->name('exportCategories');
+    Route::post('/exportProducts', [AdminController::class, 'exportProducts'])->name('exportProducts');
     Route::post('/importCategories', [AdminController::class, 'importCategories'])->name('importCategories');
+    Route::post('/importProducts', [AdminController::class, 'importProducts'])->name('importProducts');
 
     Route::prefix('/categories')->group(function() {
         Route::get('/', [AdminController::class, 'get_categories'])->name('admin_categories');

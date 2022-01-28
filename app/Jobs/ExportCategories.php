@@ -34,7 +34,7 @@ class ExportCategories implements ShouldQueue
     {
         $categories = Category::get()->toArray();
    
-        $file = fopen('exportCategories', 'w');
+        $file = fopen('exportCategories.csv', 'w');
         $columns = [
            'id',
            'name',

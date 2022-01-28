@@ -29,7 +29,9 @@ class BasketController extends Controller
         }
         session()->put('products', $products);
         session()->save();
-        return back();
+        return [
+            'quantity'=> $products[$id],
+        ];
     }
 
     public function remove()
@@ -38,7 +40,7 @@ class BasketController extends Controller
         $products = session('products', []);
 
         try {
-            if ($products[$id] == 1) {
+            if ($products[$id] == 0) {
                 unset($products[$id]);
             } else {
                 $products[$id] -= 1;
@@ -48,7 +50,9 @@ class BasketController extends Controller
         }
         session()->put('products', $products);
         session()->save();
-        return back();
+        return [
+            'quantity'=> $products[$id],
+        ];
     }
 
     public function index () 
@@ -69,11 +73,12 @@ class BasketController extends Controller
         $basket_products = collect($products)->map( function ($quantity, $id) {
             $product = Product::find($id);
             return [
+                'id' => $product->id,
                 'title' => $product->name,
                 'price' => $product->price,
                 'quantity' => $quantity,
             ];
-        });
+        })->values();
        
         $sum_order =  $basket_products->map( function ($product) {
             return $product['price'] * $product['quantity'];     
@@ -84,12 +89,9 @@ class BasketController extends Controller
             'title' => 'Корзина',
             'sum_order' =>  $sum_order,
             'main_address' =>  $main_address,
-            'email' => $email,
-            'name' => $name, 
         ];
 
         return view('basket', $date);
-
     }
 
     public function create_order (Request $request)

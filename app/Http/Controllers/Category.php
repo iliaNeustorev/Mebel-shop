@@ -17,5 +17,6 @@ class Category extends Controller
     {
         return view('category', compact('category')); 
     }
-   
+
+    
 }

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ExportCategories;
+use App\Jobs\ExportProducts;
 use App\Jobs\ImportCategories;
+use App\Jobs\importProducts;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
@@ -15,12 +17,20 @@ class AdminController extends Controller
 {
     public function index ()
     {
+        $data = [
+            'title' => 'Администрирование',
+        ];
+        return view('admin/home', $data);
+    }
+
+    public function showRegUsers ()
+    {
         $users = User::get();
         $data = [
             'users' => $users,
-            'title' => 'Администрирование'
+            'title' => 'Список зарегистрированых пользователей'
         ];
-        return view('admin/home', $data);
+        return view('admin/showUsers', $data);
     }
 
     public function enterAsUser ($userId)
@@ -30,21 +40,35 @@ class AdminController extends Controller
         return redirect()->route('home');
     }
 
-    public function exportCategories() 
+    public function exportCategories () 
     {
         ExportCategories::dispatch();
         session()->flash('startexportCategories');
         return back();
     }
 
-    public function importCategories() 
+    public function importCategories () 
     {
         ImportCategories::dispatch();
         session()->flash('startimportCategories');
         return back();
     }
 
-    public function get_categories()
+    public function ExportProducts () 
+    {
+        ExportProducts::dispatch();
+        session()->flash('startexportProducts');
+        return back();
+    }
+
+    public function importProducts () 
+    {
+        importProducts::dispatch();
+        session()->flash('startimportProducts');
+        return back();
+    }
+
+    public function get_categories ()
     {
         $categories = Category::get();
         $data = [
@@ -59,13 +83,13 @@ class AdminController extends Controller
         return view('admin/categories', $data); 
     }
 
-    public function add_category(Request $request)
+    public function add_category (Request $request)
     {
         $categories = Category::get();
 
         $request->validate([
             'picture' => 'image',
-            'name' => 'required|max:255|alpha_num|unique:categories,name',
+            'name' => 'required|max:255|alpha_num',
             'description' => 'required|max:1000'
         ]);
 
@@ -82,14 +106,22 @@ class AdminController extends Controller
 
             $category = new Category();
 
+            if ($categories->contains('name', $input['name'])) {
+                session()->flash('error_updated_category');
+                return back();
+            }
+
             if(isset($file_name)) 
             {    
                 $category->picture = $file_name;
             }
-           
+            else 
+            {
+                $category->picture = 'nopicture.png';
+            }
+
             $category->name = $input['name'];
-            $category->description = $input['description'];
-            $category->picture = 'nopicture.png';
+            $category->description = $input['description'];   
             $category->save();
             session()->flash('category_add');
         } else {
@@ -113,13 +145,13 @@ class AdminController extends Controller
         return back();
     }
         
-    public function del_category(Request $request) {
+    public function del_category (Request $request) {
         Category::find($request->input('id'))->delete();
         session()->flash('del_category');
         return back();
     }
 
-    public function get_category(Category $category)
+    public function get_category (Category $category)
     {
         $data = [
             'show_picture' => $category->picture,
@@ -134,7 +166,7 @@ class AdminController extends Controller
         return view('admin/categories', $data); 
     }
 
-    public function get_products()
+    public function get_products ()
     {
         $categories = Category::get();
         $products = Product::get()->sortBy('created_at', SORT_DESC, 3);
@@ -147,7 +179,7 @@ class AdminController extends Controller
         return view('admin/products', $data); 
     }
 
-    public function get_product(Category $category, $id = null)
+    public function get_product (Category $category, $id = null)
     {
         $categories = Category::where('id','!=', $category->id)->get();
         $product = Product::find($id);
@@ -275,8 +307,7 @@ class AdminController extends Controller
                 'picture' => $new_picture,
             ]);
             
-            $name = $input['name'];
-            session()->flash('status_product', "Продукт $name отредактирован");
+            session()->flash('status_product', "Продукт отредактирован");
         }
         return back();
     }
@@ -284,10 +315,8 @@ class AdminController extends Controller
     public function del_product (Request $request) 
     {
         $res = $request->input('check_delete',[]);
-        $product = Product::whereIn("id",$res);
-        $name = $product->pluck('name');
-        $product->delete();
-        session()->flash('status_product', "Продукт $name удален");
+        Product::whereIn("id",$res)->delete();
+        session()->flash('status_product', "Удаление успешно выполнено");
         return back();
     }
         
