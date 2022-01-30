@@ -129,6 +129,7 @@ class HomeController extends Controller
             $user->name = $input['name'];
             $user->email = $input['email'];
             $user->save();
+            return [$user->addresses];
     }
     public function updateAvatar(Request $request) {
         $user = User::find(auth()->id());
@@ -144,7 +145,9 @@ class HomeController extends Controller
     }
     public function del_address () 
     {
+        $user = User::find(auth()->id());
         Address::find(request('address_id'))->delete();
+        return [$user->addresses];
     }
     
 }

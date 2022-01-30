@@ -74,7 +74,7 @@
                 <label class="form-lable"> Список адресов </label>
                 <br />
 
-                <div v-for="address in addresses" :key="address.id">
+                <div v-for="address in addressesList" :key="address.id">
                     <input v-model="pick" :value="address.id" type="radio" />
                     <label>
                         {{ address.address }}
@@ -126,6 +126,7 @@ export default {
             checked: false,
             name: this.user.name,
             email: this.user.email,
+            addressesList: this.addresses,
             mainAddress: "",
             file: {},
             new_address: "",
@@ -156,7 +157,9 @@ export default {
                     this.$swal({
                         title: "Профиль обновлен",
                         icon: "success",
-                    }).then(() => {})
+                    }).then((response) => {
+                        this.addressesList = response.data.user.addresses
+                    })
                 })
                 .catch((error) => {
                     this.errors = error.response.data.errors
@@ -193,11 +196,14 @@ export default {
             }
             axios
                 .post("/home/profile/del_address", params)
-                .then(() => {
+                .then((response) => {
                     this.$swal({
                         title: "Адрес удален",
                         icon: "success",
-                    }).then(() => {})
+                    }).then((response) => {
+                        this.addressesList = response.data.user.addresses
+                    })
+                    this.addressesList = response.user.addresses
                 })
                 .catch((error) => {
                     this.errors = error.response.data.errors

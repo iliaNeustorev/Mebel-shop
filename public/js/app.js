@@ -5887,6 +5887,7 @@ __webpack_require__.r(__webpack_exports__);
       checked: false,
       name: this.user.name,
       email: this.user.email,
+      addressesList: this.addresses,
       mainAddress: "",
       file: {},
       new_address: "",
@@ -5917,7 +5918,9 @@ __webpack_require__.r(__webpack_exports__);
         _this.$swal({
           title: "Профиль обновлен",
           icon: "success"
-        }).then(function () {});
+        }).then(function (response) {
+          _this.addressesList = response.data.user.addresses;
+        });
       })["catch"](function (error) {
         _this.errors = error.response.data.errors;
       })["finally"](function () {});
@@ -5949,11 +5952,15 @@ __webpack_require__.r(__webpack_exports__);
       var params = {
         address_id: addressId
       };
-      axios.post("/home/profile/del_address", params).then(function () {
+      axios.post("/home/profile/del_address", params).then(function (response) {
         _this3.$swal({
           title: "Адрес удален",
           icon: "success"
-        }).then(function () {});
+        }).then(function (response) {
+          _this3.addressesList = response.data.user.addresses;
+        });
+
+        _this3.addressesList = response.user.addresses;
       })["catch"](function (error) {
         _this3.errors = error.response.data.errors;
       })["finally"](function () {});
@@ -30576,7 +30583,7 @@ var render = function () {
           _vm._v(" "),
           _c("br"),
           _vm._v(" "),
-          _vm._l(_vm.addresses, function (address) {
+          _vm._l(_vm.addressesList, function (address) {
             return _c("div", { key: address.id }, [
               _c("input", {
                 directives: [
