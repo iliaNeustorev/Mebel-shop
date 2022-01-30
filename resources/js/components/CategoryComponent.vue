@@ -73,6 +73,10 @@ export default {
                     return product.id == productId
                 })
                 this.products[idx].quantity = data.quantity
+                this.$store.dispatch(
+                    "changeBasketProductsQuantity",
+                    data.basketProductsQuantity
+                )
             })
         },
     },

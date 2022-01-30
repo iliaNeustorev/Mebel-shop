@@ -30,7 +30,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <a href="{{ route('repeatOrder', $order->id) }}"><button class="btn btn-info btn-sm w-50">Повторить заказ</button></a>
+                    <a href="{{ route('repeatOrder', $order->id) }}"><button class="btn btn-info w-50">Повторить заказ</button></a>
                 </div>
             </div>
         @endforeach

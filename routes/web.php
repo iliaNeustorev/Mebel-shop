@@ -27,10 +27,10 @@ Route::get('/', function () {
 
 Route::prefix('basket')->group(function () {
     Route::get('/', [BasketController::class, 'index'])->name('basket');
-    Route::post('/create_order', [BasketController::class, 'create_order'])->name('create_order');
+    Route::post('/create_order', [BasketController::class, 'create_order']);
     Route::prefix('product')->group(function () {
-        Route::post('/add', [BasketController::class, 'add'])->name('addProduct');
-        Route::post('/remove', [BasketController::class, 'remove'])->name('removeProduct');
+        Route::post('/add', [BasketController::class, 'add']);
+        Route::post('/remove', [BasketController::class, 'remove']);
     });
 });
 
@@ -40,9 +40,10 @@ Route::get('/orders/repeatOrder{orderId}', [OrderController::class, 'repeatOrder
 Route::prefix('home')->group(function() {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
         Route::prefix('profile')->middleware('auth')->group(function() {
-            Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
-            Route::post('/profile/update', [HomeController::class, 'profile_update'])->name('profile_update');  
-            Route::post('/del_address', [HomeController::class, 'del_address'])->name('del_address');   
+            Route::get('/', [HomeController::class, 'profile'])->name('profile');
+            Route::post('/update', [HomeController::class, 'profile_update']);  
+            Route::post('/del_address', [HomeController::class, 'del_address']);   
+            Route::post('/updateAvatar', [HomeController::class, 'updateAvatar']);   
         });
             
 });

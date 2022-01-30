@@ -12,7 +12,6 @@
         <div class="row">
             <category-component :category-id="{{$category->id}}"></category-component>
         </div>
-
     </div>
 
 @endsection

@@ -65,7 +65,7 @@ class HomeController extends Controller
         // } else 
         // {
             $request->validate([
-                'picture' => 'image',
+                'file' => 'image',
                 'name' => 'max:255|alpha_num',
                 'email' => 'email',
                 'password' => 'nullable|confirmed|min:8',
@@ -75,7 +75,7 @@ class HomeController extends Controller
 
             $user = User::find(auth()->id());
 
-            $file = $request->file('picture');
+            $file = $request->file('file');
             $input = $request->all();
            if ($input['password']) {
                 $current_password = $input['current_password'];
@@ -108,7 +108,7 @@ class HomeController extends Controller
            
             if ($input['new_address']) {
                 
-                if (isset($input['main_new_address'])) {
+                if ($input['main_new_address'] === 'да')  {
                     Address::where('user_id', $user->id)->update([
                         'main' => false
                     ]);
@@ -129,14 +129,22 @@ class HomeController extends Controller
             $user->name = $input['name'];
             $user->email = $input['email'];
             $user->save();
-            session()->flash('profileUpdated');
-            return back();
     }
-
+    public function updateAvatar(Request $request) {
+        $user = User::find(auth()->id());
+        $file = $request->file('file');
+        if($file) {
+            $ext = $file->getClientOriginalExtension();
+            $file_name = time(). mt_rand(1000, 9999) . '.' . $ext;
+            $file->storeAs('public/img/users', $file_name);
+            
+            $user->picture = $file_name;
+            $user->save();
+            }
+    }
     public function del_address () 
     {
         Address::find(request('address_id'))->delete();
-        return back();
     }
     
 }

@@ -1,16 +1,16 @@
 <template>
     <div>
-        <div v-if="errors.length" class="alert alert-danger">
+        <div v-if="errors" class="alert alert-danger">
             <ul>
                 <li v-for="(error, idx) in errors" :key="idx">
-                    {{ error }}
+                    {{ error[0] }}
                 </li>
                 <template v-if="errors.email">
                     Ссылка на <a :href="routeLogin">Вход</a>
                 </template>
             </ul>
         </div>
-        <table class="table table-bordered">
+        <table v-if="products.length" class="table table-bordered">
             <thead>
                 <tr>
                     <th>Название</th>
@@ -34,45 +34,112 @@
                         >
                     </td>
                 </tr>
-                <tr v-if="!products">
-                    <td colspan="4">
-                        Нет товаров в корзине
-                        <em><a :href="routeHome">Перейти в каталог</a></em>
-                    </td>
-                </tr>
             </tbody>
         </table>
+        <div class="mb-5 text-center" v-if="!products.length">
+            <em>
+                Нет товаров в корзине
+                <a :href="routeHome"> Перейти в каталог</a></em
+            >
+        </div>
         <template v-if="products">
             <label>Имя</label>
-            <input v-model="name" class="form-control mb-2" />
+            <input
+                v-model="name"
+                :disabled="isDisabled"
+                class="form-control mb-2"
+            />
             <label>Адрес</label>
-            <input class="form-control mb-2" />
+            <input
+                v-model="mainAddress"
+                :disabled="isDisabled"
+                class="form-control mb-2"
+            />
             <label>Почта</label>
-            <input v-model="email" type="email" class="form-control mb-2" />
-            <button class="btn btn-success">Оформить заказ</button>
+            <input
+                v-model="email"
+                :disabled="isDisabled"
+                type="email"
+                class="form-control mb-2"
+            />
+            <button
+                @click="submit"
+                :disabled="processing || !products.length"
+                class="btn btn-success"
+            >
+                <img
+                    class="loader"
+                    v-if="processing"
+                    src="/storage/img/loaders/loader.gif"
+                />
+                <span v-else>Оформить заказ</span>
+            </button>
         </template>
     </div>
 </template>
 <script>
 export default {
-    props: ["errorList", "routeLogin", "products", "routeHome", "sumOrder"],
+    props: [
+        "errorList",
+        "routeLogin",
+        "products",
+        "routeHome",
+        "routeOrders",
+        "sumOrder",
+        "mainAddress",
+        "name",
+        "email",
+    ],
     data() {
         return {
-            errors: [],
-            name: "",
-            email: "",
+            processing: false,
+            errors: null,
+            isDisabled: true,
         }
     },
     mounted() {
-        console.log(this.products)
         for (let error in this.errorList) {
             this.errors.push(this.errorList[error][0])
         }
+        if (!this.email) {
+            this.isDisabled = false
+        }
+    },
+    methods: {
+        submit() {
+            this.processing = true
+            this.errors = null
+            const params = {
+                name: this.name,
+                email: this.email,
+                address: this.mainAddress,
+            }
+            axios
+                .post("/basket/create_order", params)
+                .then(() => {
+                    this.$swal({
+                        title: "Заказ оформлен!",
+                        icon: "success",
+                    }).then(() => {
+                        window.location.href = this.routeOrders
+                    })
+                })
+                .catch((error) => {
+                    this.errors = error.response.data.errors
+                })
+                .finally(() => {
+                    this.processing = false
+                })
+        },
     },
 }
 </script>
 <style scoped>
 span {
     float: right;
+}
+.loader {
+    width: 200px;
+    height: 200px;
 }
 </style>

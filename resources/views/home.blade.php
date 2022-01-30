@@ -36,6 +36,5 @@
         @else
 
         @endif
-
     </div>
 @endsection

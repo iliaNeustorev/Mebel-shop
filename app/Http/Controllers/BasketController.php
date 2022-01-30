@@ -31,6 +31,7 @@ class BasketController extends Controller
         session()->save();
         return [
             'quantity'=> $products[$id],
+            'basketProductsQuantity' => collect($products)->sum()
         ];
     }
 
@@ -52,6 +53,7 @@ class BasketController extends Controller
         session()->save();
         return [
             'quantity'=> $products[$id],
+            'basketProductsQuantity' => collect($products)->sum()
         ];
     }
 
@@ -83,12 +85,13 @@ class BasketController extends Controller
         $sum_order =  $basket_products->map( function ($product) {
             return $product['price'] * $product['quantity'];     
         })->sum();
-       
         $date = [
             'products' => $basket_products,
             'title' => 'Корзина',
             'sum_order' =>  $sum_order,
-            'main_address' =>  $main_address,
+            'mainAddress' =>  $main_address,
+            'email' => $email,
+            'name' => $name, 
         ];
 
         return view('basket', $date);
