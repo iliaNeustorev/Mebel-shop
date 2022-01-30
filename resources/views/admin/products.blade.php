@@ -147,8 +147,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class='text-center' colspan=8>
-
+                        <td class='text-center' colspan=7>
+                            {{ $products->links() }}
                         </td>
                     </tr>
         </form>

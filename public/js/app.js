@@ -30448,7 +30448,7 @@ var render = function () {
               expression: "email",
             },
           ],
-          staticClass: "form-control",
+          staticClass: "form-control w-50",
           attrs: { type: "email" },
           domProps: { value: _vm.email },
           on: {
@@ -30481,7 +30481,7 @@ var render = function () {
               expression: "name",
             },
           ],
-          staticClass: "form-control",
+          staticClass: "form-control w-50",
           attrs: { type: "text" },
           domProps: { value: _vm.name },
           on: {
@@ -30517,7 +30517,7 @@ var render = function () {
                 expression: "password",
               },
             ],
-            staticClass: "form-control",
+            staticClass: "form-control w-50",
             attrs: { type: "password" },
             domProps: { value: _vm.password },
             on: {
@@ -30730,7 +30730,7 @@ var staticRenderFns = [
       ),
       _vm._v(" "),
       _c("input", {
-        staticClass: "form-control",
+        staticClass: "form-control w-50",
         attrs: { type: "password", name: "current_password" },
       }),
     ])
@@ -30747,7 +30747,7 @@ var staticRenderFns = [
       ),
       _vm._v(" "),
       _c("input", {
-        staticClass: "form-control",
+        staticClass: "form-control w-50",
         attrs: { type: "password", name: "password_confirmation" },
       }),
     ])

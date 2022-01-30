@@ -12,13 +12,13 @@
                 <label for="exampleInputEmail1" class="form-label">
                     Почта
                 </label>
-                <input type="email" class="form-control" v-model="email" />
+                <input type="email" class="form-control w-50" v-model="email" />
             </div>
             <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">
                     Имя
                 </label>
-                <input type="text" class="form-control" v-model="name" />
+                <input type="text" class="form-control w-50" v-model="name" />
             </div>
             <div class="mb-3">
                 <div class="mb-3">
@@ -27,7 +27,7 @@
                     </label>
                     <input
                         type="password"
-                        class="form-control"
+                        class="form-control w-50"
                         name="current_password"
                     />
                 </div>
@@ -37,7 +37,7 @@
                     </label>
                     <input
                         type="password"
-                        class="form-control"
+                        class="form-control w-50"
                         v-model="password"
                     />
                 </div>
@@ -47,7 +47,7 @@
                     </label>
                     <input
                         type="password"
-                        class="form-control"
+                        class="form-control w-50"
                         name="password_confirmation"
                     />
                 </div>

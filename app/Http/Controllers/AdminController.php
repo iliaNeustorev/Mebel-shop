@@ -70,7 +70,7 @@ class AdminController extends Controller
 
     public function get_categories ()
     {
-        $categories = Category::get();
+        $categories = Category::paginate(3);
         $data = [
             'id' => NULL,
             'name' =>  NULL,
@@ -169,7 +169,8 @@ class AdminController extends Controller
     public function get_products ()
     {
         $categories = Category::get();
-        $products = Product::get()->sortBy('created_at', SORT_DESC, 3);
+        $products = Product::paginate(5);
+        $products->sortBy('created_at', SORT_DESC, 3);
         $data = [
             'categories' =>  $categories,
             'title' => 'Список продуктов',

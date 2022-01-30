@@ -151,12 +151,12 @@
                             <td>{{ $category->created_at }}</td>
                             <td>{{ $category->updated_at }}</td>
                         </tr>
-                    @endforeach
-                    <tr>
-                        <td class='text-center' colspan=4>
-
-                        </td>
-                    </tr>
+                        @endforeach
+                        <tr>
+                            <td class='text-center' colspan=7>
+                                {{ $categories->links() }}
+                            </td>
+                        </tr>
                 </tbody>
             </table>
         @endif
