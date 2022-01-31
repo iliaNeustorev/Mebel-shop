@@ -5712,6 +5712,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ["categories"],
   data: function data() {
@@ -5722,6 +5723,7 @@ __webpack_require__.r(__webpack_exports__);
   computed: {},
   methods: {},
   mounted: function mounted() {
+    this.countCurrent = this.count;
     console.log(this.categories);
   }
 });
@@ -5878,16 +5880,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ["errorList", "routeProfile", "user", "routeDelAddress", "addresses"],
+  props: ["errorList", "routeProfile", "user", "addresses"],
   data: function data() {
     return {
       pick: "",
       errors: null,
       checked: false,
-      name: this.user.name,
-      email: this.user.email,
-      addressesList: this.addresses,
+      userCurrent: [],
+      addressesList: [],
       mainAddress: "",
       file: {},
       new_address: "",
@@ -5899,7 +5915,8 @@ __webpack_require__.r(__webpack_exports__);
       this.errors.push(this.errorList[error][0]);
     }
 
-    console.log(this.pick);
+    this.addressesList = this.addresses;
+    this.userCurrent = this.user;
   },
   methods: {
     submit: function submit() {
@@ -5907,8 +5924,8 @@ __webpack_require__.r(__webpack_exports__);
 
       this.errors = null;
       var params = {
-        name: this.name,
-        email: this.email,
+        name: this.userCurrent.name,
+        email: this.userCurrent.email,
         password: this.password,
         main_new_address: this.checked,
         new_address: this.new_address,
@@ -5918,8 +5935,8 @@ __webpack_require__.r(__webpack_exports__);
         _this.$swal({
           title: "Профиль обновлен",
           icon: "success"
-        }).then(function (response) {
-          _this.addressesList = response.data.user.addresses;
+        }).then(function () {
+          window.location.href = _this.routeProfile;
         });
       })["catch"](function (error) {
         _this.errors = error.response.data.errors;
@@ -5934,11 +5951,14 @@ __webpack_require__.r(__webpack_exports__);
         headers: {
           "Content-Type": "multipart/form-data"
         }
-      }).then(function () {
+      }).then(function (response) {
         _this2.$swal({
           title: "Аватар обновлен",
           icon: "success"
-        }).then(function () {});
+        }).then(function () {// window.location.href = this.routeProfile
+        });
+
+        _this2.userCurrent.picture = response.data;
       })["catch"](function (error) {
         _this2.errors = error.response.data.errors;
       })["finally"](function () {});
@@ -5956,11 +5976,9 @@ __webpack_require__.r(__webpack_exports__);
         _this3.$swal({
           title: "Адрес удален",
           icon: "success"
-        }).then(function (response) {
-          _this3.addressesList = response.data.user.addresses;
-        });
+        }).then(function () {});
 
-        _this3.addressesList = response.user.addresses;
+        _this3.addressesList = response.data;
       })["catch"](function (error) {
         _this3.errors = error.response.data.errors;
       })["finally"](function () {});
@@ -30347,6 +30365,7 @@ var render = function () {
                     _vm._v(
                       "\n                            " +
                         _vm._s(category.name) +
+                        _vm._s(category.products) +
                         "\n                        "
                     ),
                   ]),
@@ -30444,19 +30463,19 @@ var render = function () {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.email,
-              expression: "email",
+              value: _vm.userCurrent.email,
+              expression: "userCurrent.email",
             },
           ],
           staticClass: "form-control w-50",
           attrs: { type: "email" },
-          domProps: { value: _vm.email },
+          domProps: { value: _vm.userCurrent.email },
           on: {
             input: function ($event) {
               if ($event.target.composing) {
                 return
               }
-              _vm.email = $event.target.value
+              _vm.$set(_vm.userCurrent, "email", $event.target.value)
             },
           },
         }),
@@ -30477,19 +30496,19 @@ var render = function () {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.name,
-              expression: "name",
+              value: _vm.userCurrent.name,
+              expression: "userCurrent.name",
             },
           ],
           staticClass: "form-control w-50",
           attrs: { type: "text" },
-          domProps: { value: _vm.name },
+          domProps: { value: _vm.userCurrent.name },
           on: {
             input: function ($event) {
               if ($event.target.composing) {
                 return
               }
-              _vm.name = $event.target.value
+              _vm.$set(_vm.userCurrent, "name", $event.target.value)
             },
           },
         }),
@@ -30540,7 +30559,7 @@ var render = function () {
           _vm._v(" "),
           _c("img", {
             staticClass: "avatar",
-            attrs: { src: "/storage/img/users/" + _vm.user.picture },
+            attrs: { src: "/storage/img/users/" + _vm.userCurrent.picture },
           }),
           _vm._v(" "),
           _c("input", {
@@ -30585,26 +30604,28 @@ var render = function () {
           _vm._v(" "),
           _vm._l(_vm.addressesList, function (address) {
             return _c("div", { key: address.id }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.pick,
-                    expression: "pick",
-                  },
-                ],
-                attrs: { type: "radio" },
-                domProps: {
-                  value: address.id,
-                  checked: _vm._q(_vm.pick, address.id),
-                },
-                on: {
-                  change: function ($event) {
-                    _vm.pick = address.id
-                  },
-                },
-              }),
+              address.main
+                ? _c("input", { attrs: { type: "radio", checked: "" } })
+                : _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.pick,
+                        expression: "pick",
+                      },
+                    ],
+                    attrs: { type: "radio" },
+                    domProps: {
+                      value: address.id,
+                      checked: _vm._q(_vm.pick, address.id),
+                    },
+                    on: {
+                      change: function ($event) {
+                        _vm.pick = address.id
+                      },
+                    },
+                  }),
               _vm._v(" "),
               _c("label", [
                 _vm._v(
@@ -30614,11 +30635,19 @@ var render = function () {
                 ),
               ]),
               _vm._v(" "),
+              address.main
+                ? _c("span", { staticClass: "selected" }, [_vm._v("выбран")])
+                : _vm._e(),
+              _vm._v(" "),
               _c(
                 "button",
                 {
                   staticClass: "btn-del-address btn btn-danger btn-sm",
-                  attrs: { title: "Удалить адрес", type: "submit" },
+                  attrs: {
+                    disabled: address.main == 1,
+                    title: "Удалить адрес",
+                    type: "submit",
+                  },
                   on: {
                     click: function ($event) {
                       return _vm.delAddress(address.id)
@@ -30627,10 +30656,6 @@ var render = function () {
                 },
                 [_vm._v("\n                    X\n                ")]
               ),
-              _vm._v(" "),
-              address.main
-                ? _c("span", { staticClass: "selected" }, [_vm._v("выбран")])
-                : _vm._e(),
             ])
           }),
         ],

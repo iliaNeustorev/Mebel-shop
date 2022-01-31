@@ -65,7 +65,6 @@ class HomeController extends Controller
         // } else 
         // {
             $request->validate([
-                'file' => 'image',
                 'name' => 'max:255|alpha_num',
                 'email' => 'email',
                 'password' => 'nullable|confirmed|min:8',
@@ -74,8 +73,6 @@ class HomeController extends Controller
 
 
             $user = User::find(auth()->id());
-
-            $file = $request->file('file');
             $input = $request->all();
            if ($input['password']) {
                 $current_password = $input['current_password'];
@@ -87,14 +84,6 @@ class HomeController extends Controller
                    $user->save();
                 }
            }
-
-            if($file) {
-            $ext = $file->getClientOriginalExtension();
-            $file_name = time(). mt_rand(1000, 9999) . '.' . $ext;
-            $file->storeAs('public/img/users', $file_name);
-            
-            $user->picture = $file_name;
-            }
             if (isset($input['main_address'])) {
             
                 $address = Address::find($input['main_address']);
@@ -129,9 +118,12 @@ class HomeController extends Controller
             $user->name = $input['name'];
             $user->email = $input['email'];
             $user->save();
-            return [$user->addresses];
+            return $user->addresses;
     }
     public function updateAvatar(Request $request) {
+        $request->validate([
+            'file' => 'image',
+        ]);
         $user = User::find(auth()->id());
         $file = $request->file('file');
         if($file) {
@@ -142,12 +134,13 @@ class HomeController extends Controller
             $user->picture = $file_name;
             $user->save();
             }
+        return $user->picture;
     }
     public function del_address () 
     {
         $user = User::find(auth()->id());
         Address::find(request('address_id'))->delete();
-        return [$user->addresses];
+        return $user->addresses;
     }
     
 }

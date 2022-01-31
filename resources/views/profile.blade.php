@@ -6,6 +6,6 @@
 
 @section('content')
 
-    <profile-component :error-list='{{ $errors }}' :user="{{ $user }}" :addresses='{{ $user->addresses }}'></profile-component>
+    <profile-component route-profile="{{ route('profile') }}" :error-list='{{ $errors }}' :user="{{ $user }}" :addresses='{{ $user->addresses }}'></profile-component>
 
 @endsection

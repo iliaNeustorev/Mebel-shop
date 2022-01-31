@@ -16,7 +16,8 @@
                         />
                         <div class="card-body">
                             <h5 class="card-title text-center">
-                                {{ category.name }}
+                                {{ category.name
+                                }}{{ category.products }}
                             </h5>
                         </div>
                     </div>
@@ -36,6 +37,7 @@ export default {
     computed: {},
     methods: {},
     mounted() {
+        this.countCurrent = this.count
         console.log(this.categories)
     },
 }

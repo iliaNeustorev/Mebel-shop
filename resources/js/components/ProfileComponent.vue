@@ -12,13 +12,21 @@
                 <label for="exampleInputEmail1" class="form-label">
                     Почта
                 </label>
-                <input type="email" class="form-control w-50" v-model="email" />
+                <input
+                    type="email"
+                    class="form-control w-50"
+                    v-model="userCurrent.email"
+                />
             </div>
             <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">
                     Имя
                 </label>
-                <input type="text" class="form-control w-50" v-model="name" />
+                <input
+                    type="text"
+                    class="form-control w-50"
+                    v-model="userCurrent.name"
+                />
             </div>
             <div class="mb-3">
                 <div class="mb-3">
@@ -56,7 +64,7 @@
                     <br />
                     <img
                         class="avatar"
-                        :src="'/storage/img/users/' + user.picture"
+                        :src="'/storage/img/users/' + userCurrent.picture"
                     />
                     <input
                         id="file"
@@ -75,19 +83,26 @@
                 <br />
 
                 <div v-for="address in addressesList" :key="address.id">
-                    <input v-model="pick" :value="address.id" type="radio" />
+                    <input v-if="address.main" type="radio" checked />
+                    <input
+                        v-else
+                        v-model="pick"
+                        :value="address.id"
+                        type="radio"
+                    />
                     <label>
                         {{ address.address }}
                     </label>
+                    <span class="selected" v-if="address.main">выбран</span>
                     <button
                         @click="delAddress(address.id)"
+                        :disabled="address.main == 1"
                         title="Удалить адрес"
                         type="submit"
                         class="btn-del-address btn btn-danger btn-sm"
                     >
                         X
                     </button>
-                    <span class="selected" v-if="address.main">выбран</span>
                 </div>
             </div>
 
@@ -112,21 +127,14 @@
 
 <script>
 export default {
-    props: [
-        "errorList",
-        "routeProfile",
-        "user",
-        "routeDelAddress",
-        "addresses",
-    ],
+    props: ["errorList", "routeProfile", "user", "addresses"],
     data() {
         return {
             pick: "",
             errors: null,
             checked: false,
-            name: this.user.name,
-            email: this.user.email,
-            addressesList: this.addresses,
+            userCurrent: [],
+            addressesList: [],
             mainAddress: "",
             file: {},
             new_address: "",
@@ -137,14 +145,15 @@ export default {
         for (let error in this.errorList) {
             this.errors.push(this.errorList[error][0])
         }
-        console.log(this.pick)
+        this.addressesList = this.addresses
+        this.userCurrent = this.user
     },
     methods: {
         submit() {
             this.errors = null
             const params = {
-                name: this.name,
-                email: this.email,
+                name: this.userCurrent.name,
+                email: this.userCurrent.email,
                 password: this.password,
                 main_new_address: this.checked,
                 new_address: this.new_address,
@@ -157,8 +166,8 @@ export default {
                     this.$swal({
                         title: "Профиль обновлен",
                         icon: "success",
-                    }).then((response) => {
-                        this.addressesList = response.data.user.addresses
+                    }).then(() => {
+                        window.location.href = this.routeProfile
                     })
                 })
                 .catch((error) => {
@@ -176,11 +185,14 @@ export default {
                         "Content-Type": "multipart/form-data",
                     },
                 })
-                .then(() => {
+                .then((response) => {
                     this.$swal({
                         title: "Аватар обновлен",
                         icon: "success",
-                    }).then(() => {})
+                    }).then(() => {
+                        // window.location.href = this.routeProfile
+                    })
+                    this.userCurrent.picture = response.data
                 })
                 .catch((error) => {
                     this.errors = error.response.data.errors
@@ -200,10 +212,8 @@ export default {
                     this.$swal({
                         title: "Адрес удален",
                         icon: "success",
-                    }).then((response) => {
-                        this.addressesList = response.data.user.addresses
-                    })
-                    this.addressesList = response.user.addresses
+                    }).then(() => {})
+                    this.addressesList = response.data
                 })
                 .catch((error) => {
                     this.errors = error.response.data.errors

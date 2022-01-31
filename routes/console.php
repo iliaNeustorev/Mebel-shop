@@ -4,6 +4,7 @@ use App\Models\Category as ModelsCategory;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Inspiring;
 use App\Http\Controllers\Category;
+use App\Models\Address;
 use App\Models\Product;
 use App\Models\Role;
 use App\Models\User;
@@ -238,13 +239,23 @@ Artisan::command('test', function () {
         
     //     Product::upsert($insert,['id'],['name','description','price','picture','category_id']);
     // }
-    $products = Product::get()->toArray();
-    // $products->transform(function($product) {
-    //     $product->category_id = $product->category()->pluck('name')->toArray();
+
+
+    // $names_category = $products->transform(function($product) {
+    //     return ['name' => $product->category()->value('name')];
+    // });
+    $products = Product::get();
+            $productsExport = $products->map( function ($product) {
+                $product['name_category'] = $product->category()->value('name');
+                return $product;
+              })->toArray();
+            
+    // $products2 =$products->merge($names_category);
+    // $products = $products->map(function($product) {
+    //     $product->category_id = $product->category()->value('name');
     //     return $product;
     // });
-    // $products = $products->toArray();
-    dd($products);
+     dd( $productsExport);
    
    
 });

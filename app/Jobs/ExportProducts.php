@@ -33,7 +33,11 @@ class ExportProducts implements ShouldQueue
     public function handle()
     {
         {
-            $products = Product::get()->toArray();
+            $products = Product::get();
+            $productsExport = $products->map( function ($product) {
+                $product['name_category'] = $product->category()->value('name');
+                return $product;
+              })->toArray();
             
             $file = fopen('exportProducts.csv', 'w');
             $columns = [
@@ -44,15 +48,17 @@ class ExportProducts implements ShouldQueue
                'picture',
                'category_id',
                'created_at',
-               'updated_at' 
+               'updated_at', 
+               'name_category'
             ];
                 fputcsv($file, $columns, ';');
-            foreach ($products as $product) {
+            foreach ($productsExport as $product) {
                 $product['name']  = iconv('utf-8', 'windows-1251//IGNORE',$product['name']);
                 $product['description']  = iconv('utf-8', 'windows-1251//IGNORE', $product['description']);
                 $product['price']  = iconv('utf-8', 'windows-1251//IGNORE', $product['price']);
                 $product['picture']  = iconv('utf-8', 'windows-1251//IGNORE', $product['picture']);
                 $product['category_id']  = iconv('utf-8', 'windows-1251//IGNORE', $product['category_id']);
+                $product['name_category']  = iconv('utf-8', 'windows-1251//IGNORE', $product['name_category']);
                 fputcsv($file,$product, ';');
             }
             fclose($file);
