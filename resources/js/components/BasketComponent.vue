@@ -139,7 +139,7 @@ span {
     float: right;
 }
 .loader {
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: 100px;
 }
 </style>
