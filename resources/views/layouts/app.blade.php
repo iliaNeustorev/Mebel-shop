@@ -45,14 +45,12 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
+                        
                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
-                        
-                       <navbarbasket-component></navbarbasket-component>
-
+                        <navbarbasket-component route-basket={{ route('basket') }}></navbarbasket-component>
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
