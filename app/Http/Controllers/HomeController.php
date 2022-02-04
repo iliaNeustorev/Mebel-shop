@@ -68,7 +68,6 @@ class HomeController extends Controller
                 'name' => 'max:255|alpha_num',
                 'email' => 'email',
                 'password' => 'nullable|confirmed|min:8',
-                'new_address' => 'unique:addresses,address',
             ]);
 
 
@@ -94,33 +93,14 @@ class HomeController extends Controller
                     'main' => false
                 ]);
             }
-           
-            if ($input['new_address']) {
-                
-                if ($input['main_new_address'] === 'да')  {
-                    Address::where('user_id', $user->id)->update([
-                        'main' => false
-                    ]);
-                    $main_address = true;
-                } else {
-                    $main_address = !$user->addresses->contains(function($address) {
-                        return $address->main == true;
-                    });
-                }
-
-                $address = new Address();
-                $address->user_id = $user->id;
-                $address->address = $input['new_address'];
-                $address->main = $main_address;
-                $address->save();
-            
-            }
             $user->name = $input['name'];
             $user->email = $input['email'];
             $user->save();
-            return $user->addresses;
+            return $user;
     }
-    public function updateAvatar(Request $request) {
+
+    public function updateAvatar (Request $request) 
+    {
         $request->validate([
             'file' => 'image',
         ]);
@@ -136,11 +116,42 @@ class HomeController extends Controller
             }
         return $user->picture;
     }
+
     public function del_address () 
     {
         $user = User::find(auth()->id());
         Address::find(request('address_id'))->delete();
         return $user->addresses;
     }
-    
+
+    public function addAddress (Request $request)
+    {
+        $request->validate([
+            'new_address' => 'unique:addresses,address',
+        ]);
+
+        $user = User::find(auth()->id());
+
+        if (request('new_address')) {
+            
+            if (request('main_new_address') === 'да')  {
+                Address::where('user_id', $user->id)->update([
+                    'main' => false
+                ]);
+                $main_address = true;
+            } else {
+                $main_address = !$user->addresses->contains(function($address) {
+                    return $address->main == true;
+                });
+            }
+
+            $address = new Address();
+            $address->user_id = $user->id;
+            $address->address = request('new_address');
+            $address->main = $main_address;
+            $address->save();
+        }
+        $userRefresh = User::find(auth()->id());
+        return $userRefresh->addresses;
+    }
 }

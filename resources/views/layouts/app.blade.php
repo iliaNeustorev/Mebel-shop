@@ -36,16 +36,16 @@
                     aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                @auth
-                    <span>Здравствуйте {{ Auth::user()->name }}</span>
-                @endauth
-                @guest
-                    <span>Вы не авторизованы, авторизуйтесь пожалуйста</span>
-                @endguest
+               
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-                        
+                        @auth
+                            Здравствуйте {{ Auth::user()->name }}
+                        @endauth
+                        @guest
+                            Вы не авторизованы, авторизуйтесь пожалуйста
+                        @endguest
                     </ul>
 
                     <!-- Right Side Of Navbar -->

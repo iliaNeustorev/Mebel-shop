@@ -45,6 +45,7 @@ Route::prefix('home')->group(function() {
             Route::post('/update', [HomeController::class, 'profile_update']);  
             Route::post('/del_address', [HomeController::class, 'del_address']);   
             Route::post('/updateAvatar', [HomeController::class, 'updateAvatar']);   
+            Route::post('/addAddress', [HomeController::class, 'addAddress']);   
         });
             
 });

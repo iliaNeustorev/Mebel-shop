@@ -78,48 +78,52 @@
                     </button>
                 </div>
             </div>
-            <div class="container addressess">
-                <label class="form-lable"> Список адресов </label>
-                <br />
-
-                <div v-for="address in addressesList" :key="address.id">
-                    <input v-if="address.main" type="radio" checked />
-                    <input
-                        v-else
-                        v-model="pick"
-                        :value="address.id"
-                        type="radio"
-                    />
-                    <label>
-                        {{ address.address }}
-                    </label>
-                    <span class="selected" v-if="address.main">выбран</span>
-                    <button
-                        @click="delAddress(address.id)"
-                        :disabled="address.main == 1"
-                        title="Удалить адрес"
-                        type="submit"
-                        class="btn-del-address btn btn-danger btn-sm"
-                    >
-                        X
+            <template>
+                <div class="container addressess">
+                    <label class="form-lable"> Список адресов </label>
+                    <br />
+                    <div v-for="address in addressesList" :key="address.id">
+                        <input v-if="address.main" type="radio" checked />
+                        <input
+                            v-else
+                            v-model="pick"
+                            :value="address.id"
+                            type="radio"
+                        />
+                        <label>
+                            {{ address.address }}
+                        </label>
+                        <span class="selected" v-if="address.main">выбран</span>
+                        <button
+                            @click="delAddress(address.id)"
+                            :disabled="address.main == 1"
+                            title="Удалить адрес"
+                            type="submit"
+                            class="btn-del-address btn btn-danger btn-sm"
+                        >
+                            X
+                        </button>
+                    </div>
+                    <div class="mb-3 mt-3">
+                        <label class="form-lable"> Новый адрес </label>
+                        <input v-model="new_address" class="form-control" />
+                        <label>Сделать основным</label>
+                        <input
+                            type="checkbox"
+                            v-model="checked"
+                            true-value="да"
+                            false-value="нет"
+                        />
+                    </div>
+                    <button @click="saveAddress()" class="btn btn-success mb-3">
+                        Добавить новый адрес
                     </button>
                 </div>
-            </div>
+            </template>
 
             <br />
-            <div class="mb-3">
-                <label class="form-lable"> Новый адрес </label>
-                <input v-model="new_address" class="form-control w-50" />
-                <label>Сделать основным</label>
-                <input
-                    type="checkbox"
-                    v-model="checked"
-                    true-value="да"
-                    false-value="нет"
-                />
-            </div>
         </div>
-        <button @click="submit()" class="btn btn-primary btn-lg mt-2">
+        <button @click="saveProfile()" class="btn btn-primary btn-lg mt-2">
             Сохранить
         </button>
     </div>
@@ -149,26 +153,21 @@ export default {
         this.userCurrent = this.user
     },
     methods: {
-        submit() {
+        saveProfile() {
             this.errors = null
             const params = {
                 name: this.userCurrent.name,
                 email: this.userCurrent.email,
                 password: this.password,
-                main_new_address: this.checked,
-                new_address: this.new_address,
                 main_address: this.pick,
             }
-
             axios
                 .post("/home/profile/update", params)
                 .then(() => {
                     this.$swal({
                         title: "Профиль обновлен",
                         icon: "success",
-                    }).then(() => {
-                        window.location.href = this.routeProfile
-                    })
+                    }).then(() => {})
                 })
                 .catch((error) => {
                     this.errors = error.response.data.errors
@@ -201,6 +200,29 @@ export default {
         },
         handleFileUpload() {
             this.file = this.$refs.file.files[0]
+        },
+        saveAddress() {
+            this.errors = null
+            const params = {
+                main_new_address: this.checked,
+                new_address: this.new_address,
+            }
+
+            axios
+                .post("/home/profile/addAddress", params)
+                .then((response) => {
+                    this.$swal({
+                        title: "Адрес добавлен",
+                        icon: "success",
+                    }).then(() => {})
+                    this.addressesList = response.data
+                })
+                .catch((error) => {
+                    this.errors = error.response.data.errors
+                })
+                .finally(() => {
+                    console.log(this.addressesList)
+                })
         },
         delAddress(addressId) {
             const params = {
@@ -244,7 +266,9 @@ export default {
 }
 
 .addressess {
-    border: 2px dotted lavender;
+    width: 40%;
+    margin-left: 3%;
+    border: 3px dotted lavender;
     font-size: small;
 }
 
