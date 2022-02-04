@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\CategoriesExportFinishEvents;
 use App\Models\Category as ModelsCategory;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Inspiring;
@@ -244,18 +245,19 @@ Artisan::command('test', function () {
     // $names_category = $products->transform(function($product) {
     //     return ['name' => $product->category()->value('name')];
     // });
-    $products = Product::get();
-            $productsExport = $products->map( function ($product) {
-                $product['name_category'] = $product->category()->value('name');
-                return $product;
-              })->toArray();
+    // $products = Product::get();
+    //         $productsExport = $products->map( function ($product) {
+    //             $product['name_category'] = $product->category()->value('name');
+    //             return $product;
+    //           })->toArray();
             
     // $products2 =$products->merge($names_category);
     // $products = $products->map(function($product) {
     //     $product->category_id = $product->category()->value('name');
     //     return $product;
     // });
-     dd( $productsExport);
+    //  dd( $productsExport);
+    event(new CategoriesExportFinishEvents('test'));
    
    
 });

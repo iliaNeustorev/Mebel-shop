@@ -75,12 +75,12 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    @if (Auth::user()->roles->pluck('name')->contains('Admin'))
+                                        <a class="dropdown-item" href="{{ route('admin') }}">Администрирование</a>
+                                    @endif
                                     <a class="dropdown-item" href="{{ route('profile') }}">Личный кабинет</a>
                                     @if (Auth::user()->orders->isNotEmpty())
                                         <a class="dropdown-item" href="{{ route('orders') }}">Заказы</a>
-                                    @endif
-                                    @if (Auth::user()->roles->pluck('name')->contains('Admin'))
-                                        <a class="dropdown-item" href="{{ route('admin') }}">Администрирование</a>
                                     @endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();

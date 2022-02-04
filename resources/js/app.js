@@ -43,6 +43,11 @@ Vue.component(
     "navbarbasket-component",
     require("./components/NavBarBasketComponent.vue").default
 )
+
+Vue.component(
+    "showusers-component",
+    require("./components/Admin/ShowUsersComponent.vue").default
+)
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

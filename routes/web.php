@@ -27,6 +27,7 @@ Route::get('/', function () {
 
 Route::prefix('basket')->group(function () {
     Route::get('/', [BasketController::class, 'index'])->name('basket');
+    Route::get('/getProductsQuantity', [BasketController::class, 'getProductsQuantity']);
     Route::post('/create_order', [BasketController::class, 'create_order']);
     Route::prefix('product')->group(function () {
         Route::post('/add', [BasketController::class, 'add']);

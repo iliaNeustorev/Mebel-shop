@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -59,7 +60,14 @@ class BasketController extends Controller
 
     public function index () 
     {
-        $products = session('products');
+        $products = session('products',[]);
+        foreach($products as $key => $product){
+            if ($product == 0){
+              unset($products[$key]);
+            }
+        }
+        session()->put('products', $products);
+        session()->save();
         $main_address = null;
         $email = null;
         $name = null;
@@ -81,7 +89,6 @@ class BasketController extends Controller
                 'quantity' => $quantity,
             ];
         })->values();
-       
         $sum_order =  $basket_products->map( function ($product) {
             return $product['price'] * $product['quantity'];     
         })->sum();
@@ -95,6 +102,11 @@ class BasketController extends Controller
         ];
 
         return view('basket', $date);
+        
+    }
+    public function getProductsQuantity () {
+        $products = session('products', []);
+        return collect($products)->sum();
     }
 
     public function create_order (Request $request)

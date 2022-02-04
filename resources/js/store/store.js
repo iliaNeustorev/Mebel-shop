@@ -1,3 +1,4 @@
+import axios from "axios"
 import Vue from "vue"
 import Vuex from "vuex"
 
@@ -9,13 +10,18 @@ const store = new Vuex.Store({
     },
     getters: {},
     mutations: {
-        setBasketProductQuantity(state, payload) {
+        setBasketProductsQuantity(state, payload) {
             state.basketProductsQuantity = payload
         },
     },
     actions: {
         changeBasketProductsQuantity(context, payload) {
-            context.commit("setBasketProductQuantity", payload)
+            context.commit("setBasketProductsQuantity", payload)
+        },
+        getBasketProductsQuantity(context) {
+            axios.get("/basket/getProductsQuantity").then((response) => {
+                context.commit("setBasketProductsQuantity", response.data)
+            })
         },
     },
 })

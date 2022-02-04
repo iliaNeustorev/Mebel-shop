@@ -24,7 +24,9 @@
                     <td>{{ product["title"] }}</td>
                     <td>{{ product["price"] }}</td>
                     <td>{{ product["quantity"] }}</td>
-                    <td>{{ product["quantity"] * product["price"] }}</td>
+                    <td>
+                        {{ product["quantity"] * product["price"] }}
+                    </td>
                 </tr>
 
                 <tr v-if="products">
@@ -67,11 +69,13 @@
                 :disabled="processing || !products.length"
                 class="btn btn-success"
             >
-                <img
-                    class="loader"
+                <span
                     v-if="processing"
-                    src="/storage/img/loaders/loader.gif"
-                />
+                    class="spinner-border text-success"
+                    role="status"
+                >
+                    <span class="visually-hidden">Загрузка</span>
+                </span>
                 <span v-else>Оформить заказ</span>
             </button>
         </template>

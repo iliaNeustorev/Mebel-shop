@@ -12,5 +12,8 @@ export default {
             return this.$store.state.basketProductsQuantity
         },
     },
+    mounted() {
+        this.$store.dispatch("getBasketProductsQuantity")
+    },
 }
 </script>

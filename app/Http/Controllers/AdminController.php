@@ -43,8 +43,6 @@ class AdminController extends Controller
     public function exportCategories () 
     {
         ExportCategories::dispatch();
-        session()->flash('startexportCategories');
-        return back();
     }
 
     public function importCategories () 

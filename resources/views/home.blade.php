@@ -27,14 +27,12 @@
 @endsection
 
 @section('content')
-    <home-component :categories="{{ $categories }}"></home-component>
-    <div class="container">
-        @if (session()->has('another_user'))
-            <div class="alert alert-info text-center">
-                Вход под {{ $user->name }} выполнен успешно
-            </div>
-        @else
+    @if (session()->has('another_user'))
+        <div class="alert alert-info text-center">
+            Вход под {{ $user->name }} выполнен успешно
+        </div>
+    @else
 
-        @endif
-    </div>
+    @endif
+    <home-component :categories="{{ $categories }}"></home-component>
 @endsection
