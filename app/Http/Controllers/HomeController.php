@@ -151,7 +151,7 @@ class HomeController extends Controller
             $address->main = $main_address;
             $address->save();
         }
-        $userRefresh = User::find(auth()->id());
-        return $userRefresh->addresses;
+        $user->refresh();
+        return $user->addresses;
     }
 }

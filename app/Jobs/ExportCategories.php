@@ -35,7 +35,7 @@ class ExportCategories implements ShouldQueue
     public function handle()
     {
         $categories = Category::get()->toArray();
-        Storage::delete('exportCategories.csv');
+        Storage::delete('public/exportCategories.csv');
         $columns = [
            'id',
            'name',
@@ -44,13 +44,13 @@ class ExportCategories implements ShouldQueue
            'created_at',
            'updated_at' 
         ];
-            Storage::append('exportCategories.csv',implode(';',$columns));
+            Storage::append('public/exportCategories.csv',implode(';',$columns));
         foreach ($categories as $category) {
             $category['name']  = iconv('utf-8', 'windows-1251//IGNORE', $category['name']);
             $category['description']  = iconv('utf-8', 'windows-1251//IGNORE', $category['description']);
             $category['picture']  = iconv('utf-8', 'windows-1251//IGNORE', $category['picture']);
-            Storage::append('exportCategories.csv',implode(';',$category));
+            Storage::append('public/exportCategories.csv',implode(';',$category));
         }
-        event(new CategoriesExportFinishEvents(Storage::path('exportCategories.csv')));
+        event(new CategoriesExportFinishEvents('exportCategories.csv'));
     }
 }

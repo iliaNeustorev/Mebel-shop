@@ -48,6 +48,21 @@ Vue.component(
     "showusers-component",
     require("./components/Admin/ShowUsersComponent.vue").default
 )
+
+Vue.component(
+    "categoriesadmin-component",
+    require("./components/Admin/CategoriesAdmin.vue").default
+)
+
+Vue.component(
+    "login-component",
+    require("./components/Auth/LoginComponent.vue").default
+)
+
+Vue.component(
+    "register-component",
+    require("./components/Auth/RegisterComponent.vue").default
+)
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

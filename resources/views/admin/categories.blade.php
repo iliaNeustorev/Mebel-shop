@@ -17,18 +17,8 @@
 @section('content')
 
     <div class='container'>
-        <div class="d-grid gap-2 d-md-block text-center">
-            <h2 class="text-center">{{ $caption }}</h2>
-            <form action="{{ route('exportCategories') }}" method="post">
-                @csrf
-                <button type="submit" class="btn btn-link btn-sm">Выгрузить список категорий</button>
-            </form>
-            <form action="{{ route('importCategories') }}" method="post">
-                @csrf
-                <button type="submit" class="btn btn-link btn-sm">Загрузить список категорий</button>
-            </form>
-        </div>
-
+        <categoriesadmin-component route-export-categories="{{ route("exportCategories") }}" route-import-categories="{{ route("importCategories") }}"></categoriesadmin-component>
+        <h2 class="text-center">{{ $caption }}</h2>
         <hr>
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -40,11 +30,6 @@
             </div>
         @endif
 
-        @if (session()->has('startexportCategories'))
-            <div class="alert alert-success text-center">
-                Выгрузка списка категорий запущена
-            </div>
-        @endif
 
         @if (session()->has('startimportCategories'))
             <div class="alert alert-success text-center">
