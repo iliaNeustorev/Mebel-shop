@@ -21,9 +21,13 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 |
 */
 
+Route::any('/{any}', function () {
+    return redirect(route('main'));
+})->where('any','.*');
+
 Route::get('/', function () {
     return redirect()->route('home');
-});
+})->name('main');
 
 Route::prefix('basket')->group(function () {
     Route::get('/', [BasketController::class, 'index'])->name('basket');
