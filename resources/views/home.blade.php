@@ -22,10 +22,6 @@
     </style>
 @endsection
 
-@section('title')
-    {{ $title }}
-@endsection
-
 @section('content')
     @if (session()->has('another_user'))
         <div class="alert alert-info text-center">
@@ -34,5 +30,5 @@
     @else
 
     @endif
-    <home-component :categories="{{ $categories }}"></home-component>
+    <home-component></home-component>
 @endsection

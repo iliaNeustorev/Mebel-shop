@@ -22,12 +22,9 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 */
 
 Route::any('/{any}', function () {
-    return redirect(route('main'));
-})->where('any','.*');
-
-Route::get('/', function () {
-    return redirect()->route('home');
-})->name('main');
+    return view('layouts.app');
+})->where('any', '.*');
+    
 
 Route::prefix('basket')->group(function () {
     Route::get('/', [BasketController::class, 'index'])->name('basket');
@@ -65,9 +62,6 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     $request->fulfill();
     return redirect('/home');
 })->middleware(['auth', 'signed'])->name('verification.verify');
-
-Route::get('/categories/{category}', [Category::class, 'category'])->name('category');
-Route::get('/categories/{category}/getProducts', [ProductController::class, 'getProducts']);
 
 Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function()
 {

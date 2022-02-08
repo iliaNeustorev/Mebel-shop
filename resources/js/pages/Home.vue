@@ -28,7 +28,6 @@
 </template>
 <script>
 export default {
-    props: ["categories"],
     data() {
         return {
             categories: [],
@@ -37,8 +36,15 @@ export default {
     computed: {},
     methods: {},
     mounted() {
-        this.countCurrent = this.count
-        console.log(this.categories)
+        axios
+            .get('')
+            .then((response) => {
+                // this.categories = response.data
+            })
+            .catch((error) => {})
+            .finally(() => {
+                this.loading = false
+            })
     },
 }
 </script>

@@ -50,7 +50,7 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
-                        <navbarbasket-component route-basket={{ route('basket') }}></navbarbasket-component>
+                        <!-- <navbarbasket-component route-basket={{ route('basket') }}></navbarbasket-component> -->
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))

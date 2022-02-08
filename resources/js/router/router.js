@@ -4,15 +4,20 @@ import VueRouter from "vue-router"
 Vue.use(VueRouter)
 
 
-const Foo = { template: '<div>Foo</div>' }
 const Bar = { template: '<div>Bar</div>' }
+const Page404 = { template: '<div>Страница не найдена</div>' }
+
+import HomeComponent from "../pages/Home.vue"
 
 const routes = [
-    { path: '/', component: Foo },
-    { path: '/Bar', component: Bar },
+    { path: '/', component: HomeComponent},
+    { path: '/bar', component: Bar },
+    { path: '*', redirect: '404'},
+    { path: '/404', component: Page404, name: '404'},
 ]
 
 const router = new VueRouter ({ 
+    mode:'history',
     routes 
 })
 
