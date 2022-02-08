@@ -10,12 +10,15 @@ const Page404 = { template: '<div>Страница не найдена</div>' }
 import HomePage from "../pages/Home"
 import CategoryPage from "../pages/Category"
 import BasketPage from "../pages/Basket"
+import LoginPage from "../pages/Auth/Login"
+import RegisterPage from "../pages/Auth/Register"
 
 const routes = [
     { path: '/', component: HomePage},
     { path: '/categories/:id', component: CategoryPage},
     { path: '/basket', component: BasketPage},
-    { path: '/bar', component: Bar },
+    { path: '/login', component: LoginPage },
+    { path: '/register', component: RegisterPage },
     { path: '*', redirect: '404'},
     { path: '/404', component: Page404, name: '404'},
 ]

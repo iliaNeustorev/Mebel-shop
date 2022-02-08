@@ -3,7 +3,6 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BasketController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Category;
 use App\Http\Controllers\OrderController;
@@ -39,9 +38,6 @@ Route::prefix('home')->group(function() {
         });
             
 });
-   
-
-Auth::routes();
 
 Route::get('/email/verify', function () {
     return view('auth.verify-email');

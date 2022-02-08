@@ -42,7 +42,7 @@
                               <router-link class="dropdown-item" to="/admin">Администрирование</router-link>
                               <router-link class="dropdown-item" to="/profile">Личный кабинет</router-link>
                               <router-link class="dropdown-item" to="/orders">Заказы</router-link>
-                              <router-link class="dropdown-item" to="/logout">Выход</router-link>
+                              <button class="dropdown-item" @click="logout()">Выход</button>
                             </div>
                         </li>
                     </ul>
@@ -53,7 +53,7 @@
 
 <script>
 export default {
-    props: ["routeBasket"],
+    props: ["user"],
     computed: {
         quantity() {
             return this.$store.state.basketProductsQuantity
@@ -62,5 +62,15 @@ export default {
     mounted() {
         this.$store.dispatch("getBasketProductsQuantity")
     },
+    methods: {
+        logout() {
+            axios
+            .post('/api/logout')
+                .then(() => {
+                    if(this.$route.path != '/')
+                    this.$router.push('/')
+                })
+        }
+    }
 }
 </script>

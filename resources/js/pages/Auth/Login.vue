@@ -60,7 +60,7 @@
 
                     <div class="row mb-0">
                         <div class="col-md-8 offset-md-4">
-                            <button type="submit" class="btn btn-primary">
+                            <button @click="login()" class="btn btn-primary">
                                 Войти
                             </button>
                             <a
@@ -80,14 +80,30 @@
 
 <script>
 export default {
-    props: ["routePasswordRequest", "routeLogin"],
     data() {
         return {
+            user:"",
             email: "",
             password: "",
             rememberMe: false,
+            routePasswordRequest:"",
         }
     },
+    methods: {
+        login () {
+            axios.get('/sanctum/csrf-cookie')
+            .then(response => {
+                const params = {
+                   email: this.email,
+                   password: this.password
+                }
+               axios.post('/api/auth/login', params)
+               .then((response) => {
+                  this.user = response.data
+               })
+            });
+        }
+    }
 }
 </script>
 

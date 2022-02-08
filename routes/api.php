@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,5 +39,6 @@ Route::prefix('basket')->group(function () {
     });
 });
 
-
+Route::post('auth/login', [LoginController::class, 'authenticate']);
+Auth::routes();
 
