@@ -1,6 +1,8 @@
 <?php
 
-use App\Http\Controllers\Category;
+use App\Http\Controllers\BasketController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,9 +22,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('categories')->group(function () {
-    Route::get('/get', [Category::class, 'getCategoires']);
-    Route::get('{category}', [Category::class, 'category']);
+    Route::get('/get', [CategoryController::class, 'getCategories']);
+    Route::get('{category}', [CategoryController::class, 'category']);
     Route::get('{category}/getProducts', [ProductController::class, 'getProducts']);
+});
+
+Route::prefix('basket')->group(function () {
+    Route::get('/', [BasketController::class, 'index']);
+    Route::get('/getProductsQuantity', [BasketController::class, 'getProductsQuantity']);
+    Route::post('/create_order', [BasketController::class, 'create_order']);
+    Route::prefix('product')->group(function () {
+        Route::post('/add', [BasketController::class, 'add']);
+        Route::post('/remove', [BasketController::class, 'remove']);
+    });
 });
 
 

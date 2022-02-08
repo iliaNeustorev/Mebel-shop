@@ -15,8 +15,7 @@ class CategoryController extends Controller
 
     public function getCategories()
     {
-        $categories = Category::get();
-        return $categories; 
+        return Category::get();     
     }
 
     public function category(Category $category)

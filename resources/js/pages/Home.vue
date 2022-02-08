@@ -1,13 +1,16 @@
 <template>
     <div>
         <h1 class="mb-3">Список категорий</h1>
-        <div class="row">
+        <div class="text-center" v-if="loading">
+            <img src="/storage/img/loaders/loader.gif">
+        </div>
+        <div v-else class="row">
             <div
                 v-for="category in categories"
                 :key="category.id"
                 class="col-3"
             >
-                <a :href="'categories/' + category.id">
+                <router-link :to="'categories/' + category.id">
                     <div class="card mb-4" style="width: 18rem">
                         <img
                             style="width: 100%; height: 300px"
@@ -21,7 +24,7 @@
                             </h5>
                         </div>
                     </div>
-                </a>
+                </router-link>
             </div>
         </div>
     </div>
@@ -31,15 +34,17 @@ export default {
     data() {
         return {
             categories: [],
+            loading: false,
         }
     },
     computed: {},
     methods: {},
     mounted() {
+        this.loading = true
         axios
-            .get('')
+            .get('/api/categories/get')
             .then((response) => {
-                // this.categories = response.data
+                this.categories = response.data
             })
             .catch((error) => {})
             .finally(() => {

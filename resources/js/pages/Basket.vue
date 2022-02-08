@@ -6,7 +6,7 @@
                     {{ error[0] }}
                 </li>
                 <template v-if="errors.email">
-                    Ссылка на <a :href="routeLogin">Вход</a>
+                    Ссылка на <a href="">Вход</a>
                 </template>
             </ul>
         </div>
@@ -41,7 +41,7 @@
         <div class="mb-5 text-center" v-if="!products.length">
             <em>
                 Нет товаров в корзине
-                <a :href="routeHome"> Перейти в каталог</a></em
+                <a href=""> Перейти в каталог</a></em
             >
         </div>
         <template v-if="products">
@@ -83,22 +83,15 @@
 </template>
 <script>
 export default {
-    props: [
-        "errorList",
-        "routeLogin",
-        "products",
-        "routeHome",
-        "routeOrders",
-        "sumOrder",
-        "mainAddress",
-        "name",
-        "email",
-    ],
     data() {
         return {
             processing: false,
             errors: null,
             isDisabled: true,
+            products:[],
+            email:'',
+            mainAddress: '',
+            name: '',
         }
     },
     mounted() {
@@ -119,7 +112,7 @@ export default {
                 address: this.mainAddress,
             }
             axios
-                .post("/basket/create_order", params)
+                .post("/api/basket/create_order", params)
                 .then(() => {
                     this.$swal({
                         title: "Заказ оформлен!",

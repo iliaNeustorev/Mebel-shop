@@ -23,21 +23,14 @@ Vue.component(
     "example-component",
     require("./components/ExampleComponent.vue").default
 )
-Vue.component(
-    "category-component",
-    require("./components/CategoryComponent.vue").default
-)
-Vue.component(
-    "basket-component",
-    require("./components/BasketComponent.vue").default
-)
+
 Vue.component(
     "profile-component",
     require("./components/ProfileComponent.vue").default
 )
 Vue.component(
-    "navbarbasket-component",
-    require("./components/NavBarBasketComponent.vue").default
+    "navbar-component",
+    require("./components/NavBarComponent.vue").default
 )
 
 Vue.component(

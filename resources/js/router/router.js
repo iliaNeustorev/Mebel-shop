@@ -7,10 +7,14 @@ Vue.use(VueRouter)
 const Bar = { template: '<div>Bar</div>' }
 const Page404 = { template: '<div>Страница не найдена</div>' }
 
-import HomeComponent from "../pages/Home.vue"
+import HomePage from "../pages/Home"
+import CategoryPage from "../pages/Category"
+import BasketPage from "../pages/Basket"
 
 const routes = [
-    { path: '/', component: HomeComponent},
+    { path: '/', component: HomePage},
+    { path: '/categories/:id', component: CategoryPage},
+    { path: '/basket', component: BasketPage},
     { path: '/bar', component: Bar },
     { path: '*', redirect: '404'},
     { path: '/404', component: Page404, name: '404'},

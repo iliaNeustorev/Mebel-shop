@@ -25,17 +25,6 @@ Route::any('/{any}', function () {
     return view('layouts.app');
 })->where('any', '.*');
     
-
-Route::prefix('basket')->group(function () {
-    Route::get('/', [BasketController::class, 'index'])->name('basket');
-    Route::get('/getProductsQuantity', [BasketController::class, 'getProductsQuantity']);
-    Route::post('/create_order', [BasketController::class, 'create_order']);
-    Route::prefix('product')->group(function () {
-        Route::post('/add', [BasketController::class, 'add']);
-        Route::post('/remove', [BasketController::class, 'remove']);
-    });
-});
-
 Route::get('/orders', [OrderController::class, 'index'])->name('orders');
 Route::get('/orders/repeatOrder{orderId}', [OrderController::class, 'repeatOrder'])->name('repeatOrder');
 
