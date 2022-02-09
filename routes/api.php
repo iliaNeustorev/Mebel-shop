@@ -39,6 +39,7 @@ Route::prefix('basket')->group(function () {
     });
 });
 
-Route::post('auth/login', [LoginController::class, 'authenticate']);
-Auth::routes();
+Route::post('login', [LoginController::class, 'authenticate']);
+Route::post('logout', [LoginController::class, 'logout']);
+// Auth::routes();
 

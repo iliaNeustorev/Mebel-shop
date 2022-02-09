@@ -37,7 +37,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        // $this->middleware('guest')->except('logout');
     }
 
     public function authenticate(Request $request)
@@ -50,11 +50,11 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
  
-            return redirect()->intended('dashboard');
+            return Auth::user();
         }
  
-        return back()->withErrors([
+        return response()->json([
             'email' => 'The provided credentials do not match our records.',
-        ]);
+        ], 422);
     }
 }

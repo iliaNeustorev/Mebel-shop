@@ -82,7 +82,6 @@
 export default {
     data() {
         return {
-            user:"",
             email: "",
             password: "",
             rememberMe: false,
@@ -94,13 +93,14 @@ export default {
             axios.get('/sanctum/csrf-cookie')
             .then(response => {
                 const params = {
-                   email: this.email,
-                   password: this.password
+                email: this.email,
+                password: this.password
                 }
-               axios.post('/api/auth/login', params)
-               .then((response) => {
-                  this.user = response.data
-               })
+                axios.post('/api/login', params)
+                .then((response) => {
+                    this.$store.dispatch('getUser', response.data)
+                     window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
+                })
             });
         }
     }

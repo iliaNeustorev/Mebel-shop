@@ -5597,21 +5597,36 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ["user"],
+  data: function data() {
+    return {};
+  },
   computed: {
     quantity: function quantity() {
       return this.$store.state.basketProductsQuantity;
+    },
+    user: function user() {
+      return this.$store.state.user;
     }
   },
   mounted: function mounted() {
-    this.$store.dispatch("getBasketProductsQuantity");
+    var _this = this;
+
+    this.$store.dispatch("getBasketProductsQuantity", {});
+
+    if (!this.user.name) {
+      axios.get("/api/user").then(function (response) {
+        _this.$store.dispatch('getUser', response.data);
+      });
+    }
   },
   methods: {
     logout: function logout() {
-      var _this = this;
+      var _this2 = this;
 
       axios.post('/api/logout').then(function () {
-        if (_this.$route.path != '/') _this.$router.push('/');
+        _this2.$store.dispatch('getUser', {});
+
+        if (_this2.$route.path != '/') _this2.$router.push('/');
       });
     }
   }
@@ -5965,7 +5980,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      user: "",
       email: "",
       password: "",
       rememberMe: false,
@@ -5981,8 +5995,10 @@ __webpack_require__.r(__webpack_exports__);
           email: _this.email,
           password: _this.password
         };
-        axios.post('/api/auth/login', params).then(function (response) {
-          _this.user = response.data;
+        axios.post('/api/login', params).then(function (response) {
+          _this.$store.dispatch('getUser', response.data);
+
+          window.history.length > 1 ? _this.$router.go(-1) : _this.$router.push('/');
         });
       });
     }
@@ -6610,15 +6626,22 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_2__["default"]);
 var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
   state: {
+    user: {},
     basketProductsQuantity: 0
   },
   getters: {},
   mutations: {
     setBasketProductsQuantity: function setBasketProductsQuantity(state, payload) {
       state.basketProductsQuantity = payload;
+    },
+    setUser: function setUser(state, payload) {
+      state.user = payload;
     }
   },
   actions: {
+    getUser: function getUser(context, payload) {
+      context.commit('setUser', payload);
+    },
     changeBasketProductsQuantity: function changeBasketProductsQuantity(context, payload) {
       context.commit("setBasketProductsQuantity", payload);
     },
@@ -37280,85 +37303,122 @@ var render = function () {
                     )
                   : _vm._e(),
                 _vm._v(" "),
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
-                    _c(
-                      "router-link",
-                      { staticClass: "nav-link", attrs: { to: "/login" } },
-                      [_vm._v("Авторизация")]
-                    ),
-                  ],
-                  1
-                ),
+                !_vm.user.name
+                  ? _c(
+                      "li",
+                      { staticClass: "nav-item" },
+                      [
+                        _c(
+                          "router-link",
+                          { staticClass: "nav-link", attrs: { to: "/login" } },
+                          [_vm._v("Авторизация")]
+                        ),
+                      ],
+                      1
+                    )
+                  : _vm._e(),
                 _vm._v(" "),
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
-                    _c(
-                      "router-link",
-                      { staticClass: "nav-link", attrs: { to: "/register" } },
-                      [_vm._v("Регистрация")]
-                    ),
-                  ],
-                  1
-                ),
+                !_vm.user.name
+                  ? _c(
+                      "li",
+                      { staticClass: "nav-item" },
+                      [
+                        _c(
+                          "router-link",
+                          {
+                            staticClass: "nav-link",
+                            attrs: { to: "/register" },
+                          },
+                          [_vm._v("Регистрация")]
+                        ),
+                      ],
+                      1
+                    )
+                  : _vm._e(),
                 _vm._v(" "),
-                _c("li", { staticClass: "nav-item dropdown" }, [
-                  _vm._m(1),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "dropdown-menu dropdown-menu-right",
-                      attrs: { "aria-labelledby": "navbarDropdown" },
-                    },
-                    [
+                _vm.user.name
+                  ? _c("li", { staticClass: "nav-item dropdown" }, [
                       _c(
-                        "router-link",
+                        "span",
                         {
-                          staticClass: "dropdown-item",
-                          attrs: { to: "/admin" },
-                        },
-                        [_vm._v("Администрирование")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "dropdown-item",
-                          attrs: { to: "/profile" },
-                        },
-                        [_vm._v("Личный кабинет")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "dropdown-item",
-                          attrs: { to: "/orders" },
-                        },
-                        [_vm._v("Заказы")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "dropdown-item",
-                          on: {
-                            click: function ($event) {
-                              return _vm.logout()
-                            },
+                          staticClass: "nav-link dropdown-toggle",
+                          attrs: {
+                            href: "#",
+                            role: "button",
+                            "data-bs-toggle": "dropdown",
                           },
                         },
-                        [_vm._v("Выход")]
+                        [
+                          _vm._v(
+                            "\r\n                                 " +
+                              _vm._s(_vm.user.name) +
+                              "\r\n                                "
+                          ),
+                          _c("img", {
+                            staticClass: "avatar",
+                            staticStyle: {
+                              height: "20px",
+                              width: "20px",
+                              "border-radius": "20px",
+                            },
+                            attrs: {
+                              src: "storage/img/users/" + _vm.user.picture,
+                            },
+                          }),
+                        ]
                       ),
-                    ],
-                    1
-                  ),
-                ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "dropdown-menu dropdown-menu-right",
+                          attrs: { "aria-labelledby": "navbarDropdown" },
+                        },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              staticClass: "dropdown-item",
+                              attrs: { to: "/admin" },
+                            },
+                            [_vm._v("Администрирование")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "router-link",
+                            {
+                              staticClass: "dropdown-item",
+                              attrs: { to: "/profile" },
+                            },
+                            [_vm._v("Личный кабинет")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "router-link",
+                            {
+                              staticClass: "dropdown-item",
+                              attrs: { to: "/orders" },
+                            },
+                            [_vm._v("Заказы")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "dropdown-item",
+                              on: {
+                                click: function ($event) {
+                                  return _vm.logout()
+                                },
+                              },
+                            },
+                            [_vm._v("Выход")]
+                          ),
+                        ],
+                        1
+                      ),
+                    ])
+                  : _vm._e(),
               ]),
             ]
           ),
@@ -37386,39 +37446,6 @@ var staticRenderFns = [
         },
       },
       [_c("span", { staticClass: "navbar-toggler-icon" })]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        pre: true,
-        attrs: {
-          id: "navbarDropdown",
-          class: "nav-link dropdown-toggle",
-          href: "#",
-          role: "button",
-          "data-bs-toggle": "dropdown",
-          "aria-haspopup": "true",
-          "aria-expanded": "false",
-        },
-      },
-      [
-        _vm._v(
-          "\r\n                                User\r\n                                "
-        ),
-        _c("img", {
-          pre: true,
-          attrs: {
-            class: "avatar",
-            style: "height: 20px;width:20px;border-radius:20px",
-            src: "",
-          },
-        }),
-      ]
     )
   },
 ]

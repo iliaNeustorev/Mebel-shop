@@ -26,7 +26,6 @@
 
 <body>
     <div id="app">
-        {{ Auth::user()->name ?? 'not!!!'}}
         <navbar-component></navbar-component>
         <main class="py-4">
             <div class="container">

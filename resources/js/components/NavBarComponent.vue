@@ -22,22 +22,22 @@
                             <router-link class="nav-link" to="/basket"> Корзина </router-link>
                         </li>
                         <!-- Authentication Links -->
-                        <li class="nav-item">
+                        <li v-if="!user.name" class="nav-item">
                             <router-link class="nav-link" to="/login">Авторизация</router-link>
                         </li>
 
-                        <li class="nav-item">
+                        <li v-if="!user.name" class="nav-item">
                             <router-link class="nav-link" to="/register">Регистрация</router-link>
                         </li>
-                        
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                User
+                        <li v-if="user.name" class="nav-item dropdown">
+                            <span class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" >
+                                 {{ user.name }}
                                 <img class="avatar" style="height: 20px;width:20px;border-radius:20px"
-                                    src="">
-                            </a>
-
+                                    :src="`storage/img/users/` + user.picture">
+                                    
+                            </span>
+                          
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                               <router-link class="dropdown-item" to="/admin">Администрирование</router-link>
                               <router-link class="dropdown-item" to="/profile">Личный кабинет</router-link>
@@ -53,20 +53,35 @@
 
 <script>
 export default {
-    props: ["user"],
+    data() {
+        return {
+           
+    }
+    },
     computed: {
         quantity() {
             return this.$store.state.basketProductsQuantity
         },
+        user() {
+            return this.$store.state.user
+        }
     },
     mounted() {
-        this.$store.dispatch("getBasketProductsQuantity")
+        this.$store.dispatch("getBasketProductsQuantity",{})
+        if (!this.user.name) {
+            axios.get("/api/user")
+                .then(response => {
+                   this.$store.dispatch('getUser', response.data)
+                })
+        }
+       
     },
     methods: {
         logout() {
             axios
             .post('/api/logout')
                 .then(() => {
+                    this.$store.dispatch('getUser', {})
                     if(this.$route.path != '/')
                     this.$router.push('/')
                 })
