@@ -43,6 +43,13 @@
             >
                вперед
         </button>
+        <select v-model="length" @change="getUsers()" class="form-control userPerPage">
+            <option 
+                v-for="(length,idx) in usersPerPage" 
+                :key="idx"
+                >{{length}}
+            </option>
+        </select>
     </div>
 </template>
 
@@ -50,8 +57,8 @@
 export default {
     data() {
         return {
-           usersPerPage:[3, 5, 10, 50],
-           length:[],
+           usersPerPage:[2, 3, 10, 50],
+           length: [],
            users:[],
            links:[],
            currentPage: null,
@@ -62,16 +69,18 @@ export default {
     },
     methods: {
         getUsers (page = 1) {
-            if (page == this.currentPage) {
-                return false
-            }
+            // if (page == this.currentPage) {
+            //     return false
+            // }
             const newLink = `/admin/showRegUsers?page=${page}`
             if(this.$route.fullPath != newLink) { 
                 this.$router.push(newLink)
             }
             const params = {
-                page
+                page,
+                length: this.length
             }
+            console.log(params)
             axios
             .get('/api/admin/showRegUsers', {params})
                 .then((response) => {
@@ -101,5 +110,10 @@ a {
     color:rgb(42, 104, 42);
      text-decoration: none;
      background-color:rgba(165, 135, 135, 0.582)
+}
+.userPerPage {
+    width:50px;
+    float:right;
+    display: inline;
 }
 </style>

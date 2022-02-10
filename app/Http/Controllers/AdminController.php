@@ -18,7 +18,8 @@ class AdminController extends Controller
 
     public function showRegUsers ()
     {
-        return  User::paginate(2);
+        $length = request('length');
+        return  User::paginate($length);
     }
 
     public function enterAsUser ($userId)

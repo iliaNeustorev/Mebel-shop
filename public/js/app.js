@@ -5888,9 +5888,116 @@ __webpack_require__.r(__webpack_exports__);
 /*!*****************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Admin/ShowUsers.vue?vue&type=script&lang=js& ***!
   \*****************************************************************************************************************************************************************************************************************/
-/***/ (() => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nSyntaxError: C:\\Users\\jjnn9\\OneDrive\\Документы\\GitHub\\Internet-trider\\resources\\js\\pages\\Admin\\ShowUsers.vue: Unexpected token, expected \",\" (75:16)\n\n\u001b[0m \u001b[90m 73 |\u001b[39m             \u001b[36mconst\u001b[39m params \u001b[33m=\u001b[39m {\u001b[0m\n\u001b[0m \u001b[90m 74 |\u001b[39m                 page\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 75 |\u001b[39m                 len\u001b[0m\n\u001b[0m \u001b[90m    |\u001b[39m                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 76 |\u001b[39m             }\u001b[0m\n\u001b[0m \u001b[90m 77 |\u001b[39m             axios\u001b[0m\n\u001b[0m \u001b[90m 78 |\u001b[39m             \u001b[33m.\u001b[39m\u001b[36mget\u001b[39m(\u001b[32m'/api/admin/showRegUsers'\u001b[39m\u001b[33m,\u001b[39m {params})\u001b[0m\n    at Parser._raise (C:\\Users\\jjnn9\\OneDrive\\Документы\\GitHub\\Internet-trider\\node_modules\\@babel\\parser\\lib\\index.js:541:17)\n    at Parser.raiseWithData (C:\\Users\\jjnn9\\OneDrive\\Документы\\GitHub\\Internet-trider\\node_modules\\@babel\\parser\\lib\\index.js:534:17)\n    at Parser.raise (C:\\Users\\jjnn9\\OneDrive\\Документы\\GitHub\\Internet-trider\\node_modules\\@babel\\parser\\lib\\index.js:495:17)\n    at Parser.unexpected (C:\\Users\\jjnn9\\OneDrive\\Документы\\GitHub\\Internet-trider\\node_modules\\@babel\\parser\\lib\\index.js:3580:16)\n    at Parser.expect (C:\\Users\\jjnn9\\OneDrive\\Документы\\GitHub\\Internet-trider\\node_modules\\@babel\\parser\\lib\\index.js:3554:28)\n    at Parser.parseObjectLike (C:\\Users\\jjnn9\\OneDrive\\Документы\\GitHub\\Internet-trider\\node_modules\\@babel\\parser\\lib\\index.js:12460:14)\n    at Parser.parseExprAtom (C:\\Users\\jjnn9\\OneDrive\\Документы\\GitHub\\Internet-trider\\node_modules\\@babel\\parser\\lib\\index.js:11913:23)\n    at Parser.parseExprSubscripts (C:\\Users\\jjnn9\\OneDrive\\Документы\\GitHub\\Internet-trider\\node_modules\\@babel\\parser\\lib\\index.js:11584:23)\n    at Parser.parseUpdate (C:\\Users\\jjnn9\\OneDrive\\Документы\\GitHub\\Internet-trider\\node_modules\\@babel\\parser\\lib\\index.js:11564:21)\n    at Parser.parseMaybeUnary (C:\\Users\\jjnn9\\OneDrive\\Документы\\GitHub\\Internet-trider\\node_modules\\@babel\\parser\\lib\\index.js:11539:23)\n    at Parser.parseMaybeUnaryOrPrivate (C:\\Users\\jjnn9\\OneDrive\\Документы\\GitHub\\Internet-trider\\node_modules\\@babel\\parser\\lib\\index.js:11353:61)\n    at Parser.parseExprOps (C:\\Users\\jjnn9\\OneDrive\\Документы\\GitHub\\Internet-trider\\node_modules\\@babel\\parser\\lib\\index.js:11360:23)\n    at Parser.parseMaybeConditional (C:\\Users\\jjnn9\\OneDrive\\Документы\\GitHub\\Internet-trider\\node_modules\\@babel\\parser\\lib\\index.js:11330:23)\n    at Parser.parseMaybeAssign (C:\\Users\\jjnn9\\OneDrive\\Документы\\GitHub\\Internet-trider\\node_modules\\@babel\\parser\\lib\\index.js:11290:21)\n    at C:\\Users\\jjnn9\\OneDrive\\Документы\\GitHub\\Internet-trider\\node_modules\\@babel\\parser\\lib\\index.js:11248:39\n    at Parser.allowInAnd (C:\\Users\\jjnn9\\OneDrive\\Документы\\GitHub\\Internet-trider\\node_modules\\@babel\\parser\\lib\\index.js:13131:16)");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      usersPerPage: [2, 3, 10, 50],
+      length: [],
+      users: [],
+      links: [],
+      currentPage: null
+    };
+  },
+  computed: {},
+  methods: {
+    getUsers: function getUsers() {
+      var _this = this;
+
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      // if (page == this.currentPage) {
+      //     return false
+      // }
+      var newLink = "/admin/showRegUsers?page=".concat(page);
+
+      if (this.$route.fullPath != newLink) {
+        this.$router.push(newLink);
+      }
+
+      var params = {
+        page: page,
+        length: this.length
+      };
+      console.log(params);
+      axios.get('/api/admin/showRegUsers', {
+        params: params
+      }).then(function (response) {
+        _this.users = response.data.data;
+        var links = response.data.links.splice(1, response.data.links.length - 2);
+        _this.links = links;
+        _this.currentPage = response.data.current_page;
+      });
+    },
+    getCurrentPageClass: function getCurrentPageClass(page) {
+      return page == this.currentPage ? 'current-page' : '';
+    }
+  },
+  mounted: function mounted() {
+    var page = this.$route.query.page;
+    this.getUsers(page);
+  }
+});
 
 /***/ }),
 
@@ -11817,7 +11924,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\na[data-v-77c51632] {\r\n    text-decoration: none;\r\n    color: rgb(27, 119, 39);\n}\n.current-page[data-v-77c51632] {\r\n    color:rgb(42, 104, 42);\r\n     text-decoration: none;\r\n     background-color:rgba(165, 135, 135, 0.582)\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\na[data-v-77c51632] {\r\n    text-decoration: none;\r\n    color: rgb(27, 119, 39);\n}\n.current-page[data-v-77c51632] {\r\n    color:rgb(42, 104, 42);\r\n     text-decoration: none;\r\n     background-color:rgba(165, 135, 135, 0.582)\n}\n.userPerPage[data-v-77c51632] {\r\n    width:50px;\r\n    float:right;\r\n    display: inline;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -38044,9 +38151,41 @@ var render = function () {
       _vm._v(" "),
       _c(
         "select",
-        { staticClass: "form-control" },
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.length,
+              expression: "length",
+            },
+          ],
+          staticClass: "form-control userPerPage",
+          on: {
+            change: [
+              function ($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function (o) {
+                    return o.selected
+                  })
+                  .map(function (o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.length = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              },
+              function ($event) {
+                return _vm.getUsers()
+              },
+            ],
+          },
+        },
         _vm._l(_vm.usersPerPage, function (length, idx) {
-          return _c("option", { key: idx }, [_vm._v(_vm._s(length))])
+          return _c("option", { key: idx }, [
+            _vm._v(_vm._s(length) + "\n        "),
+          ])
         }),
         0
       ),
