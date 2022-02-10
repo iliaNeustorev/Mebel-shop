@@ -48,35 +48,7 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     return redirect('/home');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
-Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function()
-{
-    // Route::redirect('/', '/admin/categories')->name('edit_categories');
-    Route::get('/', [AdminController::class, 'index'])->name('admin');
-    Route::get('/showRegUsers', [AdminController::class, 'showRegUsers'])->name('showRegUsers');
-    Route::get('/enterAsUser/{userId}', [AdminController::class, 'enterAsUser'])->name('enterAsUser');
-    Route::post('/exportCategories', [AdminController::class, 'exportCategories'])->name('exportCategories');
-    Route::post('/exportProducts', [AdminController::class, 'exportProducts'])->name('exportProducts');
-    Route::post('/importCategories', [AdminController::class, 'importCategories'])->name('importCategories');
-    Route::post('/importProducts', [AdminController::class, 'importProducts'])->name('importProducts');
 
-    Route::prefix('/categories')->group(function() {
-        Route::get('/', [AdminController::class, 'get_categories'])->name('admin_categories');
-        Route::post('/add_category', [AdminController::class, 'add_category'])->name('add_and_upd_category');
-        Route::post('/del_category', [AdminController::class, 'del_category'])->name('del_category');
-        Route::get('/add_category/{category}', [AdminController::class, 'get_category'])->name('admin_category');
-    });
-
-    Route::prefix('/products')->group(function() {
-        Route::get('/', [AdminController::class, 'get_products'])->name('admin_products');
-            Route::prefix('/product')->group(function (){
-                Route::get('/{category}/{id?}', [AdminController::class, 'get_product'])->name('admin_get_product');
-                Route::post('/add_product', [AdminController::class, 'add_product'])->name('add_product');
-                Route::post('/upd_product', [AdminController::class, 'upd_product'])->name('upd_product');
-                Route::post('/del_product', [AdminController::class, 'del_product'])->name('delete_product');
-            });
-       
-    });   
-});
 
 
 

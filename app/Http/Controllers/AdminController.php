@@ -15,22 +15,10 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
-    public function index ()
-    {
-        $data = [
-            'title' => 'Администрирование',
-        ];
-        return view('admin/home', $data);
-    }
 
     public function showRegUsers ()
     {
-        $users = User::get();
-        $data = [
-            'users' => $users,
-            'title' => 'Список зарегистрированых пользователей'
-        ];
-        return view('admin/showUsers', $data);
+        return  User::paginate(2);
     }
 
     public function enterAsUser ($userId)
