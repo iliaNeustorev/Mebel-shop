@@ -34,7 +34,6 @@ class HomeController extends Controller
         $data = [
             'user' => $user,
             'categories' => $categories, 
-            'title' => 'Главная',
             'show_title' => true
         ];
         return view('home', $data);

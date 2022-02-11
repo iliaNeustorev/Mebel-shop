@@ -51,7 +51,6 @@
 </template>
 <script>
 export default {
-    props: ["categoryId"],
     data() {
         return {
             products: [],
@@ -68,7 +67,7 @@ export default {
             const params = {
                 id: productId,
             }
-            axios.post(`/basket/product/${method}`, params).then(({ data }) => {
+            axios.post(`/api/basket/product/${method}`, params).then(({ data }) => {
                 const idx = this.products.findIndex((product) => {
                     return product.id == productId
                 })
@@ -82,7 +81,7 @@ export default {
     },
     mounted() {
         axios
-            .get(`/categories/${this.categoryId}/getProducts`)
+            .get(`/api/categories/${this.$route.params.id}/getProducts`)
             .then((response) => {
                 this.products = response.data
             })

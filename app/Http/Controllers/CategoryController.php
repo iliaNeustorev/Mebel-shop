@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category as ModelsCategory;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
-class Category extends Controller
+class CategoryController extends Controller
 {
     /**
      * Show the application dashboard.
@@ -13,7 +13,12 @@ class Category extends Controller
      * @return  App\Models\Category
      */
 
-    public function category(ModelsCategory $category)
+    public function getCategories()
+    {
+        return Category::get();     
+    }
+
+    public function category(Category $category)
     {
         return view('category', compact('category')); 
     }

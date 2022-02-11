@@ -23,53 +23,25 @@ Vue.component(
     "example-component",
     require("./components/ExampleComponent.vue").default
 )
-Vue.component(
-    "home-component",
-    require("./components/HomeComponent.vue").default
-)
-Vue.component(
-    "category-component",
-    require("./components/CategoryComponent.vue").default
-)
-Vue.component(
-    "basket-component",
-    require("./components/BasketComponent.vue").default
-)
+
 Vue.component(
     "profile-component",
     require("./components/ProfileComponent.vue").default
 )
 Vue.component(
-    "navbarbasket-component",
-    require("./components/NavBarBasketComponent.vue").default
-)
-
-Vue.component(
-    "showusers-component",
-    require("./components/Admin/ShowUsersComponent.vue").default
-)
-
-Vue.component(
-    "categoriesadmin-component",
-    require("./components/Admin/CategoriesAdmin.vue").default
-)
-
-Vue.component(
-    "login-component",
-    require("./components/Auth/LoginComponent.vue").default
-)
-
-Vue.component(
-    "register-component",
-    require("./components/Auth/RegisterComponent.vue").default
+    "navbar-component",
+    require("./components/NavBarComponent.vue").default
 )
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-import store from "./store/store"
+import store from "./store/store.js"
+import router from "./router/router.js"
+
 const app = new Vue({
     el: "#app",
     store,
+    router
 })

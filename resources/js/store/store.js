@@ -6,6 +6,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state: {
+        user: {},
         basketProductsQuantity: 0,
     },
     getters: {},
@@ -13,8 +14,14 @@ const store = new Vuex.Store({
         setBasketProductsQuantity(state, payload) {
             state.basketProductsQuantity = payload
         },
+        setUser(state, payload) {
+            state.user = payload
+        }
     },
     actions: {
+        getUser(context, payload) {
+            context.commit('setUser', payload)
+        },
         changeBasketProductsQuantity(context, payload) {
             context.commit("setBasketProductsQuantity", payload)
         },
