@@ -5950,25 +5950,116 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       usersPerPage: [2, 3, 10, 50],
-      length: [],
+      length: 3,
       users: [],
       links: [],
-      currentPage: null
+      currentPage: null,
+      updating: false,
+      filters: {
+        id: {
+          value: null,
+          type: "="
+        },
+        name: {
+          value: null,
+          type: "like"
+        },
+        email: {
+          value: null,
+          type: "like"
+        }
+      },
+      delay: null,
+      sortColumn: {
+        column: "id",
+        direction: "asc"
+      },
+      currentDirection: "asc",
+      textLoad: "Загрузка"
     };
   },
   computed: {},
   methods: {
+    getSortArrow: function getSortArrow(column) {
+      if (column != this.sortColumn.column) {
+        return "&udarr;";
+      } else {
+        return this.currentDirection == "asc" ? "&#8639;" : " &#8642;";
+      }
+    },
+    sort: function sort(column) {
+      if (column == this.sortColumn.column) {
+        this.currentDirection = this.currentDirection == "asc" ? "desc" : "asc";
+        this.sortColumn.direction = this.currentDirection;
+      } else {
+        this.currentDirection = "asc";
+        this.sortColumn.direction = this.currentDirection;
+        this.sortColumn.column = column;
+      }
+
+      this.getUsers();
+    },
     getUsers: function getUsers() {
       var _this = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      // if (page == this.currentPage) {
+      this.updating = true; // if (page == this.currentPage) {
       //     return false
       // }
+
       var newLink = "/admin/showRegUsers?page=".concat(page);
 
       if (this.$route.fullPath != newLink) {
@@ -5977,20 +6068,34 @@ __webpack_require__.r(__webpack_exports__);
 
       var params = {
         page: page,
-        length: this.length
+        length: this.length,
+        filters: this.filters,
+        sortColumn: this.sortColumn
       };
       console.log(params);
-      axios.get('/api/admin/showRegUsers', {
-        params: params
-      }).then(function (response) {
+      axios.post("/api/admin/showRegUsers", params).then(function (response) {
         _this.users = response.data.data;
         var links = response.data.links.splice(1, response.data.links.length - 2);
         _this.links = links;
         _this.currentPage = response.data.current_page;
+      })["finally"](function () {
+        _this.updating = false;
+
+        if (_this.users == "") {
+          _this.textLoad = "Нет записей";
+        }
       });
     },
     getCurrentPageClass: function getCurrentPageClass(page) {
-      return page == this.currentPage ? 'current-page' : '';
+      return page == this.currentPage ? "current-page" : "";
+    },
+    filter: function filter() {
+      var _this2 = this;
+
+      clearTimeout(this.delay);
+      this.delay = setTimeout(function () {
+        _this2.getUsers();
+      }, 1000);
     }
   },
   mounted: function mounted() {
@@ -11852,7 +11957,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\na[data-v-299e239e] {\r\n    text-decoration: none;\r\n    color: rgb(17, 117, 25);\n}\na[data-v-299e239e]:hover {\r\n    color: rgb(153, 161, 29);\n}\na[data-v-299e239e]:after {\r\n    color: rgb(153, 161, 29);\n}\n.card[data-v-299e239e]:hover {\r\n    box-shadow: 0.4em 0.4em 5px rgb(122 122 122 / 50%);\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\na[data-v-299e239e] {\n    text-decoration: none;\n    color: rgb(17, 117, 25);\n}\na[data-v-299e239e]:hover {\n    color: rgb(153, 161, 29);\n}\na[data-v-299e239e]:after {\n    color: rgb(153, 161, 29);\n}\n.card[data-v-299e239e]:hover {\n    box-shadow: 0.4em 0.4em 5px rgb(122 122 122 / 50%);\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -11924,7 +12029,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\na[data-v-77c51632] {\r\n    text-decoration: none;\r\n    color: rgb(27, 119, 39);\n}\n.current-page[data-v-77c51632] {\r\n    color:rgb(42, 104, 42);\r\n     text-decoration: none;\r\n     background-color:rgba(165, 135, 135, 0.582)\n}\n.userPerPage[data-v-77c51632] {\r\n    width:50px;\r\n    float:right;\r\n    display: inline;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\na[data-v-77c51632] {\r\n    text-decoration: none;\r\n    color: rgb(27, 119, 39);\n}\n.current-page[data-v-77c51632] {\r\n    color: rgb(42, 104, 42);\r\n    text-decoration: none;\r\n    background-color: rgba(165, 135, 135, 0.582);\n}\n.userPerPage[data-v-77c51632] {\r\n    width: 50px;\r\n    float: right;\r\n    display: inline;\n}\ntable.updating tbody[data-v-77c51632] {\r\n    position: relative;\r\n    color: rgba(0, 0, 0, 0.404);\n}\ntable.updating a[data-v-77c51632] {\r\n    color: rgba(0, 0, 0, 0.404);\n}\ntable.updating tbody[data-v-77c51632]:after {\r\n    content: \"\";\r\n    width: 100%;\r\n    height: 100%;\r\n    top: 0;\r\n    background-color: rgba(2, 2, 2, 0.05);\n}\n.sort[data-v-77c51632] {\r\n    cursor: pointer;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -38077,31 +38182,210 @@ var render = function () {
         _vm._v("Список зарегистрированых пользователей"),
       ]),
       _vm._v(" "),
-      _c("table", { staticClass: "table table-bordered text-center" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "tbody",
-          _vm._l(_vm.users, function (user, index) {
-            return _c("tr", { key: user.id }, [
-              _c("td", [_vm._v(_vm._s(index))]),
+      _c(
+        "table",
+        {
+          staticClass: "table table-bordered text-center",
+          class: { updating: _vm.updating },
+        },
+        [
+          _c("thead", [
+            _c("tr", [
+              _c(
+                "th",
+                {
+                  staticClass: "sort",
+                  on: {
+                    click: function ($event) {
+                      return _vm.sort("id")
+                    },
+                  },
+                },
+                [
+                  _vm._v("\n                    id "),
+                  _c("span", {
+                    domProps: { innerHTML: _vm._s(_vm.getSortArrow("id")) },
+                  }),
+                ]
+              ),
               _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(user.name))]),
+              _c(
+                "th",
+                {
+                  staticClass: "sort",
+                  on: {
+                    click: function ($event) {
+                      return _vm.sort("name")
+                    },
+                  },
+                },
+                [
+                  _vm._v("\n                    nickname "),
+                  _c("span", {
+                    domProps: { innerHTML: _vm._s(_vm.getSortArrow("name")) },
+                  }),
+                ]
+              ),
               _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(user.email))]),
+              _c(
+                "th",
+                {
+                  staticClass: "sort",
+                  on: {
+                    click: function ($event) {
+                      return _vm.sort("email")
+                    },
+                  },
+                },
+                [
+                  _vm._v("\n                    email "),
+                  _c("span", {
+                    domProps: { innerHTML: _vm._s(_vm.getSortArrow("email")) },
+                  }),
+                ]
+              ),
               _vm._v(" "),
-              _c("td", [
-                _c(
-                  "a",
-                  { attrs: { href: "/api/admin/enterAsUser/" + user.id } },
-                  [_vm._v(" Войти ")]
-                ),
+              _c("th", [_vm._v("Вход под пользователем")]),
+            ]),
+            _vm._v(" "),
+            _c("th", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.filters.id.value,
+                    expression: "filters.id.value",
+                  },
+                ],
+                staticClass: "form-control text-center",
+                attrs: { placeholder: "поиск по id" },
+                domProps: { value: _vm.filters.id.value },
+                on: {
+                  input: [
+                    function ($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.filters.id, "value", $event.target.value)
+                    },
+                    function ($event) {
+                      return _vm.filter()
+                    },
+                  ],
+                },
+              }),
+            ]),
+            _vm._v(" "),
+            _c("th", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.filters.name.value,
+                    expression: "filters.name.value",
+                  },
+                ],
+                staticClass: "form-control text-center",
+                attrs: { placeholder: " поиск по Nickname" },
+                domProps: { value: _vm.filters.name.value },
+                on: {
+                  input: [
+                    function ($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.filters.name, "value", $event.target.value)
+                    },
+                    function ($event) {
+                      return _vm.filter()
+                    },
+                  ],
+                },
+              }),
+            ]),
+            _vm._v(" "),
+            _c("th", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.filters.email.value,
+                    expression: "filters.email.value",
+                  },
+                ],
+                staticClass: "form-control text-center",
+                attrs: { placeholder: "поиск по E-mail" },
+                domProps: { value: _vm.filters.email.value },
+                on: {
+                  input: [
+                    function ($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.filters.email, "value", $event.target.value)
+                    },
+                    function ($event) {
+                      return _vm.filter()
+                    },
+                  ],
+                },
+              }),
+            ]),
+            _vm._v(" "),
+            _c("th"),
+          ]),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            [
+              _vm._l(_vm.users, function (user) {
+                return _c("tr", { key: user.id }, [
+                  _c("td", [_vm._v(_vm._s(user.id))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(user.name))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(user.email))]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c(
+                      "a",
+                      { attrs: { href: "/api/admin/enterAsUser/" + user.id } },
+                      [
+                        _vm._v(
+                          "\n                        Войти\n                    "
+                        ),
+                      ]
+                    ),
+                  ]),
+                ])
+              }),
+              _vm._v(" "),
+              _c("tr", [
+                !_vm.users.length
+                  ? _c(
+                      "td",
+                      {
+                        staticClass: "text-muted text-center",
+                        attrs: { colspan: "4" },
+                      },
+                      [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(_vm.textLoad) +
+                            "\n                "
+                        ),
+                      ]
+                    )
+                  : _vm._e(),
               ]),
-            ])
-          }),
-          0
-        ),
-      ]),
+            ],
+            2
+          ),
+        ]
+      ),
       _vm._v(" "),
       _c(
         "button",
@@ -38114,7 +38398,7 @@ var render = function () {
             },
           },
         },
-        [_vm._v("\n            назад\n    ")]
+        [_vm._v("\n        назад\n    ")]
       ),
       _vm._v(" "),
       _vm._l(_vm.links, function (link, idx) {
@@ -38131,7 +38415,7 @@ var render = function () {
               },
             },
           },
-          [_vm._v("\n            " + _vm._s(link.label) + "\n    ")]
+          [_vm._v("\n        " + _vm._s(link.label) + "\n    ")]
         )
       }),
       _vm._v(" "),
@@ -38146,7 +38430,7 @@ var render = function () {
             },
           },
         },
-        [_vm._v("\n           вперед\n    ")]
+        [_vm._v("\n        вперед\n    ")]
       ),
       _vm._v(" "),
       _c(
@@ -38184,7 +38468,7 @@ var render = function () {
         },
         _vm._l(_vm.usersPerPage, function (length, idx) {
           return _c("option", { key: idx }, [
-            _vm._v(_vm._s(length) + "\n        "),
+            _vm._v("\n            " + _vm._s(length) + "\n        "),
           ])
         }),
         0
@@ -38193,22 +38477,7 @@ var render = function () {
     2
   )
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("th", [_vm._v("#")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Nickname")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("E-mail")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Вход под пользователем")]),
-    ])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

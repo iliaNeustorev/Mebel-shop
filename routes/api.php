@@ -45,7 +45,7 @@ Route::post('/logout', [LoginController::class, 'logout']);
 
 Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function()
 {
-    Route::get('/showRegUsers', [AdminController::class, 'showRegUsers']);
+    Route::post('/showRegUsers', [AdminController::class, 'showRegUsers']);
     Route::get('/enterAsUser/{userId}', [AdminController::class, 'enterAsUser']);
     Route::post('/exportCategories', [AdminController::class, 'exportCategories']);
     Route::post('/exportProducts', [AdminController::class, 'exportProducts']);

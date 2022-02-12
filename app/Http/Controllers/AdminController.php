@@ -19,7 +19,16 @@ class AdminController extends Controller
     public function showRegUsers ()
     {
         $length = request('length');
-        return  User::paginate($length);
+        $query = User::query();
+        $filters = request('filters');
+        $sortColumn = request('sortColumn');
+        foreach ($filters as $column => $filter) {
+            if($filter['value']) {
+                $value = $filter['type'] == 'like' ? "%{$filter['value']}%" : $filter['value'];
+                $query->where($column, $filter['type'], $value);
+            }
+        }
+        return $query->orderBy($sortColumn['column'], $sortColumn['direction'])->paginate($length);
     }
 
     public function enterAsUser ($userId)
