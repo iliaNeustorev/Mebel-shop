@@ -29,35 +29,43 @@
                 />
             </div>
             <div class="mb-3">
-                <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">
-                        Текущий пароль
-                    </label>
-                    <input
-                        type="password"
-                        class="form-control w-50"
-                        name="current_password"
-                    />
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">
-                        Новый пароль
-                    </label>
-                    <input
-                        type="password"
-                        class="form-control w-50"
-                        v-model="password"
-                    />
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">
-                        Повторите пароль
-                    </label>
-                    <input
-                        type="password"
-                        class="form-control w-50"
-                        name="password_confirmation"
-                    />
+                <button
+                    @click="passwordChange = !passwordChange"
+                    class="btn btn-success mt-2 mb-2"
+                >
+                    Сменить пароль
+                </button>
+                <div v-show="passwordChange" class="slide">
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">
+                            Текущий пароль
+                        </label>
+                        <input
+                            type="password"
+                            class="form-control w-50"
+                            name="current_password"
+                        />
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">
+                            Новый пароль
+                        </label>
+                        <input
+                            type="password"
+                            class="form-control w-50"
+                            v-model="password"
+                        />
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">
+                            Повторите пароль
+                        </label>
+                        <input
+                            type="password"
+                            class="form-control w-50"
+                            name="password_confirmation"
+                        />
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label"> Изображение </label>
@@ -137,6 +145,7 @@
 export default {
     data() {
         return {
+            passwordChange: false,
             address: false,
             errors: null,
             checked: false,
