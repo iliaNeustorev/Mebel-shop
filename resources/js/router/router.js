@@ -15,6 +15,7 @@ import RegisterPage from "../pages/Auth/Register"
 import AdminPage from "../pages/Admin/Admin"
 import showRegUsersPage from "../pages/Admin/ShowUsers"
 import categoriesAdminPage from "../pages/Admin/CategoriesAdmin"
+import ProfilePage from "../pages/Profile"
 
 const routes = [
     { path: '/', component: HomePage},
@@ -25,6 +26,7 @@ const routes = [
     { path: '/admin', component: AdminPage },
     { path: '/admin/showRegUsers', component: showRegUsersPage },
     { path: '/admin/categoriesAdmin', component: categoriesAdminPage },
+    { path: '/profile', component: ProfilePage },
     { path: '*', redirect: '404'},
     { path: '/404', component: Page404, name: '404'},
 ]

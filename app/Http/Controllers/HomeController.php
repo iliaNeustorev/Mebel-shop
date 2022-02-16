@@ -27,26 +27,14 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
-    {
-        $user = Auth::user();
-        $categories = Category::get();
-        $data = [
-            'user' => $user,
-            'categories' => $categories, 
-            'show_title' => true
-        ];
-        return view('home', $data);
-    }
 
-     
     public function profile()
     {
         $user = Auth::user();
-        return view('profile',[
-            'title' => 'Личный кабинет',
-            'user' => $user
-        ]);
+        return [
+            'user' => $user,
+            'addresses' => $user->addresses
+        ];
     }
 
     public function profile_update (Request $request)
@@ -70,7 +58,7 @@ class HomeController extends Controller
             ]);
 
 
-            $user = User::find(auth()->id());
+            $user = User::with('addresses')->find(auth()->id());
             $input = $request->all();
            if ($input['password']) {
                 $current_password = $input['current_password'];
@@ -82,20 +70,30 @@ class HomeController extends Controller
                    $user->save();
                 }
            }
-            if (isset($input['main_address'])) {
-            
-                $address = Address::find($input['main_address']);
-                $address->main = true;
-                $address->save();
-    
-                Address::where('user_id', $user->id)->where('id', '!=' , $address->id)->update([
-                    'main' => false
-                ]);
-            }
             $user->name = $input['name'];
             $user->email = $input['email'];
             $user->save();
             return $user;
+    }
+
+    public function updateMainAddress (Request $request) {
+
+        $user = Auth::user();
+
+            Validator::make($request->all(), [
+                'main_address' => 'num'
+            ]);
+    
+            $old_main_address = request('main_address');
+            $address = Address::find($old_main_address);
+            $address->main = true;
+            $address->save();
+
+            Address::where('user_id', $user->id)->where('id', '!=' , $address->id)->update([
+                'main' => false
+            ]);
+        return $user->addresses;
+       
     }
 
     public function updateAvatar (Request $request) 
@@ -133,7 +131,7 @@ class HomeController extends Controller
 
         if (request('new_address')) {
             
-            if (request('main_new_address') === 'да')  {
+            if (request('main_new_address'))  {
                 Address::where('user_id', $user->id)->update([
                     'main' => false
                 ]);

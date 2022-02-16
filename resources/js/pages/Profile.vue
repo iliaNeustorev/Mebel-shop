@@ -78,22 +78,27 @@
                     </button>
                 </div>
             </div>
-            <template>
-                <div class="container addressess">
+            <button
+                @click="address = !address"
+                class="btn btn-success mt-2 mb-2"
+            >
+                {{ btnAddress }}
+            </button>
+            <transition name="slide">
+                <div v-show="address" class="container addressess">
                     <label class="form-lable"> Список адресов </label>
                     <br />
                     <div v-for="address in addressesList" :key="address.id">
-                        <input v-if="address.main" type="radio" checked />
                         <input
-                            v-else
-                            v-model="pick"
+                            :checked="address.main"
+                            v-model="picked"
+                            @change="updAddress()"
                             :value="address.id"
                             type="radio"
                         />
                         <label>
                             {{ address.address }}
                         </label>
-                        <span class="selected" v-if="address.main">выбран</span>
                         <button
                             @click="delAddress(address.id)"
                             :disabled="address.main == 1"
@@ -119,8 +124,7 @@
                         Добавить новый адрес
                     </button>
                 </div>
-            </template>
-
+            </transition>
             <br />
         </div>
         <button @click="saveProfile()" class="btn btn-primary btn-lg mt-2">
@@ -131,26 +135,38 @@
 
 <script>
 export default {
-    props: ["errorList", "routeProfile", "user", "addresses"],
     data() {
         return {
-            pick: "",
+            address: false,
             errors: null,
             checked: false,
             userCurrent: [],
             addressesList: [],
-            mainAddress: "",
             file: {},
             new_address: "",
             password: "",
+            picked: "",
         }
+    },
+    computed: {
+        btnAddress() {
+            return !this.address ? "Показать адреса" : "Скрыть адреса"
+        },
     },
     mounted() {
         for (let error in this.errorList) {
             this.errors.push(this.errorList[error][0])
         }
-        this.addressesList = this.addresses
-        this.userCurrent = this.user
+        axios
+            .get("/api/home/profile/")
+            .then((response) => {
+                this.userCurrent = response.data.user
+                this.addressesList = response.data.addresses
+            })
+            .catch((error) => {
+                this.errors = error.response.data.errors
+            })
+            .finally(() => {})
     },
     methods: {
         saveProfile() {
@@ -159,15 +175,15 @@ export default {
                 name: this.userCurrent.name,
                 email: this.userCurrent.email,
                 password: this.password,
-                main_address: this.pick,
             }
             axios
-                .post("/home/profile/update", params)
-                .then(() => {
+                .post("/api/home/profile/update", params)
+                .then((response) => {
                     this.$swal({
                         title: "Профиль обновлен",
                         icon: "success",
                     }).then(() => {})
+                    this.addressesList = response.data.addresses
                 })
                 .catch((error) => {
                     this.errors = error.response.data.errors
@@ -179,7 +195,7 @@ export default {
             let formData = new FormData()
             formData.append("file", this.file)
             axios
-                .post("/home/profile/updateAvatar", formData, {
+                .post("/api/home/profile/updateAvatar", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
@@ -188,9 +204,7 @@ export default {
                     this.$swal({
                         title: "Аватар обновлен",
                         icon: "success",
-                    }).then(() => {
-                        // window.location.href = this.routeProfile
-                    })
+                    }).then(() => {})
                     this.userCurrent.picture = response.data
                 })
                 .catch((error) => {
@@ -201,6 +215,7 @@ export default {
         handleFileUpload() {
             this.file = this.$refs.file.files[0]
         },
+
         saveAddress() {
             this.errors = null
             const params = {
@@ -209,7 +224,7 @@ export default {
             }
 
             axios
-                .post("/home/profile/addAddress", params)
+                .post("api/home/profile/addAddress", params)
                 .then((response) => {
                     this.$swal({
                         title: "Адрес добавлен",
@@ -224,15 +239,34 @@ export default {
                     console.log(this.addressesList)
                 })
         },
+
         delAddress(addressId) {
             const params = {
                 address_id: addressId,
             }
             axios
-                .post("/home/profile/del_address", params)
+                .post("api/home/profile/del_address", params)
                 .then((response) => {
                     this.$swal({
                         title: "Адрес удален",
+                        icon: "success",
+                    }).then(() => {})
+                    this.addressesList = response.data
+                })
+                .catch((error) => {
+                    this.errors = error.response.data.errors
+                })
+                .finally(() => {})
+        },
+        updAddress() {
+            const params = {
+                main_address: this.picked,
+            }
+            axios
+                .post("/api/home/profile/updateMainAddress", params)
+                .then((response) => {
+                    this.$swal({
+                        title: "Основной адрес изменен",
                         icon: "success",
                     }).then(() => {})
                     this.addressesList = response.data
@@ -276,7 +310,23 @@ export default {
     height: 200px;
     width: 200px;
 }
+
 .selected {
     color: rgb(25, 105, 52);
+}
+
+.slide-enter {
+    opacity: 0;
+}
+
+.slide-enter-active {
+    transition: opacity 0.5s;
+}
+
+.slide-leave-active {
+    transition: opacity 0.5s;
+}
+.slide-leave-to {
+    opacity: 0;
 }
 </style>

@@ -25,10 +25,6 @@ Vue.component(
 )
 
 Vue.component(
-    "profile-component",
-    require("./components/ProfileComponent.vue").default
-)
-Vue.component(
     "navbar-component",
     require("./components/NavBarComponent.vue").default
 )
@@ -43,5 +39,5 @@ import router from "./router/router.js"
 const app = new Vue({
     el: "#app",
     store,
-    router
+    router,
 })

@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,8 +41,20 @@ Route::prefix('basket')->group(function () {
     });
 });
 
-Route::post('/login', [LoginController::class, 'authenticate']);
-Route::post('/logout', [LoginController::class, 'logout']);
+Route::post('login', [LoginController::class, 'authenticate']);
+Route::post('logout', [LoginController::class, 'logout']);
+
+Route::prefix('home')->group(function() {
+        Route::prefix('profile')->middleware('auth')->group(function() {
+            Route::get('/', [HomeController::class, 'profile']);
+            Route::post('/update', [HomeController::class, 'profile_update']);  
+            Route::post('/del_address', [HomeController::class, 'del_address']);   
+            Route::post('/updateAvatar', [HomeController::class, 'updateAvatar']);   
+            Route::post('/addAddress', [HomeController::class, 'addAddress']);   
+            Route::post('/updateMainAddress', [HomeController::class, 'updateMainAddress']);   
+        });
+            
+});
 
 Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function()
 {

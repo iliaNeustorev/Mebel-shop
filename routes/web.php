@@ -27,17 +27,7 @@ Route::any('/{any}', function () {
 Route::get('/orders', [OrderController::class, 'index'])->name('orders');
 Route::get('/orders/repeatOrder{orderId}', [OrderController::class, 'repeatOrder'])->name('repeatOrder');
 
-Route::prefix('home')->group(function() {
-    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-        Route::prefix('profile')->middleware('auth')->group(function() {
-            Route::get('/', [HomeController::class, 'profile'])->name('profile');
-            Route::post('/update', [HomeController::class, 'profile_update']);  
-            Route::post('/del_address', [HomeController::class, 'del_address']);   
-            Route::post('/updateAvatar', [HomeController::class, 'updateAvatar']);   
-            Route::post('/addAddress', [HomeController::class, 'addAddress']);   
-        });
-            
-});
+
 
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
