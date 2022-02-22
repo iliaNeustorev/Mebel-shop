@@ -53,8 +53,6 @@ class AdminController extends Controller
     public function ExportProducts () 
     {
         ExportProducts::dispatch();
-        session()->flash('startexportProducts');
-        return back();
     }
 
     public function importProducts () 

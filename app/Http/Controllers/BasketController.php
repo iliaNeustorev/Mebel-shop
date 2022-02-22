@@ -79,6 +79,7 @@ class BasketController extends Controller
                 ])->first();
             $email = $user->email;
             $name = $user->name;
+            $main_address =  $main_address->address;
         }
         $basket_products = collect($products)->map( function ($quantity, $id) {
             $product = Product::find($id);
@@ -94,14 +95,13 @@ class BasketController extends Controller
         })->sum();
         $date = [
             'products' => $basket_products,
-            'title' => 'Корзина',
-            'sum_order' =>  $sum_order,
+            'sumOrder' =>  $sum_order,
             'mainAddress' =>  $main_address,
             'email' => $email,
             'name' => $name, 
         ];
 
-        return view('basket', $date);
+        return $date;
         
     }
     public function getProductsQuantity () {
@@ -184,7 +184,6 @@ class BasketController extends Controller
         Mail::to($email)->send(new OrderCreated($data));
 
         session()->forget('products');
-        return back();
     }
 
     protected function generate_password ($type, $lenght) 

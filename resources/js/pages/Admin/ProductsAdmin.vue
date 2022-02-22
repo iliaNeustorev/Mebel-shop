@@ -1,19 +1,19 @@
 <template>
     <div class="d-grid gap-2 d-md-block text-center mb-3">
-        <button @click="exportCategories()" class="btn btn-primary btn-xl mb-2">
-            Выгрузить список категорий
+        <button @click="exportProducts()" class="btn btn-primary btn-xl mb-2">
+            Выгрузить список продуктов
         </button>
         <button type="submit" class="btn btn-link btn-xl mb-2">
-            Загрузить список категорий
+            Загрузить список продуктов
         </button>
         <div v-if="processing" class="alert alert-warning text-center">
-            Категории выгружаются
+            Продукты выгружаются
             <div class="spinner-border text-success" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
         </div>
         <div v-else-if="exportFinished" class="alert alert-success text-center">
-            Категории выгружены <a :href="downloadLink">(скачать)</a>
+            Продукты выгружены <a :href="downloadLink">(скачать)</a>
         </div>
     </div>
 </template>
@@ -28,10 +28,10 @@ export default {
         }
     },
     methods: {
-        exportCategories() {
+        exportProducts() {
             this.processing = true
             axios
-                .post("/api/admin/exportCategories")
+                .post("/api/admin/exportProducts")
                 .then(() => {})
                 .catch((error) => {
                     this.errors = error.response.data.errors
@@ -45,14 +45,14 @@ export default {
         for (let error in this.errorList) {
             this.errors.push(this.errorList[error][0])
         }
-        Echo.channel("general").listen(".categories-export-finish", (e) => {
+        Echo.channel("general").listen(".products-export-finish", (e) => {
             this.processing = false
             this.exportFinished = true
             this.downloadLink = `/storage/${e.message}`
         })
     },
     destroyed() {
-        Echo.channel("general").stopListening(".categories-export-finish")
+        Echo.channel("general").stopListening(".products-export-finish")
     },
 }
 </script>

@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\ProductsExportFinishEvents;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Bus\Queueable;
@@ -10,6 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 
 class ExportProducts implements ShouldQueue
 {
@@ -38,8 +40,7 @@ class ExportProducts implements ShouldQueue
                 $product['name_category'] = $product->category()->value('name');
                 return $product;
               })->toArray();
-            
-            $file = fopen('exportProducts.csv', 'w');
+            Storage::delete('public/exportProducts.csv');
             $columns = [
                'id',
                'name',
@@ -51,7 +52,7 @@ class ExportProducts implements ShouldQueue
                'updated_at', 
                'name_category'
             ];
-                fputcsv($file, $columns, ';');
+            Storage::append('public/exportProducts.csv',implode(';',$columns));
             foreach ($productsExport as $product) {
                 $product['name']  = iconv('utf-8', 'windows-1251//IGNORE',$product['name']);
                 $product['description']  = iconv('utf-8', 'windows-1251//IGNORE', $product['description']);
@@ -59,9 +60,9 @@ class ExportProducts implements ShouldQueue
                 $product['picture']  = iconv('utf-8', 'windows-1251//IGNORE', $product['picture']);
                 $product['category_id']  = iconv('utf-8', 'windows-1251//IGNORE', $product['category_id']);
                 $product['name_category']  = iconv('utf-8', 'windows-1251//IGNORE', $product['name_category']);
-                fputcsv($file,$product, ';');
+                Storage::append('public/exportProducts.csv',implode(';',$product));
             }
-            fclose($file);
+            event(new ProductsExportFinishEvents('exportProducts.csv'));
         }
     }
 }

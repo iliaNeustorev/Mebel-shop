@@ -5,5 +5,5 @@
 @endsection
 
 @section('content')
-    <showusers-component :users="{{ $users }}"></showusers-component>
+    <showusers-component></showusers-component>
 @endsection

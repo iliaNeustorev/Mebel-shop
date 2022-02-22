@@ -41,7 +41,7 @@
         <div class="mb-5 text-center" v-if="!products.length">
             <em>
                 Нет товаров в корзине
-                <a href=""> Перейти в каталог</a></em
+                <router-link to="/"> Перейти в каталог</router-link></em
             >
         </div>
         <template v-if="products">
@@ -88,16 +88,26 @@ export default {
             processing: false,
             errors: null,
             isDisabled: true,
-            products:[],
-            email:'',
-            mainAddress: '',
-            name: '',
+            products: [],
+            email: "",
+            mainAddress: "",
+            name: "",
+            sumOrder: "",
         }
     },
     mounted() {
         for (let error in this.errorList) {
             this.errors.push(this.errorList[error][0])
         }
+
+        axios.get("/api/basket/").then((response) => {
+            this.products = response.data.products
+            this.email = response.data.email
+            this.mainAddress = response.data.mainAddress
+            this.name = response.data.name
+            this.sumOrder = response.data.sumOrder
+        })
+
         if (!this.email) {
             this.isDisabled = false
         }
