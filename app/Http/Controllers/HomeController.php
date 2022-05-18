@@ -130,8 +130,9 @@ class HomeController extends Controller
         $user = User::find(auth()->id());
 
         if (request('new_address')) {
-            
-            if (request('main_new_address'))  {
+            $flagMainAddress = false;
+            if (request('main_new_address') == 'да')  {
+                $flagMainAddress = true;
                 Address::where('user_id', $user->id)->update([
                     'main' => false
                 ]);
@@ -149,6 +150,9 @@ class HomeController extends Controller
             $address->save();
         }
         $user->refresh();
-        return $user->addresses;
+        return [
+            'addresses' => $user->addresses,
+            'flagMainAddress' => $flagMainAddress
+        ];
     }
 }

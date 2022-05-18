@@ -65,7 +65,10 @@
                             <router-link class="dropdown-item" to="/profile"
                                 >Личный кабинет</router-link
                             >
-                            <router-link class="dropdown-item" to="/orders"
+                            <router-link
+                                v-if="orders > 0"
+                                class="dropdown-item"
+                                to="/orders"
                                 >Заказы</router-link
                             >
                             <button class="dropdown-item" @click="logout()">
@@ -91,12 +94,16 @@ export default {
         user() {
             return this.$store.state.user
         },
+        orders() {
+            return this.$store.state.chekOrders
+        },
     },
     mounted() {
         this.$store.dispatch("getBasketProductsQuantity", {})
         if (!this.user.name) {
             axios.get("/api/user").then((response) => {
-                this.$store.dispatch("getUser", response.data)
+                this.$store.dispatch("getUser", response.data.user)
+                this.$store.dispatch("getChekOrders", response.data.orders)
             })
         }
     },
@@ -104,6 +111,7 @@ export default {
         logout() {
             axios.post("/api/logout").then(() => {
                 this.$store.dispatch("getUser", {})
+                this.$store.dispatch("getChekOrders", 0)
                 if (this.$route.path != "/") this.$router.push("/")
             })
         },

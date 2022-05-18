@@ -85,25 +85,26 @@ export default {
             email: "",
             password: "",
             rememberMe: false,
-            routePasswordRequest:"",
+            routePasswordRequest: "",
         }
     },
     methods: {
-        login () {
-            axios.get('/sanctum/csrf-cookie')
-            .then(response => {
+        login() {
+            axios.get("/sanctum/csrf-cookie").then((response) => {
                 const params = {
-                email: this.email,
-                password: this.password
+                    email: this.email,
+                    password: this.password,
                 }
-                axios.post('/api/login', params)
-                .then((response) => {
-                    this.$store.dispatch('getUser', response.data)
-                     window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
+                axios.post("/api/login", params).then((response) => {
+                    this.$store.dispatch("getUser", response.data.user)
+                    this.$store.dispatch("getChekOrders", response.data.orders)
+                    window.history.length > 1
+                        ? this.$router.go(-1)
+                        : this.$router.push("/")
                 })
-            });
-        }
-    }
+            })
+        },
+    },
 }
 </script>
 

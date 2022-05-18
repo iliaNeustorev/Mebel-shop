@@ -50,7 +50,9 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
  
-            return Auth::user();
+            return [
+                'user' => Auth::user(),
+                'orders' => Auth::user()->orders->count() ];
         }
  
         return response()->json([

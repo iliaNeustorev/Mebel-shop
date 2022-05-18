@@ -24,10 +24,6 @@ Route::any('/{any}', function () {
     return view('layouts.app');
 })->where('any', '.*');
     
-Route::get('/orders', [OrderController::class, 'index'])->name('orders');
-Route::get('/orders/repeatOrder{orderId}', [OrderController::class, 'repeatOrder'])->name('repeatOrder');
-
-
 
 Route::get('/email/verify', function () {
     return view('auth.verify-email');

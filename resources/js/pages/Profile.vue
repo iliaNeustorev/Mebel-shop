@@ -43,7 +43,7 @@
                         <input
                             type="password"
                             class="form-control w-50"
-                            name="current_password"
+                            v-model="oldPassword"
                         />
                     </div>
                     <div class="mb-3">
@@ -53,7 +53,7 @@
                         <input
                             type="password"
                             class="form-control w-50"
-                            v-model="password"
+                            v-model="newPassword"
                         />
                     </div>
                     <div class="mb-3">
@@ -63,7 +63,7 @@
                         <input
                             type="password"
                             class="form-control w-50"
-                            name="password_confirmation"
+                            v-model="repeatNewPassword"
                         />
                     </div>
                 </div>
@@ -98,8 +98,8 @@
                     <br />
                     <div v-for="address in addressesList" :key="address.id">
                         <input
-                            :checked="address.main"
-                            v-model="picked"
+                            :checked="checkAddress"
+                            v-model="pickedAddress"
                             @change="updAddress()"
                             :value="address.id"
                             type="radio"
@@ -153,13 +153,23 @@ export default {
             addressesList: [],
             file: {},
             new_address: "",
-            password: "",
-            picked: "",
+            pickedAddress: "",
+            newPassword: "",
+            oldPassword: "",
+            repeatNewPassword: "",
+
         }
     },
     computed: {
         btnAddress() {
             return !this.address ? "Показать адреса" : "Скрыть адреса"
+        },
+        checkAddress() {
+            for (let address of this.addressesList) {
+                if (address.main) {
+                    this.pickedAddress = address.id
+                }
+            }
         },
     },
     mounted() {
@@ -183,7 +193,9 @@ export default {
             const params = {
                 name: this.userCurrent.name,
                 email: this.userCurrent.email,
-                password: this.password,
+                password: this.newPassword,
+                password_confirmation: this.repeatNewPassword,
+                current_password: this.oldPassword,
             }
             axios
                 .post("/api/home/profile/update", params)
@@ -233,20 +245,21 @@ export default {
             }
 
             axios
-                .post("api/home/profile/addAddress", params)
+                .post("/api/home/profile/addAddress", params)
                 .then((response) => {
                     this.$swal({
                         title: "Адрес добавлен",
                         icon: "success",
                     }).then(() => {})
-                    this.addressesList = response.data
+                    this.addressesList = response.data.addresses
+                    if (response.data.flagMainAddress == true) {
+                        this.checkAddress
+                    }
                 })
                 .catch((error) => {
                     this.errors = error.response.data.errors
                 })
-                .finally(() => {
-                    console.log(this.addressesList)
-                })
+                .finally(() => {})
         },
 
         delAddress(addressId) {
@@ -254,7 +267,7 @@ export default {
                 address_id: addressId,
             }
             axios
-                .post("api/home/profile/del_address", params)
+                .post("/api/home/profile/del_address", params)
                 .then((response) => {
                     this.$swal({
                         title: "Адрес удален",
@@ -269,7 +282,7 @@ export default {
         },
         updAddress() {
             const params = {
-                main_address: this.picked,
+                main_address: this.pickedAddress,
             }
             axios
                 .post("/api/home/profile/updateMainAddress", params)

@@ -128,7 +128,7 @@ export default {
                         title: "Заказ оформлен!",
                         icon: "success",
                     }).then(() => {
-                        window.location.href = this.routeOrders
+                        this.$router.push("/orders")
                     })
                 })
                 .catch((error) => {

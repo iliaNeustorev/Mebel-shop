@@ -14,6 +14,7 @@ import AdminPage from "../pages/Admin/Admin"
 import showRegUsersPage from "../pages/Admin/ShowUsers"
 import CategoriesAdminPage from "../pages/Admin/CategoriesAdmin"
 import ProfilePage from "../pages/Profile"
+import OrdersPage from "../pages/Orders"
 import ProductsAdminPage from "../pages/Admin/ProductsAdmin"
 
 const routes = [
@@ -27,6 +28,7 @@ const routes = [
     { path: "/admin/categoriesAdmin", component: CategoriesAdminPage },
     { path: "/admin/productsAdmin", component: ProductsAdminPage },
     { path: "/profile", component: ProfilePage },
+    { path: "/orders", component: OrdersPage },
     { path: "*", redirect: "404" },
     { path: "/404", component: Page404, name: "404" },
 ]

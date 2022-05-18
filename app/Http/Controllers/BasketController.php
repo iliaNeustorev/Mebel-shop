@@ -98,7 +98,7 @@ class BasketController extends Controller
             'sumOrder' =>  $sum_order,
             'mainAddress' =>  $main_address,
             'email' => $email,
-            'name' => $name, 
+            'name' => $name,
         ];
 
         return $date;
