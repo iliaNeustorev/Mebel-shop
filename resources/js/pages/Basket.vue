@@ -54,7 +54,7 @@
             <label>Адрес</label>
             <input
                 v-model="mainAddress"
-                :disabled="isDisabled"
+                :disabled="isDisabledAddress"
                 class="form-control mb-2"
             />
             <label>Почта</label>
@@ -66,7 +66,7 @@
             />
             <button
                 @click="submit"
-                :disabled="processing || !products.length"
+                :disabled="processing || !products.length || !mainAddress"
                 class="btn btn-success"
             >
                 <span
@@ -88,6 +88,7 @@ export default {
             processing: false,
             errors: null,
             isDisabled: true,
+            isDisabledAddress: false,
             products: [],
             email: "",
             mainAddress: "",
@@ -106,9 +107,12 @@ export default {
             this.mainAddress = response.data.mainAddress
             this.name = response.data.name
             this.sumOrder = response.data.sumOrder
+            if (response.data.mainAddress != null) {
+                this.isDisabledAddress = true
+            }
         })
 
-        if (!this.email) {
+        if (!this.$store.state.user.name) {
             this.isDisabled = false
         }
     },
@@ -123,19 +127,19 @@ export default {
             }
             axios
                 .post("/api/basket/create_order", params)
-                .then(() => {
+                .then((response) => {
                     this.$swal({
                         title: "Заказ оформлен!",
                         icon: "success",
-                    }).then(() => {
-                        this.$router.push("/orders")
-                    })
+                    }).then(() => {})
+                    this.$store.dispatch("getChekOrders", response.data.orders)
                 })
                 .catch((error) => {
                     this.errors = error.response.data.errors
                 })
                 .finally(() => {
                     this.processing = false
+                    this.$router.push("/orders")
                 })
         },
     },

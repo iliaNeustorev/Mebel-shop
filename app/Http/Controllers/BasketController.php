@@ -79,7 +79,7 @@ class BasketController extends Controller
                 ])->first();
             $email = $user->email;
             $name = $user->name;
-            $main_address =  $main_address->address;
+            $main_address =  $main_address->address ?? null;
         }
         $basket_products = collect($products)->map( function ($quantity, $id) {
             $product = Product::find($id);
@@ -90,9 +90,11 @@ class BasketController extends Controller
                 'quantity' => $quantity,
             ];
         })->values();
+
         $sum_order =  $basket_products->map( function ($product) {
             return $product['price'] * $product['quantity'];     
         })->sum();
+
         $date = [
             'products' => $basket_products,
             'sumOrder' =>  $sum_order,
@@ -109,6 +111,8 @@ class BasketController extends Controller
         return collect($products)->sum();
     }
 
+    // create order and return count user Orders
+    
     public function create_order (Request $request)
     {
         $user = Auth::user();
@@ -142,10 +146,7 @@ class BasketController extends Controller
             Mail::to($email)->send(new WelcomeToRegistration($data));
         }
 
-        $address = Address::where([
-            'user_id' => $user->id,
-            'main' => true,
-            ])->first();
+        $address = Address::firstOrCreate(['user_id' => $user->id],[ 'address' => request('address'),'main' => true]);
 
         $order = Order::create([
             'user_id' => $user->id,
@@ -184,6 +185,8 @@ class BasketController extends Controller
         Mail::to($email)->send(new OrderCreated($data));
 
         session()->forget('products');
+
+        return ['orders' => $user->orders->count()];
     }
 
     protected function generate_password ($type, $lenght) 

@@ -62,48 +62,35 @@ class AdminController extends Controller
         return back();
     }
 
-    public function get_categories ()
+    //return categories with products
+
+    public function index ()
     {
-        $categories = Category::paginate(3);
-        $data = [
-            'id' => NULL,
-            'name' =>  NULL,
-            'description' => NULL,
-            'categories' => $categories,
-            'caption' => 'Добавление категории',
-            'title' => 'Список категорий',
-            'button' => 'добавить категорию',
-        ];
-        return view('admin/categories', $data); 
+        return Category::with('products')->get();
     }
 
-    public function add_category (Request $request)
-    {
-        $categories = Category::get();
+    //create new category , return categories
 
+    public function store (Request $request)
+    {
         $request->validate([
-            'picture' => 'image',
-            'name' => 'required|max:255|alpha_num',
-            'description' => 'required|max:1000'
+            'name' => 'required|max:255|unique:categories,name',
+            'description' => 'required|max:1000',
         ]);
 
         $input = $request->all();
         $file = $request->file('picture');
-            if($file) 
+            if($file)
                 {
+                $request->validate([
+                    'picture' => 'image',
+                ]);
                     $ext = $file->getClientOriginalExtension();
                     $file_name = time(). mt_rand(1000, 9999) . '.' . $ext;
                     $file->storeAs('public/img/categories', $file_name);
                 }
 
-        if ($request->input('id') == NULL) {
-
             $category = new Category();
-
-            if ($categories->contains('name', $input['name'])) {
-                session()->flash('error_updated_category');
-                return back();
-            }
 
             if(isset($file_name)) 
             {    
@@ -117,32 +104,29 @@ class AdminController extends Controller
             $category->name = $input['name'];
             $category->description = $input['description'];   
             $category->save();
-            session()->flash('category_add');
-        } else {
-
-            if(isset($file_name)) 
-            {
-                $new_picture = $file_name;
-            }
-            else {
-                $new_picture = $categories->find($input['id'])->picture;
-            }
-
-            Category::where('id', $input['id'])->update([
-                 'name' => $input['name'],
-                 'description' => $input['description'],
-                 'picture' => $new_picture,
-                ]);
-
-            session()->flash('category_updated');
-        }
-        return back();
+     
+        return true;
     }
-        
-    public function del_category (Request $request) {
-        Category::find($request->input('id'))->delete();
-        session()->flash('del_category');
-        return back();
+    public function update (Request $request) {
+        // if(isset($file_name)) 
+        // {
+        //     $new_picture = $file_name;
+        // }
+        // else {
+        //     $new_picture = $categories->find($input['id'])->picture;
+        // }
+
+        // Category::where('id', $input['id'])->update([
+        //      'name' => $input['name'],
+        //      'description' => $input['description'],
+        //      'picture' => $new_picture,
+        //     ]);
+    }   
+    // delete category_id
+    
+    public function destroy ($id) {
+        Category::find($id)->delete();
+        return Category::with('products')->get();
     }
 
     public function get_category (Category $category)

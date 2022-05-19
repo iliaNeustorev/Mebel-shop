@@ -2,13 +2,13 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,6 +43,7 @@ Route::prefix('basket')->group(function () {
     });
 });
 
+Route::post('register', [RegisterController::class, 'register']);
 Route::post('login', [LoginController::class, 'authenticate']);
 Route::post('logout', [LoginController::class, 'logout']);
 
@@ -72,9 +73,9 @@ Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function()
     Route::post('/importProducts', [AdminController::class, 'importProducts']);
 
     Route::prefix('/categories')->group(function() {
-        Route::get('/', [AdminController::class, 'get_categories'])->name('admin_categories');
-        Route::post('/add_category', [AdminController::class, 'add_category'])->name('add_and_upd_category');
-        Route::post('/del_category', [AdminController::class, 'del_category'])->name('del_category');
+        Route::get('/', [AdminController::class, 'index']);
+        Route::post('/create', [AdminController::class, 'store']);
+        Route::delete('/category/{categoryId}', [AdminController::class, 'destroy']);
         Route::get('/add_category/{category}', [AdminController::class, 'get_category'])->name('admin_category');
     });
 

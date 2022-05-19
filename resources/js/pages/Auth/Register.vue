@@ -79,7 +79,11 @@
 
                     <div class="row mb-0">
                         <div class="col-md-6 offset-md-4">
-                            <button @click="Registration" type="submit" class="btn btn-primary">
+                            <button
+                                @click="Registration()"
+                                type="submit"
+                                class="btn btn-primary"
+                            >
                                 Регистрация
                             </button>
                         </div>
@@ -92,7 +96,6 @@
 
 <script>
 export default {
-    props:['routeRegister'],
     data() {
         return {
             name: "",
@@ -101,9 +104,20 @@ export default {
             password_confirmation: "",
         }
     },
-    mounted () {
-        
-    }
+    methods: {
+        Registration() {
+            const params = {
+                name: this.name,
+                email: this.email,
+                password: this.password,
+                password_confirmation: this.password_confirmation,
+            }
+            axios.post("/api/register", params).then((response) => {
+                this.$store.dispatch("getUser", response.data.user)
+                this.$router.push("/")
+            })
+        },
+    },
 }
 </script>
 
