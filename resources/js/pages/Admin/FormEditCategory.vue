@@ -119,7 +119,7 @@ export default {
                     })
                     .then(() => {
                         this.$swal({
-                            title: "Изменения выполнены",
+                            title: "Изменения приняты",
                             icon: "success",
                         }).then(() => {})
                         this.$router.push("/admin/categoriesAdmin")

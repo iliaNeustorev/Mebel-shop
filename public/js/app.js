@@ -6035,7 +6035,7 @@ __webpack_require__.r(__webpack_exports__);
           }
         }).then(function () {
           _this2.$swal({
-            title: "Изменения выполнены",
+            title: "Изменения приняты",
             icon: "success"
           }).then(function () {});
 
