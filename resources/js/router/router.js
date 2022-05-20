@@ -17,6 +17,7 @@ import ProfilePage from "../pages/Profile"
 import OrdersPage from "../pages/Orders"
 import ProductsAdminPage from "../pages/Admin/ProductsAdmin"
 import AddNewCategory from "../pages/Admin/FormAddNewCategory"
+import EditCategory from "../pages/Admin/FormEditCategory"
 
 const routes = [
     { path: "/", component: HomePage },
@@ -28,6 +29,7 @@ const routes = [
     { path: "/admin/showRegUsers", component: showRegUsersPage },
     { path: "/admin/categoriesAdmin", component: CategoriesAdminPage },
     { path: "/admin/AddNewCategory", component: AddNewCategory },
+    { path: "/admin/editCategory", component: EditCategory },
     { path: "/admin/productsAdmin", component: ProductsAdminPage },
     { path: "/profile", component: ProfilePage },
     { path: "/orders", component: OrdersPage },

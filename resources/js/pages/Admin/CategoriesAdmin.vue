@@ -23,12 +23,11 @@
                 >
                     Категории выгружены <a :href="downloadLink">(скачать)</a>
                 </div>
-                <button
-                    @click="showAddCategoryForm()"
-                    class="btn btn-success btn-xl mb-2 text-end"
+                <router-link to="/admin/AddNewCategory">
+                    <button class="btn btn-success">
+                        Добавить категорию
+                    </button></router-link
                 >
-                    Добавить категорию
-                </button>
             </div>
         </div>
         <div>
@@ -48,12 +47,15 @@
                     <tr v-for="category in categories" :key="category.id">
                         <td>{{ category.name }}</td>
                         <td>
-                            <button class="btn btn-info btn-sm mb-1">
+                            <button
+                                class="btn btn-success"
+                                @click="showEditCategoryForm(category.id)"
+                            >
                                 Edit
                             </button>
                             <button
                                 v-if="category.products.length == 0"
-                                class="btn btn-danger btn-sm"
+                                class="btn btn-danger"
                                 @click="deleteCategory(category.id)"
                             >
                                 Delete
@@ -105,8 +107,13 @@ export default {
                     this.exportFinished = false
                 })
         },
-        showAddCategoryForm() {
-            this.$router.push("/admin/AddNewCategory")
+        showEditCategoryForm(category) {
+            this.$router.push("/admin/editCategory")
+            axios
+                .get(`/api/admin/categories/category/${category}/edit`)
+                .then((response) => {
+                    this.$root.$emit("eventing", response.data)
+                })
         },
         deleteCategory(categoryId) {
             axios

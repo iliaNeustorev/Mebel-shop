@@ -5705,6 +5705,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -5725,35 +5727,40 @@ __webpack_require__.r(__webpack_exports__);
         _this.exportFinished = false;
       });
     },
-    showAddCategoryForm: function showAddCategoryForm() {
-      this.$router.push("/admin/AddNewCategory");
-    },
-    deleteCategory: function deleteCategory(categoryId) {
+    showEditCategoryForm: function showEditCategoryForm(category) {
       var _this2 = this;
 
+      this.$router.push("/admin/editCategory");
+      axios.get("/api/admin/categories/category/".concat(category, "/edit")).then(function (response) {
+        _this2.$root.$emit("eventing", response.data);
+      });
+    },
+    deleteCategory: function deleteCategory(categoryId) {
+      var _this3 = this;
+
       axios["delete"]("/api/admin/categories/category/".concat(categoryId)).then(function (response) {
-        _this2.categories = response.data;
+        _this3.categories = response.data;
       })["catch"](function (error) {
-        _this2.errors = error.response.data.errors;
+        _this3.errors = error.response.data.errors;
       })["finally"](function () {});
     }
   },
   mounted: function mounted() {
-    var _this3 = this;
+    var _this4 = this;
 
     for (var error in this.errorList) {
       this.errors.push(this.errorList[error][0]);
     }
 
     axios.get("/api/admin/categories/").then(function (response) {
-      _this3.categories = response.data;
+      _this4.categories = response.data;
     })["catch"](function (error) {
-      _this3.errors = error.response.data.errors;
+      _this4.errors = error.response.data.errors;
     });
     Echo.channel("general").listen(".categories-export-finish", function (e) {
-      _this3.processing = false;
-      _this3.exportFinished = true;
-      _this3.downloadLink = "/storage/".concat(e.message);
+      _this4.processing = false;
+      _this4.exportFinished = true;
+      _this4.downloadLink = "/storage/".concat(e.message);
     });
   },
   destroyed: function destroyed() {
@@ -5774,6 +5781,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5859,6 +5871,140 @@ __webpack_require__.r(__webpack_exports__);
         _this.$router.push("/admin/categoriesAdmin");
       })["catch"](function (error) {
         _this.errors = error.response.data.errors;
+      })["finally"](function () {});
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Admin/FormEditCategory.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Admin/FormEditCategory.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      category: {
+        picture: "",
+        id: "",
+        name: "",
+        description: ""
+      },
+      file: {},
+      errors: null,
+      isDisabled: true
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    for (var error in this.errorList) {
+      this.errors.push(this.errorList[error][0]);
+    }
+
+    this.$root.$on("eventing", function (data) {
+      _this.category.picture = data.picture;
+      _this.category.id = data.id;
+      _this.category.name = data.name;
+      _this.category.description = data.description;
+    });
+  },
+  methods: {
+    handleFileUpload: function handleFileUpload() {
+      this.file = this.$refs.file.files[0];
+    },
+    sendForm: function sendForm() {
+      var _this2 = this;
+
+      var formData = new FormData();
+      formData.append("id", this.category.id);
+      formData.append("name", this.category.name);
+      formData.append("description", this.category.description);
+      formData.append("picture", this.file);
+      axios.post("/api/admin/categories/category/update", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      }).then(function () {
+        _this2.$swal({
+          title: "категория обновлена",
+          icon: "success"
+        }).then(function () {});
+
+        _this2.$router.push("/admin/categoriesAdmin");
+      })["catch"](function (error) {
+        _this2.errors = error.response.data.errors;
       })["finally"](function () {});
     }
   }
@@ -7310,12 +7456,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_Orders__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../pages/Orders */ "./resources/js/pages/Orders.vue");
 /* harmony import */ var _pages_Admin_ProductsAdmin__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../pages/Admin/ProductsAdmin */ "./resources/js/pages/Admin/ProductsAdmin.vue");
 /* harmony import */ var _pages_Admin_FormAddNewCategory__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../pages/Admin/FormAddNewCategory */ "./resources/js/pages/Admin/FormAddNewCategory.vue");
+/* harmony import */ var _pages_Admin_FormEditCategory__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../pages/Admin/FormEditCategory */ "./resources/js/pages/Admin/FormEditCategory.vue");
 
 
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var Page404 = {
   template: "<div>Страница не найдена</div>"
 };
+
 
 
 
@@ -7355,6 +7503,9 @@ var routes = [{
 }, {
   path: "/admin/AddNewCategory",
   component: _pages_Admin_FormAddNewCategory__WEBPACK_IMPORTED_MODULE_13__["default"]
+}, {
+  path: "/admin/editCategory",
+  component: _pages_Admin_FormEditCategory__WEBPACK_IMPORTED_MODULE_14__["default"]
 }, {
   path: "/admin/productsAdmin",
   component: _pages_Admin_ProductsAdmin__WEBPACK_IMPORTED_MODULE_12__["default"]
@@ -37134,6 +37285,45 @@ component.options.__file = "resources/js/pages/Admin/FormAddNewCategory.vue"
 
 /***/ }),
 
+/***/ "./resources/js/pages/Admin/FormEditCategory.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/pages/Admin/FormEditCategory.vue ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _FormEditCategory_vue_vue_type_template_id_73bde5b5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FormEditCategory.vue?vue&type=template&id=73bde5b5& */ "./resources/js/pages/Admin/FormEditCategory.vue?vue&type=template&id=73bde5b5&");
+/* harmony import */ var _FormEditCategory_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FormEditCategory.vue?vue&type=script&lang=js& */ "./resources/js/pages/Admin/FormEditCategory.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _FormEditCategory_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _FormEditCategory_vue_vue_type_template_id_73bde5b5___WEBPACK_IMPORTED_MODULE_0__.render,
+  _FormEditCategory_vue_vue_type_template_id_73bde5b5___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/pages/Admin/FormEditCategory.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/pages/Admin/ProductsAdmin.vue":
 /*!****************************************************!*\
   !*** ./resources/js/pages/Admin/ProductsAdmin.vue ***!
@@ -37579,6 +37769,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/pages/Admin/FormEditCategory.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/pages/Admin/FormEditCategory.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FormEditCategory_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./FormEditCategory.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Admin/FormEditCategory.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FormEditCategory_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/pages/Admin/ProductsAdmin.vue?vue&type=script&lang=js&":
 /*!*****************************************************************************!*\
   !*** ./resources/js/pages/Admin/ProductsAdmin.vue?vue&type=script&lang=js& ***!
@@ -37921,6 +38127,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormAddNewCategory_vue_vue_type_template_id_3278dfac___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormAddNewCategory_vue_vue_type_template_id_3278dfac___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./FormAddNewCategory.vue?vue&type=template&id=3278dfac& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Admin/FormAddNewCategory.vue?vue&type=template&id=3278dfac&");
+
+
+/***/ }),
+
+/***/ "./resources/js/pages/Admin/FormEditCategory.vue?vue&type=template&id=73bde5b5&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/pages/Admin/FormEditCategory.vue?vue&type=template&id=73bde5b5& ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormEditCategory_vue_vue_type_template_id_73bde5b5___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormEditCategory_vue_vue_type_template_id_73bde5b5___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormEditCategory_vue_vue_type_template_id_73bde5b5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./FormEditCategory.vue?vue&type=template&id=73bde5b5& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Admin/FormEditCategory.vue?vue&type=template&id=73bde5b5&");
 
 
 /***/ }),
@@ -38613,58 +38836,66 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("div", [
-      _c("div", { staticClass: "d-grid gap-2 d-md-block text-center mb-3" }, [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-primary btn-xl mb-2",
-            on: {
-              click: function ($event) {
-                return _vm.exportCategories()
+      _c(
+        "div",
+        { staticClass: "d-grid gap-2 d-md-block text-center mb-3" },
+        [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary btn-xl mb-2",
+              on: {
+                click: function ($event) {
+                  return _vm.exportCategories()
+                },
               },
             },
-          },
-          [_vm._v("\n                Выгрузить список категорий\n            ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-link btn-xl mb-2",
-            attrs: { type: "submit" },
-          },
-          [_vm._v("\n                Загрузить список категорий\n            ")]
-        ),
-        _vm._v(" "),
-        _vm.processing
-          ? _c("div", { staticClass: "alert alert-warning text-center" }, [
+            [
               _vm._v(
-                "\n                Категории выгружаются\n                "
+                "\n                Выгрузить список категорий\n            "
               ),
-              _vm._m(0),
-            ])
-          : _vm.exportFinished
-          ? _c("div", { staticClass: "alert alert-success text-center" }, [
-              _vm._v("\n                Категории выгружены "),
-              _c("a", { attrs: { href: _vm.downloadLink } }, [
-                _vm._v("(скачать)"),
-              ]),
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-success btn-xl mb-2 text-end",
-            on: {
-              click: function ($event) {
-                return _vm.showAddCategoryForm()
-              },
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-link btn-xl mb-2",
+              attrs: { type: "submit" },
             },
-          },
-          [_vm._v("\n                Добавить категорию\n            ")]
-        ),
-      ]),
+            [
+              _vm._v(
+                "\n                Загрузить список категорий\n            "
+              ),
+            ]
+          ),
+          _vm._v(" "),
+          _vm.processing
+            ? _c("div", { staticClass: "alert alert-warning text-center" }, [
+                _vm._v(
+                  "\n                Категории выгружаются\n                "
+                ),
+                _vm._m(0),
+              ])
+            : _vm.exportFinished
+            ? _c("div", { staticClass: "alert alert-success text-center" }, [
+                _vm._v("\n                Категории выгружены "),
+                _c("a", { attrs: { href: _vm.downloadLink } }, [
+                  _vm._v("(скачать)"),
+                ]),
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("router-link", { attrs: { to: "/admin/AddNewCategory" } }, [
+            _c("button", { staticClass: "btn btn-success" }, [
+              _vm._v(
+                "\n                    Добавить категорию\n                "
+              ),
+            ]),
+          ]),
+        ],
+        1
+      ),
     ]),
     _vm._v(" "),
     _c("div", [
@@ -38685,17 +38916,28 @@ var render = function () {
                 _c("td", [_vm._v(_vm._s(category.name))]),
                 _vm._v(" "),
                 _c("td", [
-                  _c("button", { staticClass: "btn btn-info btn-sm mb-1" }, [
-                    _vm._v(
-                      "\n                            Edit\n                        "
-                    ),
-                  ]),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-success",
+                      on: {
+                        click: function ($event) {
+                          return _vm.showEditCategoryForm(category.id)
+                        },
+                      },
+                    },
+                    [
+                      _vm._v(
+                        "\n                            Edit\n                        "
+                      ),
+                    ]
+                  ),
                   _vm._v(" "),
                   category.products.length == 0
                     ? _c(
                         "button",
                         {
-                          staticClass: "btn btn-danger btn-sm",
+                          staticClass: "btn btn-danger",
                           on: {
                             click: function ($event) {
                               return _vm.deleteCategory(category.id)
@@ -38800,113 +39042,279 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _vm.errors
-      ? _c("div", { staticClass: "alert alert-danger" }, [
-          _c(
-            "ul",
-            _vm._l(_vm.errors, function (error, idx) {
-              return _c("li", { key: idx }, [
-                _vm._v(
-                  "\n                " + _vm._s(error[0]) + "\n            "
-                ),
-              ])
-            }),
-            0
-          ),
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _c("div", { staticClass: "mb-3" }, [
-      _c("label", { staticClass: "form-label" }, [_vm._v(" Имя категории ")]),
+  return _c(
+    "div",
+    [
+      _vm.errors
+        ? _c("div", { staticClass: "alert alert-danger" }, [
+            _c(
+              "ul",
+              _vm._l(_vm.errors, function (error, idx) {
+                return _c("li", { key: idx }, [
+                  _vm._v(
+                    "\n                " + _vm._s(error[0]) + "\n            "
+                  ),
+                ])
+              }),
+              0
+            ),
+          ])
+        : _vm._e(),
       _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.name,
-            expression: "name",
+      _c("div", { staticClass: "mb-3" }, [
+        _c("label", { staticClass: "form-label" }, [_vm._v(" Имя категории ")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.name,
+              expression: "name",
+            },
+          ],
+          staticClass: "form-control w-50",
+          attrs: { required: "", placeholder: "Введите имя категории" },
+          domProps: { value: _vm.name },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.name = $event.target.value
+            },
           },
-        ],
-        staticClass: "form-control w-50",
-        attrs: { required: "", placeholder: "Введите имя категории" },
-        domProps: { value: _vm.name },
-        on: {
-          input: function ($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.name = $event.target.value
-          },
-        },
-      }),
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "mb-3" }, [
-      _c("label", { staticClass: "form-label" }, [
-        _vm._v(" Описание категории "),
+        }),
       ]),
       _vm._v(" "),
-      _c("textarea", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.description,
-            expression: "description",
+      _c("div", { staticClass: "mb-3" }, [
+        _c("label", { staticClass: "form-label" }, [
+          _vm._v(" Описание категории "),
+        ]),
+        _vm._v(" "),
+        _c("textarea", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.description,
+              expression: "description",
+            },
+          ],
+          staticClass: "form-control w-50",
+          attrs: {
+            required: "",
+            row: "3",
+            placeholder: "Введите описание категории",
           },
-        ],
-        staticClass: "form-control w-50",
-        attrs: {
-          required: "",
-          row: "3",
-          placeholder: "Введите описание категории",
-        },
-        domProps: { value: _vm.description },
-        on: {
-          input: function ($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.description = $event.target.value
+          domProps: { value: _vm.description },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.description = $event.target.value
+            },
           },
-        },
-      }),
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "mb-3" }, [
-      _c("label", { staticClass: "form-label" }, [
-        _vm._v(" Выберите картинку для категории "),
+        }),
       ]),
       _vm._v(" "),
-      _c("br"),
+      _c("div", { staticClass: "mb-3" }, [
+        _c("label", { staticClass: "form-label" }, [
+          _vm._v(" Выберите картинку для категории "),
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("input", {
+          ref: "file",
+          staticClass: "form-control w-50",
+          attrs: { id: "file", type: "file" },
+          on: {
+            change: function ($event) {
+              return _vm.handleFileUpload()
+            },
+          },
+        }),
+      ]),
       _vm._v(" "),
-      _c("input", {
-        ref: "file",
-        staticClass: "form-control w-50",
-        attrs: { id: "file", type: "file" },
-        on: {
-          change: function ($event) {
-            return _vm.handleFileUpload()
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-success w-50",
+          on: {
+            click: function ($event) {
+              return _vm.sendForm()
+            },
           },
         },
+        [_vm._v("\n        Добавить категорию\n    ")]
+      ),
+      _vm._v(" "),
+      _c("router-link", { attrs: { to: "/admin/categoriesAdmin" } }, [
+        _c("button", { staticClass: "btn btn-success w-50 mt-2" }, [
+          _vm._v("\n            Назад\n        "),
+        ]),
+      ]),
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Admin/FormEditCategory.vue?vue&type=template&id=73bde5b5&":
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Admin/FormEditCategory.vue?vue&type=template&id=73bde5b5& ***!
+  \*****************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _vm.errors
+        ? _c("div", { staticClass: "alert alert-danger" }, [
+            _c(
+              "ul",
+              _vm._l(_vm.errors, function (error, idx) {
+                return _c("li", { key: idx }, [
+                  _vm._v(
+                    "\n                " + _vm._s(error[0]) + "\n            "
+                  ),
+                ])
+              }),
+              0
+            ),
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "mb-3" }, [
+        _c("label", { staticClass: "form-label" }, [_vm._v(" Имя категории ")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.category.name,
+              expression: "category.name",
+            },
+          ],
+          staticClass: "form-control w-50",
+          attrs: { required: "", placeholder: "Введите имя категории" },
+          domProps: { value: _vm.category.name },
+          on: {
+            change: function ($event) {
+              _vm.isDisabled = false
+            },
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.category, "name", $event.target.value)
+            },
+          },
+        }),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "mb-3" }, [
+        _c("label", { staticClass: "form-label" }, [
+          _vm._v(" Описание категории "),
+        ]),
+        _vm._v(" "),
+        _c("textarea", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.category.description,
+              expression: "category.description",
+            },
+          ],
+          staticClass: "form-control w-50",
+          attrs: {
+            required: "",
+            row: "3",
+            placeholder: "Введите описание категории",
+          },
+          domProps: { value: _vm.category.description },
+          on: {
+            change: function ($event) {
+              _vm.isDisabled = false
+            },
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.category, "description", $event.target.value)
+            },
+          },
+        }),
+      ]),
+      _vm._v(" "),
+      _c("img", {
+        staticClass: "avatar",
+        attrs: { src: "/storage/img/categories/" + _vm.category.picture },
       }),
-    ]),
-    _vm._v(" "),
-    _c(
-      "button",
-      {
-        staticClass: "btn btn-success w-50",
-        on: {
-          click: function ($event) {
-            return _vm.sendForm()
+      _vm._v(" "),
+      _c("div", { staticClass: "mb-3" }, [
+        _c("label", { staticClass: "form-label" }, [
+          _vm._v(" Выберите картинку для категории "),
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("input", {
+          ref: "file",
+          staticClass: "form-control w-50",
+          attrs: { id: "file", type: "file" },
+          on: {
+            mouseover: function ($event) {
+              _vm.isDisabled = false
+            },
+            change: function ($event) {
+              return _vm.handleFileUpload()
+            },
+          },
+        }),
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-success w-50",
+          attrs: { disabled: _vm.isDisabled },
+          on: {
+            click: function ($event) {
+              return _vm.sendForm()
+            },
           },
         },
-      },
-      [_vm._v("\n        Добавить категорию\n    ")]
-    ),
-  ])
+        [_vm._v("\n        Принять изменения\n    ")]
+      ),
+      _vm._v(" "),
+      _c("router-link", { attrs: { to: "/admin/categoriesAdmin" } }, [
+        _c("button", { staticClass: "btn btn-success w-50 mt-2" }, [
+          _vm._v("\n            Назад\n        "),
+        ]),
+      ]),
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

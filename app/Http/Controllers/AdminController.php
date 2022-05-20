@@ -108,40 +108,55 @@ class AdminController extends Controller
         return true;
     }
     public function update (Request $request) {
-        // if(isset($file_name)) 
-        // {
-        //     $new_picture = $file_name;
-        // }
-        // else {
-        //     $new_picture = $categories->find($input['id'])->picture;
-        // }
 
-        // Category::where('id', $input['id'])->update([
-        //      'name' => $input['name'],
-        //      'description' => $input['description'],
-        //      'picture' => $new_picture,
-        //     ]);
+        $request->validate([
+            'name' => 'required|max:255|',
+            'description' => 'required|max:1000',
+        ]);
+
+        $input = $request->all();
+        $file = $request->file('picture');
+            if($file)
+                {
+                $request->validate([
+                    'picture' => 'image',
+                ]);
+                    $ext = $file->getClientOriginalExtension();
+                    $file_name = time(). mt_rand(1000, 9999) . '.' . $ext;
+                    $file->storeAs('public/img/categories', $file_name);
+                }
+
+            if(isset($file_name)) 
+            {
+                $new_picture = $file_name;
+                Category::where('id', $input['id'])->update(['name' => $input['name'], 'description' => $input['description'], 'picture' => $new_picture]);
+                return true;
+            }
+
+            Category::where('id', $input['id'])->update(['name' => $input['name'], 'description' => $input['description']]);
+            return true;
+            
     }   
     // delete category_id
     
     public function destroy ($id) {
-        Category::find($id)->delete();
-        return Category::with('products')->get();
+        $category = Category::where('id', $id)->first();
+        if($category->products->count() == 0) {
+            $category->delete();
+        }
+        return $category->with('products')->get();
     }
 
-    public function get_category (Category $category)
+    public function edit (Category $category)
     {
         $data = [
-            'show_picture' => $category->picture,
+            'picture' => $category->picture,
             'name' =>  $category->name,
             'description' =>  $category->description,
             'id' => $category->id,
-            'title' => 'Редактирование категории',
-            'caption' => "Редактирование категории - $category->name",
-            'button' => 'Принять изменения',
         ];
 
-        return view('admin/categories', $data); 
+        return $data;
     }
 
     public function get_products ()
