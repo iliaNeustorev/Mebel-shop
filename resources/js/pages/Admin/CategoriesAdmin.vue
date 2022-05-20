@@ -30,9 +30,11 @@
                 >
             </div>
         </div>
+
         <div>
             <hr />
             <h2 class="text-center">Таблица со всеми категориями</h2>
+
             <table class="table table-bordered mt-2 text-center">
                 <thead>
                     <th>Имя</th>
@@ -43,7 +45,15 @@
                     <th>Дата создания</th>
                     <th>Последнее изменение</th>
                 </thead>
-                <tbody>
+                <tr v-if="loading" class="text-center">
+                    <td colspan="7">
+                        <img
+                            class="loader text-center"
+                            src="/storage/img/loaders/loader.gif"
+                        />
+                    </td>
+                </tr>
+                <tbody v-else>
                     <tr v-for="category in categories" :key="category.id">
                         <td>{{ category.name }}</td>
                         <td>
@@ -88,6 +98,7 @@
 export default {
     data() {
         return {
+            loading: true,
             categories: [],
             processing: false,
             exportFinished: false,
@@ -124,7 +135,6 @@ export default {
                 .catch((error) => {
                     this.errors = error.response.data.errors
                 })
-                .finally(() => {})
         },
     },
     mounted() {
@@ -139,6 +149,10 @@ export default {
             .catch((error) => {
                 this.errors = error.response.data.errors
             })
+            .finally(() => {
+                this.loading = false
+            })
+
         Echo.channel("general").listen(".categories-export-finish", (e) => {
             this.processing = false
             this.exportFinished = true
@@ -155,5 +169,9 @@ export default {
 .avatar {
     height: 200px;
     width: 200px;
+}
+.loader {
+    width: 30%;
+    height: 30%;
 }
 </style>

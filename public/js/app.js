@@ -5707,9 +5707,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      loading: true,
       categories: [],
       processing: false,
       exportFinished: false,
@@ -5742,7 +5753,7 @@ __webpack_require__.r(__webpack_exports__);
         _this3.categories = response.data;
       })["catch"](function (error) {
         _this3.errors = error.response.data.errors;
-      })["finally"](function () {});
+      });
     }
   },
   mounted: function mounted() {
@@ -5756,6 +5767,8 @@ __webpack_require__.r(__webpack_exports__);
       _this4.categories = response.data;
     })["catch"](function (error) {
       _this4.errors = error.response.data.errors;
+    })["finally"](function () {
+      _this4.loading = false;
     });
     Echo.channel("general").listen(".categories-export-finish", function (e) {
       _this4.processing = false;
@@ -5833,6 +5846,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -5841,6 +5858,11 @@ __webpack_require__.r(__webpack_exports__);
       file: {},
       errors: null
     };
+  },
+  computed: {
+    isDisabled: function isDisabled() {
+      return !this.name && !this.description ? true : false;
+    }
   },
   mounted: function mounted() {
     for (var error in this.errorList) {
@@ -5951,10 +5973,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      oldData: {
+        picture: "",
+        id: "",
+        name: "",
+        description: ""
+      },
       category: {
         picture: "",
         id: "",
@@ -5962,6 +5989,7 @@ __webpack_require__.r(__webpack_exports__);
         description: ""
       },
       file: {},
+      chekFile: false,
       errors: null,
       isDisabled: true
     };
@@ -5974,6 +6002,7 @@ __webpack_require__.r(__webpack_exports__);
     }
 
     this.$root.$on("eventing", function (data) {
+      _this.oldData = data;
       _this.category.picture = data.picture;
       _this.category.id = data.id;
       _this.category.name = data.name;
@@ -5982,30 +6011,39 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     handleFileUpload: function handleFileUpload() {
+      this.isDisabled = false;
       this.file = this.$refs.file.files[0];
+      this.chekFile = true;
     },
     sendForm: function sendForm() {
       var _this2 = this;
 
-      var formData = new FormData();
-      formData.append("id", this.category.id);
-      formData.append("name", this.category.name);
-      formData.append("description", this.category.description);
-      formData.append("picture", this.file);
-      axios.post("/api/admin/categories/category/update", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }
-      }).then(function () {
-        _this2.$swal({
-          title: "категория обновлена",
-          icon: "success"
-        }).then(function () {});
+      if (this.oldData.name == this.category.name && this.oldData.description == this.category.description && this.chekFile == false) {
+        this.$swal({
+          title: "Вы не внесли изменений",
+          icon: "danger"
+        });
+      } else {
+        var formData = new FormData();
+        formData.append("id", this.category.id);
+        formData.append("name", this.category.name);
+        formData.append("description", this.category.description);
+        formData.append("picture", this.file);
+        axios.post("/api/admin/categories/category/update", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        }).then(function () {
+          _this2.$swal({
+            title: "Изменения выполнены",
+            icon: "success"
+          }).then(function () {});
 
-        _this2.$router.push("/admin/categoriesAdmin");
-      })["catch"](function (error) {
-        _this2.errors = error.response.data.errors;
-      })["finally"](function () {});
+          _this2.$router.push("/admin/categoriesAdmin");
+        })["catch"](function (error) {
+          _this2.errors = error.response.data.errors;
+        })["finally"](function () {});
+      }
     }
   }
 });
@@ -12681,7 +12719,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.avatar[data-v-f0e49f0c] {\r\n    height: 200px;\r\n    width: 200px;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.avatar[data-v-f0e49f0c] {\r\n    height: 200px;\r\n    width: 200px;\n}\n.loader[data-v-f0e49f0c] {\r\n    width: 30%;\r\n    height: 30%;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -38908,74 +38946,76 @@ var render = function () {
       _c("table", { staticClass: "table table-bordered mt-2 text-center" }, [
         _vm._m(1),
         _vm._v(" "),
-        _c(
-          "tbody",
-          [
-            _vm._l(_vm.categories, function (category) {
-              return _c("tr", { key: category.id }, [
-                _c("td", [_vm._v(_vm._s(category.name))]),
-                _vm._v(" "),
-                _c("td", [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-success",
-                      on: {
-                        click: function ($event) {
-                          return _vm.showEditCategoryForm(category.id)
-                        },
-                      },
-                    },
-                    [
-                      _vm._v(
-                        "\n                            Edit\n                        "
-                      ),
-                    ]
-                  ),
-                  _vm._v(" "),
-                  category.products.length == 0
-                    ? _c(
+        _vm.loading
+          ? _c("tr", { staticClass: "text-center" }, [_vm._m(2)])
+          : _c(
+              "tbody",
+              [
+                _vm._l(_vm.categories, function (category) {
+                  return _c("tr", { key: category.id }, [
+                    _c("td", [_vm._v(_vm._s(category.name))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
                         "button",
                         {
-                          staticClass: "btn btn-danger",
+                          staticClass: "btn btn-success",
                           on: {
                             click: function ($event) {
-                              return _vm.deleteCategory(category.id)
+                              return _vm.showEditCategoryForm(category.id)
                             },
                           },
                         },
                         [
                           _vm._v(
-                            "\n                            Delete\n                        "
+                            "\n                            Edit\n                        "
                           ),
                         ]
-                      )
-                    : _vm._e(),
-                ]),
+                      ),
+                      _vm._v(" "),
+                      category.products.length == 0
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-danger",
+                              on: {
+                                click: function ($event) {
+                                  return _vm.deleteCategory(category.id)
+                                },
+                              },
+                            },
+                            [
+                              _vm._v(
+                                "\n                            Delete\n                        "
+                              ),
+                            ]
+                          )
+                        : _vm._e(),
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(category.description))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("img", {
+                        staticClass: "avatar",
+                        attrs: {
+                          src: "/storage/img/categories/" + category.picture,
+                        },
+                      }),
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(category.products.length))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(category.created_at))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(category.updated_at))]),
+                  ])
+                }),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(category.description))]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("img", {
-                    staticClass: "avatar",
-                    attrs: {
-                      src: "/storage/img/categories/" + category.picture,
-                    },
-                  }),
-                ]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(category.products.length))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(category.created_at))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(category.updated_at))]),
-              ])
-            }),
-            _vm._v(" "),
-            _vm._m(2),
-          ],
-          2
-        ),
+                _vm._m(3),
+              ],
+              2
+            ),
       ]),
     ]),
   ])
@@ -39009,6 +39049,17 @@ var staticRenderFns = [
       _c("th", [_vm._v("Дата создания")]),
       _vm._v(" "),
       _c("th", [_vm._v("Последнее изменение")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", { attrs: { colspan: "7" } }, [
+      _c("img", {
+        staticClass: "loader text-center",
+        attrs: { src: "/storage/img/loaders/loader.gif" },
+      }),
     ])
   },
   function () {
@@ -39068,9 +39119,10 @@ var render = function () {
           directives: [
             {
               name: "model",
-              rawName: "v-model",
+              rawName: "v-model.trim",
               value: _vm.name,
               expression: "name",
+              modifiers: { trim: true },
             },
           ],
           staticClass: "form-control w-50",
@@ -39081,7 +39133,10 @@ var render = function () {
               if ($event.target.composing) {
                 return
               }
-              _vm.name = $event.target.value
+              _vm.name = $event.target.value.trim()
+            },
+            blur: function ($event) {
+              return _vm.$forceUpdate()
             },
           },
         }),
@@ -39096,9 +39151,10 @@ var render = function () {
           directives: [
             {
               name: "model",
-              rawName: "v-model",
+              rawName: "v-model.trim",
               value: _vm.description,
               expression: "description",
+              modifiers: { trim: true },
             },
           ],
           staticClass: "form-control w-50",
@@ -39113,7 +39169,10 @@ var render = function () {
               if ($event.target.composing) {
                 return
               }
-              _vm.description = $event.target.value
+              _vm.description = $event.target.value.trim()
+            },
+            blur: function ($event) {
+              return _vm.$forceUpdate()
             },
           },
         }),
@@ -39142,6 +39201,7 @@ var render = function () {
         "button",
         {
           staticClass: "btn btn-success w-50",
+          attrs: { disabled: _vm.isDisabled },
           on: {
             click: function ($event) {
               return _vm.sendForm()
@@ -39209,23 +39269,27 @@ var render = function () {
           directives: [
             {
               name: "model",
-              rawName: "v-model",
+              rawName: "v-model.trim",
               value: _vm.category.name,
               expression: "category.name",
+              modifiers: { trim: true },
             },
           ],
           staticClass: "form-control w-50",
           attrs: { required: "", placeholder: "Введите имя категории" },
           domProps: { value: _vm.category.name },
           on: {
-            change: function ($event) {
+            keydown: function ($event) {
               _vm.isDisabled = false
             },
             input: function ($event) {
               if ($event.target.composing) {
                 return
               }
-              _vm.$set(_vm.category, "name", $event.target.value)
+              _vm.$set(_vm.category, "name", $event.target.value.trim())
+            },
+            blur: function ($event) {
+              return _vm.$forceUpdate()
             },
           },
         }),
@@ -39240,9 +39304,10 @@ var render = function () {
           directives: [
             {
               name: "model",
-              rawName: "v-model",
+              rawName: "v-model.trim",
               value: _vm.category.description,
               expression: "category.description",
+              modifiers: { trim: true },
             },
           ],
           staticClass: "form-control w-50",
@@ -39253,14 +39318,17 @@ var render = function () {
           },
           domProps: { value: _vm.category.description },
           on: {
-            change: function ($event) {
+            keydown: function ($event) {
               _vm.isDisabled = false
             },
             input: function ($event) {
               if ($event.target.composing) {
                 return
               }
-              _vm.$set(_vm.category, "description", $event.target.value)
+              _vm.$set(_vm.category, "description", $event.target.value.trim())
+            },
+            blur: function ($event) {
+              return _vm.$forceUpdate()
             },
           },
         }),
@@ -39283,9 +39351,6 @@ var render = function () {
           staticClass: "form-control w-50",
           attrs: { id: "file", type: "file" },
           on: {
-            mouseover: function ($event) {
-              _vm.isDisabled = false
-            },
             change: function ($event) {
               return _vm.handleFileUpload()
             },
