@@ -8,26 +8,33 @@
                 >
                     Выгрузить список категорий
                 </button>
+
                 <button type="submit" class="btn btn-link btn-xl mb-2">
                     Загрузить список категорий
                 </button>
+                <router-link to="/admin/AddNewCategory">
+                    <button class="btn btn-success">
+                        Добавить категорию
+                    </button></router-link
+                >
                 <div v-if="processing" class="alert alert-warning text-center">
                     Категории выгружаются
                     <div class="spinner-border text-success" role="status">
                         <span class="visually-hidden">Loading...</span>
                     </div>
+                    <progress-bar-component
+                        v-if="processing"
+                        channel="counter"
+                        event="ExportCategoriesCounter"
+                    />
                 </div>
+
                 <div
                     v-else-if="exportFinished"
                     class="alert alert-success text-center"
                 >
                     Категории выгружены <a :href="downloadLink">(скачать)</a>
                 </div>
-                <router-link to="/admin/AddNewCategory">
-                    <button class="btn btn-success">
-                        Добавить категорию
-                    </button></router-link
-                >
             </div>
         </div>
 
@@ -55,7 +62,16 @@
                 </tr>
                 <tbody v-else>
                     <tr v-for="category in categories" :key="category.id">
-                        <td>{{ category.name }}</td>
+                        <td>
+                            <router-link
+                                :to="
+                                    '/admin/category/' +
+                                    category.id +
+                                    '/products'
+                                "
+                                >{{ category.name }}</router-link
+                            >
+                        </td>
                         <td>
                             <button
                                 class="btn btn-success"

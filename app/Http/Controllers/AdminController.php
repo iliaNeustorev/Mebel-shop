@@ -9,9 +9,10 @@ use App\Jobs\importProducts;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -82,12 +83,12 @@ class AdminController extends Controller
         $file = $request->file('picture');
             if($file)
                 {
-                $request->validate([
-                    'picture' => 'image',
+                    $request->validate([
+                        'picture' => 'image',
                 ]);
-                    $ext = $file->getClientOriginalExtension();
+                    $ext = $file->extension();
                     $file_name = time(). mt_rand(1000, 9999) . '.' . $ext;
-                    $file->storeAs('public/img/categories', $file_name);
+                    Storage::putFileAs('public/img/categories/', $file, $file_name);
                 }
 
             $category = new Category();
@@ -107,7 +108,10 @@ class AdminController extends Controller
      
         return true;
     }
+    //update category 
+
     public function update (Request $request) {
+        
 
         $request->validate([
             'name' => 'required|max:255|',
@@ -115,30 +119,33 @@ class AdminController extends Controller
         ]);
 
         $input = $request->all();
+        $category = Category::where('id', $input['id'])->first();
         $file = $request->file('picture');
             if($file)
                 {
                 $request->validate([
                     'picture' => 'image',
                 ]);
-                    $ext = $file->getClientOriginalExtension();
+                    $ext = $file->extension();
                     $file_name = time(). mt_rand(1000, 9999) . '.' . $ext;
-                    $file->storeAs('public/img/categories', $file_name);
+                    Storage::putFileAs('public/img/categories/', $file, $file_name);
                 }
 
             if(isset($file_name)) 
             {
+                $picture = $category->picture;
+                Storage::delete("public/img/categories/$picture");
                 $new_picture = $file_name;
-                Category::where('id', $input['id'])->update(['name' => $input['name'], 'description' => $input['description'], 'picture' => $new_picture]);
+                $category->update(['name' => $input['name'], 'description' => $input['description'], 'picture' => $new_picture]);
                 return true;
             }
-
-            Category::where('id', $input['id'])->update(['name' => $input['name'], 'description' => $input['description']]);
+            
+            $category->update(['name' => $input['name'], 'description' => $input['description']]);
             return true;
             
     }   
+
     // delete category_id
-    
     public function destroy ($id) {
         $category = Category::where('id', $id)->first();
         if($category->products->count() == 0) {
@@ -159,59 +166,25 @@ class AdminController extends Controller
         return $data;
     }
 
-    public function get_products ()
+    // get products by category_id
+    public function getProductsCategory (Category $category)
     {
-        $categories = Category::get();
-        $products = Product::paginate(5);
-        $products->sortBy('created_at', SORT_DESC, 3);
-        $data = [
-            'categories' =>  $categories,
-            'title' => 'Список продуктов',
-            'products' => $products,       
-        ];
-
-        return view('admin/products', $data); 
+        $products = $category->products->sortBy('created_at', SORT_DESC, 3)->values()->all();
+        return [
+            'products' => $products, 
+            'categoryName' => $category->name, 
+            'categoryId' => $category->id
+            ];
     }
 
-    public function get_product (Category $category, $id = null)
-    {
-        $categories = Category::where('id','!=', $category->id)->get();
-        $product = Product::find($id);
-            if ($id != null && is_object($product)) { 
-                $data = [
-                    'id' => $product->id,
-                    'name' =>  $product->name,
-                    'description' => $product->description,
-                    'price' => $product->price,
-                    'category' => $product->category,
-                    'categories' => $categories,
-                    'picture' => $product->picture,
-                    'button' => 'Редактировать продукт',
-                ];
-            } else {
-                $data = [
-                    'id' => NULL,
-                    'name' =>  NULL,
-                    'description' => NULL,
-                    'price' => NULL,
-                    'category' => NULL,
-                    'categories' => $categories,
-                    'picture' => NULL,
-                    'button' => 'Добавить новый продукт',
-                ];
-            }
-           
-        return view('admin/product',compact('category'), $data); 
-    }
 
-    public function add_product (Request $request)
+    public function addProduct (Request $request)
     {
         $request->validate([
-            'picture' => 'image',
-            'name' => 'required|max:255|alpha_num',
+            'name' => 'required|max:255|unique:products,name',
             'description' => 'required|max:1000',
             'price' => 'required|numeric|max:30000000',
-            'category' => 'required',
+            'categoryId' => 'required',
         ]);
 
         $input = $request->all();
@@ -220,24 +193,25 @@ class AdminController extends Controller
 
         if($file) 
             {
-                $ext = $file->getClientOriginalExtension();
+                $request->validate([
+                    'picture' => 'image',
+                ]);
+                $ext = $file->Extension();
                 $file_name = time(). mt_rand(1000, 9999) . '.' . $ext;
-                $file->storeAs('public/img/products', $file_name);
-
+                Storage::putFileAs('public/img/products/', $file, $file_name);
                 $product->picture = $file_name;
             }
         else 
             {
                 $product->picture = 'nopicture.png';
             }
-    
+        
         $product->name = $input['name'];
         $product->description = $input['description'];
         $product->price = $input['price'];
-        $product->category_id = $input['category'];
+        $product->category_id = $input['categoryId'];
         $product->save();
-        session()->flash('product_add');
-        return back();
+        return true;
     }
 
     public function upd_product (Request $request)
@@ -306,12 +280,15 @@ class AdminController extends Controller
         return back();
     }
 
-    public function del_product (Request $request) 
+    public function delProducts (Request $request)
     {
-        $res = $request->input('check_delete',[]);
+        $res = $request->input('idProductsDelete');
         Product::whereIn("id",$res)->delete();
-        session()->flash('status_product', "Удаление успешно выполнено");
-        return back();
+        $category = Category::where('id', $request->input('categoryId'))->first();
+        $products = $category->products->sortBy('created_at', SORT_DESC, 3)->values()->all();
+        return [
+            'products' => $products,
+            ];
     }
         
 }

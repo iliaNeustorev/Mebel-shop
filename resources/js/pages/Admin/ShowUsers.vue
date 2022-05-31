@@ -171,7 +171,6 @@ export default {
                 filters: this.filters,
                 sortColumn: this.sortColumn,
             }
-            console.log(params)
             axios
                 .post("/api/admin/showRegUsers", params)
                 .then((response) => {

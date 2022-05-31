@@ -11,7 +11,6 @@
         <div class="mb-3">
             <label class="form-label"> Имя категории </label>
             <input
-                @keydown="isDisabled = false"
                 required
                 class="form-control w-50"
                 v-model.trim="category.name"
@@ -23,7 +22,6 @@
             <label class="form-label"> Описание категории </label>
             <textarea
                 required
-                @keydown="isDisabled = false"
                 class="form-control w-50"
                 v-model.trim="category.description"
                 row="3"
@@ -89,9 +87,19 @@ export default {
             this.category.description = data.description
         })
     },
+    watch: {
+        file() {
+            this.isDisabled = false
+        },
+        name() {
+            this.isDisabled = false
+        },
+        description() {
+            this.isDisabled = false
+        },
+    },
     methods: {
         handleFileUpload() {
-            this.isDisabled = false
             this.file = this.$refs.file.files[0]
             this.chekFile = true
         },
@@ -117,17 +125,16 @@ export default {
                             "Content-Type": "multipart/form-data",
                         },
                     })
-                    .then(() => {
+                    .catch((error) => {
+                        this.errors = error.response.data.errors
+                    })
+                    .finally(() => {
                         this.$swal({
                             title: "Изменения приняты",
                             icon: "success",
                         }).then(() => {})
                         this.$router.push("/admin/categoriesAdmin")
                     })
-                    .catch((error) => {
-                        this.errors = error.response.data.errors
-                    })
-                    .finally(() => {})
             }
         },
     },

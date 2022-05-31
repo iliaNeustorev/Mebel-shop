@@ -16,8 +16,9 @@ import CategoriesAdminPage from "../pages/Admin/CategoriesAdmin"
 import ProfilePage from "../pages/Profile"
 import OrdersPage from "../pages/Orders"
 import ProductsAdminPage from "../pages/Admin/ProductsAdmin"
-import AddNewCategory from "../pages/Admin/FormAddNewCategory"
-import EditCategory from "../pages/Admin/FormEditCategory"
+import AddNewCategory from "../pages/Admin/Forms/FormAddNewCategory"
+import EditCategory from "../pages/Admin/Forms/FormEditCategory"
+import ProductAdmin from "../pages/Admin/Products.vue"
 
 const routes = [
     { path: "/", component: HomePage },
@@ -28,11 +29,12 @@ const routes = [
     { path: "/admin", component: AdminPage },
     { path: "/admin/showRegUsers", component: showRegUsersPage },
     { path: "/admin/categoriesAdmin", component: CategoriesAdminPage },
-    { path: "/admin/AddNewCategory", component: AddNewCategory },
+    { path: "/admin/addNewCategory", component: AddNewCategory },
     { path: "/admin/editCategory", component: EditCategory },
     { path: "/admin/productsAdmin", component: ProductsAdminPage },
     { path: "/profile", component: ProfilePage },
     { path: "/orders", component: OrdersPage },
+    { path: "/admin/category/:id/products", component: ProductAdmin },
     { path: "*", redirect: "404" },
     { path: "/404", component: Page404, name: "404" },
 ]

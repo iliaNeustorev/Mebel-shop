@@ -28,6 +28,17 @@ Vue.component(
     "navbar-component",
     require("./components/NavBarComponent.vue").default
 )
+
+Vue.component(
+    "addProduct-component",
+    require("./components/Forms/addProduct.vue").default
+)
+
+Vue.component(
+    "progress-bar-component",
+    require("./components/ProgressBarComponent.vue").default
+)
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -35,6 +46,7 @@ Vue.component(
  */
 import store from "./store/store.js"
 import router from "./router/router.js"
+import Vue from "vue"
 
 const app = new Vue({
     el: "#app",

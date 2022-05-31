@@ -2,7 +2,7 @@
     <div>
         <h1 class="mb-3">Список категорий</h1>
         <div class="text-center" v-if="loading">
-            <img src="/storage/img/loaders/loader.gif">
+            <img src="/storage/img/loaders/loader.gif" />
         </div>
         <div v-else class="row">
             <div
@@ -19,8 +19,7 @@
                         />
                         <div class="card-body">
                             <h5 class="card-title text-center">
-                                {{ category.name
-                                }}{{ category.products }}
+                                {{ category.name }}{{ category.products }}
                             </h5>
                         </div>
                     </div>
@@ -42,7 +41,7 @@ export default {
     mounted() {
         this.loading = true
         axios
-            .get('/api/categories/get')
+            .get("/api/categories/get")
             .then((response) => {
                 this.categories = response.data
             })
