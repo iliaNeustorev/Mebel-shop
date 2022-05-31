@@ -7,6 +7,9 @@
                 </li>
             </ul>
         </div>
+        <router-link to="/admin/categoriesAdmin">
+            <button class="btn btn-success mt-2">Назад</button></router-link
+        >
         <div class="mb-3">
             <label class="form-label"> Имя категории </label>
             <input
@@ -42,15 +45,10 @@
         <button
             :disabled="isDisabled"
             @click="sendForm()"
-            class="btn btn-success w-50"
+            class="btn btn-success"
         >
             Добавить категорию
         </button>
-        <router-link to="/admin/categoriesAdmin">
-            <button class="btn btn-success w-50 mt-2">
-                Назад
-            </button></router-link
-        >
     </div>
 </template>
 

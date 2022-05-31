@@ -7,13 +7,17 @@
                 </li>
             </ul>
         </div>
-
+        <div class="mb-3">
+            <router-link to="/admin/categoriesAdmin">
+                <button class="btn btn-success mt-2">Назад</button></router-link
+            >
+        </div>
         <div class="mb-3">
             <label class="form-label"> Имя категории </label>
             <input
                 required
                 class="form-control w-50"
-                v-model.trim="category.name"
+                v-model.trim="name"
                 placeholder="Введите имя категории"
             />
         </div>
@@ -23,15 +27,12 @@
             <textarea
                 required
                 class="form-control w-50"
-                v-model.trim="category.description"
+                v-model.trim="description"
                 row="3"
                 placeholder="Введите описание категории"
             ></textarea>
         </div>
-        <img
-            class="avatar"
-            :src="`/storage/img/categories/` + category.picture"
-        />
+        <img class="avatar" :src="`/storage/img/categories/` + picture" />
         <div class="mb-3">
             <label class="form-label"> Выберите картинку для категории </label>
             <br />
@@ -46,15 +47,10 @@
         <button
             :disabled="isDisabled"
             @click="sendForm()"
-            class="btn btn-success w-50"
+            class="btn btn-success"
         >
             Принять изменения
         </button>
-        <router-link to="/admin/categoriesAdmin">
-            <button class="btn btn-success w-50 mt-2">
-                Назад
-            </button></router-link
-        >
     </div>
 </template>
 
@@ -63,17 +59,29 @@ export default {
     data() {
         return {
             oldData: { picture: "", id: "", name: "", description: "" },
-            category: {
-                picture: "",
-                id: "",
-                name: "",
-                description: "",
-            },
+            picture: "",
+            id: "",
+            name: "",
+            description: "",
             file: {},
             chekFile: false,
             errors: null,
-            isDisabled: true,
         }
+    },
+    computed: {
+        isDisabled() {
+            if (
+                !this.name ||
+                !this.description ||
+                (this.name == this.oldData.name &&
+                    this.description == this.oldData.description &&
+                    this.chekFile == false)
+            ) {
+                return true
+            } else {
+                return false
+            }
+        },
     },
     mounted() {
         for (let error in this.errorList) {
@@ -81,22 +89,11 @@ export default {
         }
         this.$root.$on("eventing", (data) => {
             this.oldData = data
-            this.category.picture = data.picture
-            this.category.id = data.id
-            this.category.name = data.name
-            this.category.description = data.description
+            this.picture = data.picture
+            this.id = data.id
+            this.name = data.name
+            this.description = data.description
         })
-    },
-    watch: {
-        file() {
-            this.isDisabled = false
-        },
-        name() {
-            this.isDisabled = false
-        },
-        description() {
-            this.isDisabled = false
-        },
     },
     methods: {
         handleFileUpload() {
@@ -104,38 +101,27 @@ export default {
             this.chekFile = true
         },
         sendForm() {
-            if (
-                this.oldData.name == this.category.name &&
-                this.oldData.description == this.category.description &&
-                this.chekFile == false
-            ) {
-                this.$swal({
-                    title: "Вы не внесли изменений",
-                    icon: "danger",
+            let formData = new FormData()
+            formData.append("id", this.id)
+            formData.append("name", this.name)
+            formData.append("description", this.description)
+            formData.append("picture", this.file)
+            axios
+                .post("/api/admin/categories/category/update", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
                 })
-            } else {
-                let formData = new FormData()
-                formData.append("id", this.category.id)
-                formData.append("name", this.category.name)
-                formData.append("description", this.category.description)
-                formData.append("picture", this.file)
-                axios
-                    .post("/api/admin/categories/category/update", formData, {
-                        headers: {
-                            "Content-Type": "multipart/form-data",
-                        },
-                    })
-                    .catch((error) => {
-                        this.errors = error.response.data.errors
-                    })
-                    .finally(() => {
-                        this.$swal({
-                            title: "Изменения приняты",
-                            icon: "success",
-                        }).then(() => {})
-                        this.$router.push("/admin/categoriesAdmin")
-                    })
-            }
+                .then(() => {
+                    this.$swal({
+                        title: "Изменения приняты",
+                        icon: "success",
+                    }).then(() => {})
+                    this.$router.push("/admin/categoriesAdmin")
+                })
+                .catch((error) => {
+                    this.errors = error.response.data.errors
+                })
         },
     },
 }

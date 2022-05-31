@@ -6052,8 +6052,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -6171,10 +6169,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -6184,17 +6178,23 @@ __webpack_require__.r(__webpack_exports__);
         name: "",
         description: ""
       },
-      category: {
-        picture: "",
-        id: "",
-        name: "",
-        description: ""
-      },
+      picture: "",
+      id: "",
+      name: "",
+      description: "",
       file: {},
       chekFile: false,
-      errors: null,
-      isDisabled: true
+      errors: null
     };
+  },
+  computed: {
+    isDisabled: function isDisabled() {
+      if (!this.name || !this.description || this.name == this.oldData.name && this.description == this.oldData.description && this.chekFile == false) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   },
   mounted: function mounted() {
     var _this = this;
@@ -6205,22 +6205,11 @@ __webpack_require__.r(__webpack_exports__);
 
     this.$root.$on("eventing", function (data) {
       _this.oldData = data;
-      _this.category.picture = data.picture;
-      _this.category.id = data.id;
-      _this.category.name = data.name;
-      _this.category.description = data.description;
+      _this.picture = data.picture;
+      _this.id = data.id;
+      _this.name = data.name;
+      _this.description = data.description;
     });
-  },
-  watch: {
-    file: function file() {
-      this.isDisabled = false;
-    },
-    name: function name() {
-      this.isDisabled = false;
-    },
-    description: function description() {
-      this.isDisabled = false;
-    }
   },
   methods: {
     handleFileUpload: function handleFileUpload() {
@@ -6230,32 +6219,25 @@ __webpack_require__.r(__webpack_exports__);
     sendForm: function sendForm() {
       var _this2 = this;
 
-      if (this.oldData.name == this.category.name && this.oldData.description == this.category.description && this.chekFile == false) {
-        this.$swal({
-          title: "Вы не внесли изменений",
-          icon: "danger"
-        });
-      } else {
-        var formData = new FormData();
-        formData.append("id", this.category.id);
-        formData.append("name", this.category.name);
-        formData.append("description", this.category.description);
-        formData.append("picture", this.file);
-        axios.post("/api/admin/categories/category/update", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        })["catch"](function (error) {
-          _this2.errors = error.response.data.errors;
-        })["finally"](function () {
-          _this2.$swal({
-            title: "Изменения приняты",
-            icon: "success"
-          }).then(function () {});
+      var formData = new FormData();
+      formData.append("id", this.id);
+      formData.append("name", this.name);
+      formData.append("description", this.description);
+      formData.append("picture", this.file);
+      axios.post("/api/admin/categories/category/update", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      }).then(function () {
+        _this2.$swal({
+          title: "Изменения приняты",
+          icon: "success"
+        }).then(function () {});
 
-          _this2.$router.push("/admin/categoriesAdmin");
-        });
-      }
+        _this2.$router.push("/admin/categoriesAdmin");
+      })["catch"](function (error) {
+        _this2.errors = error.response.data.errors;
+      });
     }
   }
 });
@@ -40051,6 +40033,12 @@ var render = function () {
           ])
         : _vm._e(),
       _vm._v(" "),
+      _c("router-link", { attrs: { to: "/admin/categoriesAdmin" } }, [
+        _c("button", { staticClass: "btn btn-success mt-2" }, [
+          _vm._v("Назад"),
+        ]),
+      ]),
+      _vm._v(" "),
       _c("div", { staticClass: "mb-3" }, [
         _c("label", { staticClass: "form-label" }, [_vm._v(" Имя категории ")]),
         _vm._v(" "),
@@ -40139,7 +40127,7 @@ var render = function () {
       _c(
         "button",
         {
-          staticClass: "btn btn-success w-50",
+          staticClass: "btn btn-success",
           attrs: { disabled: _vm.isDisabled },
           on: {
             click: function ($event) {
@@ -40149,12 +40137,6 @@ var render = function () {
         },
         [_vm._v("\n        Добавить категорию\n    ")]
       ),
-      _vm._v(" "),
-      _c("router-link", { attrs: { to: "/admin/categoriesAdmin" } }, [
-        _c("button", { staticClass: "btn btn-success w-50 mt-2" }, [
-          _vm._v("\n            Назад\n        "),
-        ]),
-      ]),
     ],
     1
   )
@@ -40182,137 +40164,140 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _vm.errors
-        ? _c("div", { staticClass: "alert alert-danger" }, [
-            _c(
-              "ul",
-              _vm._l(_vm.errors, function (error, idx) {
-                return _c("li", { key: idx }, [
-                  _vm._v(
-                    "\n                " + _vm._s(error[0]) + "\n            "
-                  ),
-                ])
-              }),
-              0
-            ),
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _c("div", { staticClass: "mb-3" }, [
-        _c("label", { staticClass: "form-label" }, [_vm._v(" Имя категории ")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model.trim",
-              value: _vm.category.name,
-              expression: "category.name",
-              modifiers: { trim: true },
-            },
-          ],
-          staticClass: "form-control w-50",
-          attrs: { required: "", placeholder: "Введите имя категории" },
-          domProps: { value: _vm.category.name },
-          on: {
-            input: function ($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(_vm.category, "name", $event.target.value.trim())
-            },
-            blur: function ($event) {
-              return _vm.$forceUpdate()
-            },
-          },
-        }),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "mb-3" }, [
-        _c("label", { staticClass: "form-label" }, [
-          _vm._v(" Описание категории "),
+  return _c("div", [
+    _vm.errors
+      ? _c("div", { staticClass: "alert alert-danger" }, [
+          _c(
+            "ul",
+            _vm._l(_vm.errors, function (error, idx) {
+              return _c("li", { key: idx }, [
+                _vm._v(
+                  "\n                " + _vm._s(error[0]) + "\n            "
+                ),
+              ])
+            }),
+            0
+          ),
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "mb-3" },
+      [
+        _c("router-link", { attrs: { to: "/admin/categoriesAdmin" } }, [
+          _c("button", { staticClass: "btn btn-success mt-2" }, [
+            _vm._v("Назад"),
+          ]),
         ]),
-        _vm._v(" "),
-        _c("textarea", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model.trim",
-              value: _vm.category.description,
-              expression: "category.description",
-              modifiers: { trim: true },
-            },
-          ],
-          staticClass: "form-control w-50",
-          attrs: {
-            required: "",
-            row: "3",
-            placeholder: "Введите описание категории",
-          },
-          domProps: { value: _vm.category.description },
-          on: {
-            input: function ($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(_vm.category, "description", $event.target.value.trim())
-            },
-            blur: function ($event) {
-              return _vm.$forceUpdate()
-            },
-          },
-        }),
-      ]),
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "mb-3" }, [
+      _c("label", { staticClass: "form-label" }, [_vm._v(" Имя категории ")]),
       _vm._v(" "),
-      _c("img", {
-        staticClass: "avatar",
-        attrs: { src: "/storage/img/categories/" + _vm.category.picture },
-      }),
-      _vm._v(" "),
-      _c("div", { staticClass: "mb-3" }, [
-        _c("label", { staticClass: "form-label" }, [
-          _vm._v(" Выберите картинку для категории "),
-        ]),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _c("input", {
-          ref: "file",
-          staticClass: "form-control w-50",
-          attrs: { id: "file", type: "file" },
-          on: {
-            change: function ($event) {
-              return _vm.handleFileUpload()
-            },
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model.trim",
+            value: _vm.name,
+            expression: "name",
+            modifiers: { trim: true },
           },
-        }),
-      ]),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-success w-50",
-          attrs: { disabled: _vm.isDisabled },
-          on: {
-            click: function ($event) {
-              return _vm.sendForm()
-            },
+        ],
+        staticClass: "form-control w-50",
+        attrs: { required: "", placeholder: "Введите имя категории" },
+        domProps: { value: _vm.name },
+        on: {
+          input: function ($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.name = $event.target.value.trim()
+          },
+          blur: function ($event) {
+            return _vm.$forceUpdate()
           },
         },
-        [_vm._v("\n        Принять изменения\n    ")]
-      ),
-      _vm._v(" "),
-      _c("router-link", { attrs: { to: "/admin/categoriesAdmin" } }, [
-        _c("button", { staticClass: "btn btn-success w-50 mt-2" }, [
-          _vm._v("\n            Назад\n        "),
-        ]),
+      }),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "mb-3" }, [
+      _c("label", { staticClass: "form-label" }, [
+        _vm._v(" Описание категории "),
       ]),
-    ],
-    1
-  )
+      _vm._v(" "),
+      _c("textarea", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model.trim",
+            value: _vm.description,
+            expression: "description",
+            modifiers: { trim: true },
+          },
+        ],
+        staticClass: "form-control w-50",
+        attrs: {
+          required: "",
+          row: "3",
+          placeholder: "Введите описание категории",
+        },
+        domProps: { value: _vm.description },
+        on: {
+          input: function ($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.description = $event.target.value.trim()
+          },
+          blur: function ($event) {
+            return _vm.$forceUpdate()
+          },
+        },
+      }),
+    ]),
+    _vm._v(" "),
+    _c("img", {
+      staticClass: "avatar",
+      attrs: { src: "/storage/img/categories/" + _vm.picture },
+    }),
+    _vm._v(" "),
+    _c("div", { staticClass: "mb-3" }, [
+      _c("label", { staticClass: "form-label" }, [
+        _vm._v(" Выберите картинку для категории "),
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("input", {
+        ref: "file",
+        staticClass: "form-control w-50",
+        attrs: { id: "file", type: "file" },
+        on: {
+          change: function ($event) {
+            return _vm.handleFileUpload()
+          },
+        },
+      }),
+    ]),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        staticClass: "btn btn-success",
+        attrs: { disabled: _vm.isDisabled },
+        on: {
+          click: function ($event) {
+            return _vm.sendForm()
+          },
+        },
+      },
+      [_vm._v("\n        Принять изменения\n    ")]
+    ),
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
