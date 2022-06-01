@@ -5532,7 +5532,7 @@ __webpack_require__.r(__webpack_exports__);
     isDisabled: function isDisabled() {
       return Object.values(this.product).every(function (val) {
         return val.length > 0;
-      }) ? false : true;
+      });
     }
   },
   methods: {
@@ -6095,7 +6095,7 @@ __webpack_require__.r(__webpack_exports__);
     isDisabled: function isDisabled() {
       return Object.values(this.category).every(function (val) {
         return val.length > 0;
-      }) ? false : true;
+      });
     }
   },
   mounted: function mounted() {
@@ -39467,7 +39467,7 @@ var render = function () {
       "button",
       {
         staticClass: "btn btn-success w-50",
-        attrs: { disabled: _vm.isDisabled },
+        attrs: { disabled: !_vm.isDisabled },
         on: {
           click: function ($event) {
             return _vm.sendForm()
@@ -40225,7 +40225,7 @@ var render = function () {
         "button",
         {
           staticClass: "btn btn-success",
-          attrs: { disabled: _vm.isDisabled },
+          attrs: { disabled: !_vm.isDisabled },
           on: {
             click: function ($event) {
               return _vm.sendForm()

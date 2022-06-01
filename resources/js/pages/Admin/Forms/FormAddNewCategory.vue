@@ -43,7 +43,7 @@
             />
         </div>
         <button
-            :disabled="isDisabled"
+            :disabled="!isDisabled"
             @click="sendForm()"
             class="btn btn-success"
         >
@@ -67,8 +67,6 @@ export default {
     computed: {
         isDisabled() {
             return Object.values(this.category).every((val) => val.length > 0)
-                ? false
-                : true
         },
     },
     mounted() {

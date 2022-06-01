@@ -60,7 +60,7 @@
         </div>
         <button
             @click="sendForm()"
-            :disabled="isDisabled"
+            :disabled="!isDisabled"
             class="btn btn-success w-50"
         >
             Добавить продукт в категорию
@@ -88,8 +88,6 @@ export default {
         },
         isDisabled() {
             return Object.values(this.product).every((val) => val.length > 0)
-                ? false
-                : true
         },
     },
     methods: {
