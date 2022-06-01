@@ -18,7 +18,7 @@ import OrdersPage from "../pages/Orders"
 import ProductsAdminPage from "../pages/Admin/ProductsAdmin"
 import AddNewCategory from "../pages/Admin/Forms/FormAddNewCategory"
 import EditCategory from "../pages/Admin/Forms/FormEditCategory"
-import ProductAdmin from "../pages/Admin/Products.vue"
+import ProductAdmin from "../pages/Admin/ProductСategoryAdmin.vue"
 
 const routes = [
     { path: "/", component: HomePage },

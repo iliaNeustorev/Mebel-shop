@@ -9,7 +9,9 @@
                 {{ titleButton }}
             </button>
 
-            <button @click="back()" class="btn btn-success">Назад</button>
+            <button @click="$router.go(-1)" class="btn btn-success">
+                Назад
+            </button>
         </h2>
         <addProduct-component
             @show-form="showForm"
@@ -116,9 +118,6 @@ export default {
             })
     },
     methods: {
-        back() {
-            this.$router.go(-1)
-        },
         deleteProducts() {
             const params = {
                 idProductsDelete: this.checkedIdforDelete,
@@ -142,8 +141,5 @@ export default {
 </script>
 
 <style scoped>
-.avatar {
-    height: 200px;
-    width: 200px;
-}
+
 </style>

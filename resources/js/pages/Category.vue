@@ -1,48 +1,55 @@
 <template>
     <div>
         <div class="row">
-            <template v-if="loading">
-                <img class="loader" src="/storage/img/loaders/loader.gif" />
-            </template>
-            <div
-                v-else
-                v-for="product in products"
-                :key="product.id"
-                class="col-3 mb-4"
-            >
-                <div class="card" style="width: 18rem">
-                    <img
-                        style="width: 100%; height: 300px"
-                        :src="'/storage/img/products/' + product.picture"
-                        class="card-img-top"
-                        :alt="product.name"
-                    />
-                    <div class="card-body">
-                        <h5 class="card-title">{{ product.name }}</h5>
-                        <p class="card-text">{{ product.description }}...</p>
-                        <div class="card-basket-buttons">
-                            <button
-                                @click="basket(product.id, 'add')"
-                                type="submit"
-                                class="btn btn-success"
-                            >
-                                +
-                            </button>
-                            <div class="card-counter">
-                                {{ product.quantity }}
+            <div class="text-center" v-if="loading">
+                <img src="/storage/img/loaders/loader.gif" />
+            </div>
+            <div class="row" v-else>
+                <div class="text-center" v-if="!products.length">
+                    <em><h2>Товары пока отсутствуют</h2></em>
+                </div>
+                <div
+                    v-else
+                    v-for="product in products"
+                    :key="product.id"
+                    class="col-3 mb-4"
+                >
+                    <div class="card" style="width: 18rem">
+                        <img
+                            style="width: 100%; height: 300px"
+                            :src="'/storage/img/products/' + product.picture"
+                            class="card-img-top"
+                            :alt="product.name"
+                        />
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">
+                                {{ product.description }}...
+                            </p>
+                            <div class="card-basket-buttons">
+                                <button
+                                    @click="basket(product.id, 'add')"
+                                    type="submit"
+                                    class="btn btn-success"
+                                >
+                                    +
+                                </button>
+                                <div class="card-counter">
+                                    {{ product.quantity }}
+                                </div>
+                                <button
+                                    @click="basket(product.id, 'remove')"
+                                    :disabled="product.quantity == 0"
+                                    type="submit"
+                                    class="btn btn-danger"
+                                >
+                                    -
+                                </button>
                             </div>
-                            <button
-                                @click="basket(product.id, 'remove')"
-                                :disabled="product.quantity == 0"
-                                type="submit"
-                                class="btn btn-danger"
-                            >
-                                -
-                            </button>
+                            <p class="card-price mt-1 text-center">
+                                {{ product.price }} руб.
+                            </p>
                         </div>
-                        <p class="card-price mt-1 text-center">
-                            {{ product.price }} руб.
-                        </p>
                     </div>
                 </div>
             </div>
@@ -67,16 +74,18 @@ export default {
             const params = {
                 id: productId,
             }
-            axios.post(`/api/basket/product/${method}`, params).then(({ data }) => {
-                const idx = this.products.findIndex((product) => {
-                    return product.id == productId
+            axios
+                .post(`/api/basket/product/${method}`, params)
+                .then(({ data }) => {
+                    const idx = this.products.findIndex((product) => {
+                        return product.id == productId
+                    })
+                    this.products[idx].quantity = data.quantity
+                    this.$store.dispatch(
+                        "changeBasketProductsQuantity",
+                        data.basketProductsQuantity
+                    )
                 })
-                this.products[idx].quantity = data.quantity
-                this.$store.dispatch(
-                    "changeBasketProductsQuantity",
-                    data.basketProductsQuantity
-                )
-            })
         },
     },
     mounted() {
@@ -115,9 +124,5 @@ export default {
     height: 45px;
     text-align: center;
     font-weight: bold;
-}
-.loader {
-    width: 30%;
-    height: 30%;
 }
 </style>

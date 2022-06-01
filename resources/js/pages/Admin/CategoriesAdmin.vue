@@ -17,6 +17,9 @@
                         Добавить категорию
                     </button></router-link
                 >
+                <button @click="$router.go(-1)" class="btn btn-success">
+                    Назад
+                </button>
                 <div v-if="processing" class="alert alert-warning text-center">
                     Категории выгружаются
                     <div class="spinner-border text-success" role="status">
@@ -182,12 +185,5 @@ export default {
 </script>
 
 <style scoped>
-.avatar {
-    height: 200px;
-    width: 200px;
-}
-.loader {
-    width: 30%;
-    height: 30%;
-}
+
 </style>

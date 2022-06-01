@@ -166,6 +166,12 @@ class AdminController extends Controller
         return $data;
     }
 
+    // get all products
+
+    public function getProducts () {
+       return Product::get();
+    }
+
     // get products by category_id
     public function getProductsCategory (Category $category)
     {

@@ -1,6 +1,11 @@
 <template>
     <div>
-        <h1 class="text-center mb-3">Список зарегистрированых пользователей</h1>
+        <h1 class="text-center mb-3">
+            Список зарегистрированых пользователей
+            <button @click="$router.go(-1)" class="btn btn-success">
+                Назад
+            </button>
+        </h1>
         <table
             class="table table-bordered text-center"
             :class="{ updating: updating }"

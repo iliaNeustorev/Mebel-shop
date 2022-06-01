@@ -15,7 +15,7 @@
             <input
                 required
                 class="form-control w-50"
-                v-model.trim="name"
+                v-model.trim="category.name"
                 placeholder="Введите имя категории"
             />
         </div>
@@ -25,7 +25,7 @@
             <textarea
                 required
                 class="form-control w-50"
-                v-model.trim="description"
+                v-model.trim="category.description"
                 row="3"
                 placeholder="Введите описание категории"
             ></textarea>
@@ -56,15 +56,19 @@
 export default {
     data() {
         return {
-            name: "",
-            description: "",
+            category: {
+                name: "",
+                description: "",
+            },
             file: {},
             errors: null,
         }
     },
     computed: {
         isDisabled() {
-            return !this.name && !this.description ? true : false
+            return Object.values(this.category).every((val) => val.length > 0)
+                ? false
+                : true
         },
     },
     mounted() {
@@ -78,8 +82,8 @@ export default {
         },
         sendForm() {
             let formData = new FormData()
-            formData.append("name", this.name)
-            formData.append("description", this.description)
+            formData.append("name", this.category.name)
+            formData.append("description", this.category.description)
             formData.append("picture", this.file)
             axios
                 .post("/api/admin/categories/create", formData, {

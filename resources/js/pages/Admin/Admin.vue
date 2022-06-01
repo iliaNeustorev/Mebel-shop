@@ -29,4 +29,13 @@
 export default {}
 </script>
 
-<style></style>
+<style>
+.loader {
+    width: 30%;
+    height: 30%;
+}
+.avatar {
+    height: 200px;
+    width: 200px;
+}
+</style>

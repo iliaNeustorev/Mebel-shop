@@ -35,6 +35,11 @@ Vue.component(
 )
 
 Vue.component(
+    "editProduct-component",
+    require("./components/Forms/editProduct.vue").default
+)
+
+Vue.component(
     "progress-bar-component",
     require("./components/ProgressBarComponent.vue").default
 )

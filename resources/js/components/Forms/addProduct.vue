@@ -12,7 +12,7 @@
             <input
                 required
                 class="form-control w-50"
-                v-model.trim="name"
+                v-model.trim="product.name"
                 placeholder="Введите имя продукта"
             />
         </div>
@@ -22,7 +22,7 @@
             <textarea
                 required
                 class="form-control w-50"
-                v-model.trim="description"
+                v-model.trim="product.description"
                 row="3"
                 placeholder="Введите описание продукта"
             ></textarea>
@@ -33,7 +33,7 @@
             <input
                 required
                 class="form-control w-50"
-                v-model.trim="price"
+                v-model.trim="product.price"
                 placeholder="Введите цену"
             />
         </div>
@@ -74,9 +74,11 @@ export default {
     data() {
         return {
             errors: null,
-            name: "",
-            description: "",
-            price: "",
+            product: {
+                name: "",
+                description: "",
+                price: "",
+            },
             file: {},
         }
     },
@@ -85,15 +87,17 @@ export default {
             return this.categoryId
         },
         isDisabled() {
-            return !this.name && !this.description ? true : false
+            return Object.values(this.product).every((val) => val.length > 0)
+                ? false
+                : true
         },
     },
     methods: {
         sendForm() {
             let formData = new FormData()
-            formData.append("name", this.name)
-            formData.append("description", this.description)
-            formData.append("price", this.price)
+            formData.append("name", this.product.name)
+            formData.append("description", this.product.description)
+            formData.append("price", this.product.price)
             formData.append("categoryId", this.id)
             formData.append("picture", this.file)
             axios
