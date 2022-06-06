@@ -17,7 +17,7 @@
                         Добавить категорию
                     </button></router-link
                 >
-                <button @click="$router.go(-1)" class="btn btn-success">
+                <button @click="$router.push('/admin')" class="btn btn-success">
                     Назад
                 </button>
                 <div v-if="processing" class="alert alert-warning text-center">
@@ -156,10 +156,7 @@ export default {
                 })
         },
     },
-    mounted() {
-        for (let error in this.errorList) {
-            this.errors.push(this.errorList[error][0])
-        }
+    created() {
         axios
             .get("/api/admin/categories/")
             .then((response) => {
@@ -171,6 +168,11 @@ export default {
             .finally(() => {
                 this.loading = false
             })
+    },
+    mounted() {
+        for (let error in this.errorList) {
+            this.errors.push(this.errorList[error][0])
+        }
 
         Echo.channel("general").listen(".categories-export-finish", (e) => {
             this.processing = false
@@ -184,6 +186,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

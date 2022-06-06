@@ -45,7 +45,7 @@
             />
         </div>
         <button
-            :disabled="isDisabled"
+            :disabled="validationForm"
             @click="sendForm()"
             class="btn btn-success"
         >
@@ -69,7 +69,7 @@ export default {
         }
     },
     computed: {
-        isDisabled() {
+        validationForm() {
             if (
                 !this.name ||
                 !this.description ||
@@ -101,27 +101,34 @@ export default {
             this.chekFile = true
         },
         sendForm() {
-            let formData = new FormData()
-            formData.append("id", this.id)
-            formData.append("name", this.name)
-            formData.append("description", this.description)
-            formData.append("picture", this.file)
-            axios
-                .post("/api/admin/categories/category/update", formData, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
+            if (!this.validationForm) {
+                let formData = new FormData()
+                formData.append("id", this.id)
+                formData.append("name", this.name)
+                formData.append("description", this.description)
+                formData.append("picture", this.file)
+                axios
+                    .post("/api/admin/categories/category/update", formData, {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    })
+                    .then(() => {
+                        this.$swal({
+                            title: "Изменения приняты",
+                            icon: "success",
+                        }).then(() => {})
+                        this.$router.push("/admin/categoriesAdmin")
+                    })
+                    .catch((error) => {
+                        this.errors = error.response.data.errors
+                    })
+            } else {
+                this.$swal({
+                    title: "Валидация не пройдена",
+                    icon: "error",
                 })
-                .then(() => {
-                    this.$swal({
-                        title: "Изменения приняты",
-                        icon: "success",
-                    }).then(() => {})
-                    this.$router.push("/admin/categoriesAdmin")
-                })
-                .catch((error) => {
-                    this.errors = error.response.data.errors
-                })
+            }
         },
     },
 }

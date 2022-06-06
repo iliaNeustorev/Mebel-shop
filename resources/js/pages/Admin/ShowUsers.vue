@@ -2,7 +2,7 @@
     <div>
         <h1 class="text-center mb-3">
             Список зарегистрированых пользователей
-            <button @click="$router.go(-1)" class="btn btn-success">
+            <button @click="$router.push('/admin')" class="btn btn-success">
                 Назад
             </button>
         </h1>

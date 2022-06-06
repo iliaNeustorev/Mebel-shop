@@ -157,7 +157,6 @@ export default {
             newPassword: "",
             oldPassword: "",
             repeatNewPassword: "",
-
         }
     },
     computed: {
@@ -172,10 +171,7 @@ export default {
             }
         },
     },
-    mounted() {
-        for (let error in this.errorList) {
-            this.errors.push(this.errorList[error][0])
-        }
+    created() {
         axios
             .get("/api/home/profile/")
             .then((response) => {
@@ -186,6 +182,11 @@ export default {
                 this.errors = error.response.data.errors
             })
             .finally(() => {})
+    },
+    mounted() {
+        for (let error in this.errorList) {
+            this.errors.push(this.errorList[error][0])
+        }
     },
     methods: {
         saveProfile() {
@@ -302,7 +303,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .btn-del-address {
     height: 20px;
     width: 20px;
@@ -335,20 +336,5 @@ export default {
 
 .selected {
     color: rgb(25, 105, 52);
-}
-
-.slide-enter {
-    opacity: 0;
-}
-
-.slide-enter-active {
-    transition: opacity 0.5s;
-}
-
-.slide-leave-active {
-    transition: opacity 0.5s;
-}
-.slide-leave-to {
-    opacity: 0;
 }
 </style>

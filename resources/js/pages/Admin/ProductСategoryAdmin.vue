@@ -13,12 +13,14 @@
                 Назад
             </button>
         </h2>
-        <addProduct-component
-            @show-form="showForm"
-            :category-id="categoryId"
-            :category-name="categoryName"
-            v-show="showForm"
-        ></addProduct-component>
+        <transition name="slide">
+            <addProduct-component
+                :category-id="categoryId"
+                :category-name="categoryName"
+                v-show="showForm"
+            ></addProduct-component>
+        </transition>
+
         <div v-if="loading" class="text-center">
             <span>
                 <img
@@ -103,7 +105,7 @@ export default {
                 : "Добавить продукт в категорию"
         },
     },
-    mounted() {
+    created() {
         axios
             .get(
                 `/api/admin/categories/${this.$route.params.id}/getProductsCategory`
@@ -117,6 +119,7 @@ export default {
                 this.loading = false
             })
     },
+    mounted() {},
     methods: {
         deleteProducts() {
             const params = {
@@ -140,6 +143,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

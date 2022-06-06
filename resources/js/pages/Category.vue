@@ -88,7 +88,7 @@ export default {
                 })
         },
     },
-    mounted() {
+    created() {
         axios
             .get(`/api/categories/${this.$route.params.id}/getProducts`)
             .then((response) => {

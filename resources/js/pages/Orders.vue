@@ -70,10 +70,7 @@ export default {
             orders: [],
         }
     },
-    mounted() {
-        for (let error in this.errorList) {
-            this.errors.push(this.errorList[error][0])
-        }
+    created() {
         axios
             .get("/api/home/orders/")
             .then((response) => {
@@ -83,6 +80,11 @@ export default {
                 this.errors = error.response.data.errors
             })
             .finally(() => {})
+    },
+    mounted() {
+        for (let error in this.errorList) {
+            this.errors.push(this.errorList[error][0])
+        }
     },
     methods: {
         repeatOrder(OrderId) {

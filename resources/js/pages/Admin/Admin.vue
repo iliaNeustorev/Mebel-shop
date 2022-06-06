@@ -38,4 +38,18 @@ export default {}
     height: 200px;
     width: 200px;
 }
+.slide-enter {
+    opacity: 0;
+}
+
+.slide-enter-active {
+    transition: opacity 0.5s;
+}
+
+.slide-leave-active {
+    transition: opacity 0.5s;
+}
+.slide-leave-to {
+    opacity: 0;
+}
 </style>

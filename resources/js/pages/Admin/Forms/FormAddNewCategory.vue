@@ -14,8 +14,10 @@
             <label class="form-label"> Имя категории </label>
             <input
                 required
+                ref="firstInp"
                 class="form-control w-50"
                 v-model.trim="category.name"
+                @keyup.enter="$refs.twoInp.focus()"
                 placeholder="Введите имя категории"
             />
         </div>
@@ -25,6 +27,7 @@
             <textarea
                 required
                 class="form-control w-50"
+                ref="twoInp"
                 v-model.trim="category.description"
                 row="3"
                 placeholder="Введите описание категории"
@@ -43,7 +46,7 @@
             />
         </div>
         <button
-            :disabled="!isDisabled"
+            :disabled="!validationForm"
             @click="sendForm()"
             class="btn btn-success"
         >
@@ -65,11 +68,12 @@ export default {
         }
     },
     computed: {
-        isDisabled() {
+        validationForm() {
             return Object.values(this.category).every((val) => val.length > 0)
         },
     },
     mounted() {
+        this.$refs.firstInp.focus()
         for (let error in this.errorList) {
             this.errors.push(this.errorList[error][0])
         }
@@ -79,27 +83,34 @@ export default {
             this.file = this.$refs.file.files[0]
         },
         sendForm() {
-            let formData = new FormData()
-            formData.append("name", this.category.name)
-            formData.append("description", this.category.description)
-            formData.append("picture", this.file)
-            axios
-                .post("/api/admin/categories/create", formData, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
+            if (this.validationForm) {
+                let formData = new FormData()
+                formData.append("name", this.category.name)
+                formData.append("description", this.category.description)
+                formData.append("picture", this.file)
+                axios
+                    .post("/api/admin/categories/create", formData, {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    })
+                    .then(() => {
+                        this.$swal({
+                            title: "категория добавлена",
+                            icon: "success",
+                        }).then(() => {})
+                        this.$router.push("/admin/categoriesAdmin")
+                    })
+                    .catch((error) => {
+                        this.errors = error.response.data.errors
+                    })
+                    .finally(() => {})
+            } else {
+                this.$swal({
+                    title: "нет данных для отправки",
+                    icon: "error",
                 })
-                .then(() => {
-                    this.$swal({
-                        title: "категория добавлена",
-                        icon: "success",
-                    }).then(() => {})
-                    this.$router.push("/admin/categoriesAdmin")
-                })
-                .catch((error) => {
-                    this.errors = error.response.data.errors
-                })
-                .finally(() => {})
+            }
         },
     },
 }

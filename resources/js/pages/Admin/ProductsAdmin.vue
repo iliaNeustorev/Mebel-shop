@@ -118,15 +118,17 @@ export default {
                 })
         },
     },
-    mounted() {
-        for (let error in this.errorList) {
-            this.errors.push(this.errorList[error][0])
-        }
-
+    created() {
         axios.get("/api/admin/products").then((response) => {
             this.products = response.data
             this.loading = false
         })
+    },
+
+    mounted() {
+        for (let error in this.errorList) {
+            this.errors.push(this.errorList[error][0])
+        }
 
         Echo.channel("general").listen(".products-export-finish", (e) => {
             this.processing = false

@@ -38,7 +38,7 @@ export default {
     },
     computed: {},
     methods: {},
-    mounted() {
+    created() {
         this.loading = true
         axios
             .get("/api/categories/get")

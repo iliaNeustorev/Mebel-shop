@@ -96,11 +96,7 @@ export default {
             sumOrder: "",
         }
     },
-    mounted() {
-        for (let error in this.errorList) {
-            this.errors.push(this.errorList[error][0])
-        }
-
+    created() {
         axios.get("/api/basket/").then((response) => {
             this.products = response.data.products
             this.email = response.data.email
@@ -111,7 +107,11 @@ export default {
                 this.isDisabledAddress = true
             }
         })
-
+    },
+    mounted() {
+        for (let error in this.errorList) {
+            this.errors.push(this.errorList[error][0])
+        }
         if (!this.$store.state.user.name) {
             this.isDisabled = false
         }

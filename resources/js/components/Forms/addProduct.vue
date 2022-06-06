@@ -11,6 +11,7 @@
             <label class="form-label"> Имя продукта </label>
             <input
                 required
+                ref="fInp"
                 class="form-control w-50"
                 v-model.trim="product.name"
                 placeholder="Введите имя продукта"
@@ -50,17 +51,40 @@
             />
         </div>
 
-        <div class="mb-3">
-            <label class="form-label"> Категория </label>
-            <select disabled class="form-control w-50" v-model="categoryName">
-                <option>
-                    {{ categoryName }}
-                </option>
-            </select>
+        <div class="gx-3 gy-2 mb-3 row align-items-center">
+            <div class="col-sm-3">
+                <label class="form-label"> Категория </label>
+                <select
+                    :disabled="!changeCategory"
+                    class="form-select"
+                    v-model="categoryId"
+                >
+                    <option
+                        v-for="category in categories"
+                        :key="category.id"
+                        :value="category.id"
+                    >
+                        {{ category.name }}
+                    </option>
+                </select>
+            </div>
+            <div class="col-auto mt-5">
+                <div class="form-check">
+                    <input
+                        class="form-check-input"
+                        id="checkbox"
+                        type="checkbox"
+                        v-model="changeCategory"
+                    />
+                    <label class="form-check-label" for="checkbox"
+                        >Изменить категорию</label
+                    >
+                </div>
+            </div>
         </div>
         <button
             @click="sendForm()"
-            :disabled="!isDisabled"
+            :disabled="!validationForm"
             class="btn btn-success w-50"
         >
             Добавить продукт в категорию
@@ -79,52 +103,68 @@ export default {
                 description: "",
                 price: "",
             },
+            categories: [],
             file: {},
+            changeCategory: false,
         }
     },
     computed: {
         id() {
             return this.categoryId
         },
-        isDisabled() {
+        validationForm() {
             return Object.values(this.product).every((val) => val.length > 0)
         },
     },
     methods: {
         sendForm() {
-            let formData = new FormData()
-            formData.append("name", this.product.name)
-            formData.append("description", this.product.description)
-            formData.append("price", this.product.price)
-            formData.append("categoryId", this.id)
-            formData.append("picture", this.file)
-            axios
-                .post("/api/admin/products/addProduct", formData, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                })
-                .then(() => {
-                    this.$swal({
-                        title: "Продукт в категорию добавлен",
-                        icon: "success",
-                    }).then(() => {
-                        this.$router.go(0)
+            if (this.validationForm) {
+                let formData = new FormData()
+                formData.append("name", this.product.name)
+                formData.append("description", this.product.description)
+                formData.append("price", this.product.price)
+                formData.append("categoryId", this.id)
+                formData.append("picture", this.file)
+                axios
+                    .post("/api/admin/products/addProduct", formData, {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
                     })
+                    .then(() => {
+                        this.$swal({
+                            title: "Продукт в категорию добавлен",
+                            icon: "success",
+                        }).then(() => {
+                            this.$router.go(0)
+                        })
+                    })
+                    .catch((error) => {
+                        this.errors = error.response.data.errors
+                    })
+            } else {
+                this.$swal({
+                    title: "нет данных для отправки",
+                    icon: "error",
                 })
-                .catch((error) => {
-                    this.errors = error.response.data.errors
-                })
+            }
         },
+
         handleFileUpload() {
             this.file = this.$refs.file.files[0]
         },
     },
-
+    created() {
+        axios.get("/api/categories/get").then((response) => {
+            this.categories = response.data
+        })
+    },
     mounted() {
         for (let error in this.errorList) {
             this.errors.push(this.errorList[error][0])
         }
+        console.log(this.$refs)
+        this.$refs.fInp.focus()
     },
 }
 </script>
