@@ -92,16 +92,8 @@ class AdminController extends Controller
                 }
 
             $category = new Category();
-
-            if(isset($file_name)) 
-            {    
-                $category->picture = $file_name;
-            }
-            else 
-            {
-                $category->picture = 'nopicture.png';
-            }
-
+            
+            $category->picture = isset($file_name) ? $file_name : 'nopicture.png';
             $category->name = $input['name'];
             $category->description = $input['description'];   
             $category->save();
@@ -110,9 +102,8 @@ class AdminController extends Controller
     }
     //update category 
 
-    public function update (Request $request) {
+    public function update (Request $request) : bool {
         
-
         $request->validate([
             'name' => 'required|max:255|',
             'description' => 'required|max:1000',
@@ -126,23 +117,15 @@ class AdminController extends Controller
                 $request->validate([
                     'picture' => 'image',
                 ]);
+                    Storage::delete("public/img/categories/$category->picture");
                     $ext = $file->extension();
                     $file_name = time(). mt_rand(1000, 9999) . '.' . $ext;
                     Storage::putFileAs('public/img/categories/', $file, $file_name);
+                    $category->update(['name' => $input['name'], 'description' => $input['description'], 'picture' => $file_name]);
+                } else {
+                    $category->update(['name' => $input['name'], 'description' => $input['description']]);
                 }
-
-            if(isset($file_name)) 
-            {
-                $picture = $category->picture;
-                Storage::delete("public/img/categories/$picture");
-                $new_picture = $file_name;
-                $category->update(['name' => $input['name'], 'description' => $input['description'], 'picture' => $new_picture]);
-                return true;
-            }
-            
-            $category->update(['name' => $input['name'], 'description' => $input['description']]);
-            return true;
-            
+            return true;   
     }   
 
     // delete category_id
@@ -183,7 +166,7 @@ class AdminController extends Controller
             ];
     }
 
-
+    //add new Product
     public function addProduct (Request $request)
     {
         $request->validate([
@@ -197,7 +180,8 @@ class AdminController extends Controller
         $file = $request->file('picture');
         $product = new Product();
 
-        if($file) 
+        if($file)
+             
             {
                 $request->validate([
                     'picture' => 'image',
@@ -232,30 +216,25 @@ class AdminController extends Controller
 
         $input = $request->all();
         $file = $request->file('picture');
-
+        $product = Product::where("id", $input['id'])->first();
         if($file) 
             {
                 $request->validate([
                     'picture' => 'image',
                 ]);
+                Storage::delete("public/img/products/$product->picture");
                 $ext = $file->Extension();
                 $file_name = time(). mt_rand(1000, 9999) . '.' . $ext;
                 Storage::putFileAs('public/img/products/', $file, $file_name);
-            }
-
-            if(isset($file_name)) 
-                {
-                    Product::where('id', $input['id'])->update([
-                        'name' => $input['name'],
-                        'description' => $input['description'],
-                        'price' => $input['price'],
-                        'category_id' => $input['categoryId'],
-                        'picture' => $file_name,
-                    ]);
-                }
-                else 
-                {
-                    Product::where('id', $input['id'])->update([
+                $product->update([
+                    'name' => $input['name'],
+                    'description' => $input['description'],
+                    'price' => $input['price'],
+                    'category_id' => $input['categoryId'],
+                    'picture' => $file_name,
+                ]);
+            } else {
+                    $product->update([
                         'name' => $input['name'],
                         'description' => $input['description'],
                         'price' => $input['price'],
