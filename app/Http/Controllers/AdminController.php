@@ -220,15 +220,14 @@ class AdminController extends Controller
         return true;
     }
 
-    public function upd_product (Request $request)
+    public function updProduct (Request $request)
     {
             
         $request->validate([
-            'picture' => 'image',
             'name' => 'required|max:255|string',
             'description' => 'required|max:1000',
             'price' => 'required|numeric|max:30000000',
-            'category' => 'required',
+            'categoryId' => 'required',
         ]);
 
         $input = $request->all();
@@ -236,54 +235,35 @@ class AdminController extends Controller
 
         if($file) 
             {
-                $ext = $file->getClientOriginalExtension();
+                $request->validate([
+                    'picture' => 'image',
+                ]);
+                $ext = $file->Extension();
                 $file_name = time(). mt_rand(1000, 9999) . '.' . $ext;
-                $file->storeAs('public/img/products', $file_name);
+                Storage::putFileAs('public/img/products/', $file, $file_name);
             }
-
-        if ($input['id'] == null) {
-            
-            $product = new Product();
 
             if(isset($file_name)) 
                 {
-                    $product->picture = $file_name;
+                    Product::where('id', $input['id'])->update([
+                        'name' => $input['name'],
+                        'description' => $input['description'],
+                        'price' => $input['price'],
+                        'category_id' => $input['categoryId'],
+                        'picture' => $file_name,
+                    ]);
                 }
                 else 
                 {
-                    $product->picture = 'nopicture.png';
+                    Product::where('id', $input['id'])->update([
+                        'name' => $input['name'],
+                        'description' => $input['description'],
+                        'price' => $input['price'],
+                        'category_id' => $input['categoryId'],
+                    ]);
                 }
-            
-            $name = $input['name'];
-            $product->name = $input['name'];
-            $product->description = $input['description'];
-            $product->price = $input['price'];
-            $product->category_id = $input['category'];
-            $product->save();
-            session()->flash('status_product', "Продукт $name добавлен");
-        } else {
-            $product =  Product::find($input['id']);
-
-                if(isset($file_name)) 
-                    {
-                        $new_picture = $file_name;
-                    }
-                    else 
-                    {
-                        $new_picture =$product->picture;
-                    }
-
-            Product::where('id', $input['id'])->update([
-                'name' => $input['name'],
-                'description' => $input['description'],
-                'price' => $input['price'],
-                'category_id' => $input['category'],
-                'picture' => $new_picture,
-            ]);
-            
-            session()->flash('status_product', "Продукт отредактирован");
-        }
-        return back();
+        
+        return true;
     }
 
     public function delProducts (Request $request)

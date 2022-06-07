@@ -17,7 +17,7 @@
             <input
                 required
                 class="form-control w-50"
-                v-model.trim="name"
+                v-model.trim="category.name"
                 placeholder="Введите имя категории"
             />
         </div>
@@ -27,12 +27,15 @@
             <textarea
                 required
                 class="form-control w-50"
-                v-model.trim="description"
+                v-model.trim="category.description"
                 row="3"
                 placeholder="Введите описание категории"
             ></textarea>
         </div>
-        <img class="avatar" :src="`/storage/img/categories/` + picture" />
+        <img
+            class="avatar"
+            :src="`/storage/img/categories/` + category.picture"
+        />
         <div class="mb-3">
             <label class="form-label"> Выберите картинку для категории </label>
             <br />
@@ -45,7 +48,7 @@
             />
         </div>
         <button
-            :disabled="validationForm"
+            :disabled="!validationForm"
             @click="sendForm()"
             class="btn btn-success"
         >
@@ -59,28 +62,18 @@ export default {
     data() {
         return {
             oldData: { picture: "", id: "", name: "", description: "" },
-            picture: "",
-            id: "",
-            name: "",
-            description: "",
+            category: { picture: "", id: "", name: "", description: "" },
             file: {},
-            chekFile: false,
+            checkFile: false,
             errors: null,
         }
     },
     computed: {
         validationForm() {
-            if (
-                !this.name ||
-                !this.description ||
-                (this.name == this.oldData.name &&
-                    this.description == this.oldData.description &&
-                    this.chekFile == false)
-            ) {
-                return true
-            } else {
-                return false
-            }
+            return (
+                JSON.stringify(this.category) !==
+                    JSON.stringify(this.oldData) || this.checkFile
+            )
         },
     },
     mounted() {
@@ -88,24 +81,27 @@ export default {
             this.errors.push(this.errorList[error][0])
         }
         this.$root.$on("eventing", (data) => {
-            this.oldData = data
-            this.picture = data.picture
-            this.id = data.id
-            this.name = data.name
-            this.description = data.description
+            this.oldData.name = data.name
+            this.oldData.description = data.description
+            this.oldData.id = data.id
+            this.oldData.picture = data.picture
+            this.category.name = data.name
+            this.category.description = data.description
+            this.category.id = data.id
+            this.category.picture = data.picture
         })
     },
     methods: {
         handleFileUpload() {
             this.file = this.$refs.file.files[0]
-            this.chekFile = true
+            this.checkFile = true
         },
         sendForm() {
-            if (!this.validationForm) {
+            if (this.validationForm) {
                 let formData = new FormData()
-                formData.append("id", this.id)
-                formData.append("name", this.name)
-                formData.append("description", this.description)
+                formData.append("id", this.category.id)
+                formData.append("name", this.category.name)
+                formData.append("description", this.category.description)
                 formData.append("picture", this.file)
                 axios
                     .post("/api/admin/categories/category/update", formData, {

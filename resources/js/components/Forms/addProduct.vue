@@ -163,7 +163,6 @@ export default {
         for (let error in this.errorList) {
             this.errors.push(this.errorList[error][0])
         }
-        console.log(this.$refs)
         this.$refs.fInp.focus()
     },
 }

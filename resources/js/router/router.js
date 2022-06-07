@@ -19,6 +19,7 @@ import ProductsAdminPage from "../pages/Admin/ProductsAdmin"
 import AddNewCategory from "../pages/Admin/Forms/FormAddNewCategory"
 import EditCategory from "../pages/Admin/Forms/FormEditCategory"
 import ProductAdmin from "../pages/Admin/ProductСategoryAdmin.vue"
+import EditProduct from "../components/Forms/editProduct.vue"
 
 const routes = [
     { path: "/", component: HomePage },
@@ -35,6 +36,12 @@ const routes = [
     { path: "/profile", component: ProfilePage },
     { path: "/orders", component: OrdersPage },
     { path: "/admin/category/:id/products", component: ProductAdmin },
+    {
+        path: "/admin/category/EditProduct/:id",
+        name: "EditProduct",
+        component: EditProduct,
+        props: true,
+    },
     { path: "*", redirect: "404" },
     { path: "/404", component: Page404, name: "404" },
 ]

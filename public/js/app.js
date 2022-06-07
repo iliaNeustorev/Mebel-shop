@@ -5609,7 +5609,6 @@ __webpack_require__.r(__webpack_exports__);
       this.errors.push(this.errorList[error][0]);
     }
 
-    console.log(this.$refs);
     this.$refs.fInp.focus();
   }
 });
@@ -5629,9 +5628,160 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ["name", "price", "description", "categoryID", "id", "picture"],
   data: function data() {
-    return {};
+    return {
+      oldData: {
+        name: this.name,
+        price: this.price,
+        description: this.description,
+        categoryID: this.categoryID
+      },
+      product: {
+        name: this.name,
+        price: this.price,
+        description: this.description,
+        categoryID: this.categoryID
+      },
+      errors: null,
+      file: {},
+      categories: [],
+      checkfile: false
+    };
+  },
+  computed: {
+    validationForm: function validationForm() {
+      return JSON.stringify(this.oldData) !== JSON.stringify(this.product) || this.checkfile == true;
+    }
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get("/api/categories/get").then(function (response) {
+      _this.categories = response.data;
+    });
+  },
+  mounted: function mounted() {
+    for (var error in this.errorList) {
+      this.errors.push(this.errorList[error][0]);
+    }
+  },
+  methods: {
+    sendForm: function sendForm() {
+      var _this2 = this;
+
+      if (this.validationForm) {
+        var formData = new FormData();
+        formData.append("id", this.id);
+        formData.append("name", this.product.name);
+        formData.append("description", this.product.description);
+        formData.append("price", this.product.price);
+        formData.append("categoryId", this.product.categoryID);
+        formData.append("picture", this.file);
+        axios.post("/api/admin/products/updProduct", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        }).then(function () {
+          _this2.$swal({
+            title: "Изменение прошло успешно",
+            icon: "success"
+          }).then(function () {
+            _this2.$router.go(-1);
+          });
+        })["catch"](function (error) {
+          _this2.errors = error.response.data.errors;
+        });
+      } else {
+        this.$swal({
+          title: "Недостаточно данных для отправки",
+          icon: "error"
+        });
+      }
+    },
+    handleFileUpload: function handleFileUpload() {
+      this.file = this.$refs.file.files[0];
+      this.checkfile = true;
+    }
   }
 });
 
@@ -6260,6 +6410,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -6269,22 +6422,20 @@ __webpack_require__.r(__webpack_exports__);
         name: "",
         description: ""
       },
-      picture: "",
-      id: "",
-      name: "",
-      description: "",
+      category: {
+        picture: "",
+        id: "",
+        name: "",
+        description: ""
+      },
       file: {},
-      chekFile: false,
+      checkFile: false,
       errors: null
     };
   },
   computed: {
     validationForm: function validationForm() {
-      if (!this.name || !this.description || this.name == this.oldData.name && this.description == this.oldData.description && this.chekFile == false) {
-        return true;
-      } else {
-        return false;
-      }
+      return JSON.stringify(this.category) !== JSON.stringify(this.oldData) || this.checkFile;
     }
   },
   mounted: function mounted() {
@@ -6295,26 +6446,29 @@ __webpack_require__.r(__webpack_exports__);
     }
 
     this.$root.$on("eventing", function (data) {
-      _this.oldData = data;
-      _this.picture = data.picture;
-      _this.id = data.id;
-      _this.name = data.name;
-      _this.description = data.description;
+      _this.oldData.name = data.name;
+      _this.oldData.description = data.description;
+      _this.oldData.id = data.id;
+      _this.oldData.picture = data.picture;
+      _this.category.name = data.name;
+      _this.category.description = data.description;
+      _this.category.id = data.id;
+      _this.category.picture = data.picture;
     });
   },
   methods: {
     handleFileUpload: function handleFileUpload() {
       this.file = this.$refs.file.files[0];
-      this.chekFile = true;
+      this.checkFile = true;
     },
     sendForm: function sendForm() {
       var _this2 = this;
 
-      if (!this.validationForm) {
+      if (this.validationForm) {
         var formData = new FormData();
-        formData.append("id", this.id);
-        formData.append("name", this.name);
-        formData.append("description", this.description);
+        formData.append("id", this.category.id);
+        formData.append("name", this.category.name);
+        formData.append("description", this.category.description);
         formData.append("picture", this.file);
         axios.post("/api/admin/categories/category/update", formData, {
           headers: {
@@ -6509,6 +6663,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -8047,12 +8216,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_Admin_Forms_FormAddNewCategory__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../pages/Admin/Forms/FormAddNewCategory */ "./resources/js/pages/Admin/Forms/FormAddNewCategory.vue");
 /* harmony import */ var _pages_Admin_Forms_FormEditCategory__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../pages/Admin/Forms/FormEditCategory */ "./resources/js/pages/Admin/Forms/FormEditCategory.vue");
 /* harmony import */ var _pages_Admin_Product_ategoryAdmin_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../pages/Admin/ProductСategoryAdmin.vue */ "./resources/js/pages/Admin/ProductСategoryAdmin.vue");
+/* harmony import */ var _components_Forms_editProduct_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../components/Forms/editProduct.vue */ "./resources/js/components/Forms/editProduct.vue");
 
 
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var Page404 = {
   template: "<div>Страница не найдена</div>"
 };
+
 
 
 
@@ -8109,6 +8280,11 @@ var routes = [{
 }, {
   path: "/admin/category/:id/products",
   component: _pages_Admin_Product_ategoryAdmin_vue__WEBPACK_IMPORTED_MODULE_15__["default"]
+}, {
+  path: "/admin/category/EditProduct/:id",
+  name: "EditProduct",
+  component: _components_Forms_editProduct_vue__WEBPACK_IMPORTED_MODULE_16__["default"],
+  props: true
 }, {
   path: "*",
   redirect: "404"
@@ -13275,7 +13451,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.loader {\r\n    width: 30%;\r\n    height: 30%;\n}\n.avatar {\r\n    height: 200px;\r\n    width: 200px;\n}\n.slide-enter {\r\n    opacity: 0;\n}\n.slide-enter-active {\r\n    transition: opacity 0.5s;\n}\n.slide-leave-active {\r\n    transition: opacity 0.5s;\n}\n.slide-leave-to {\r\n    opacity: 0;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.loader {\r\n    width: 30%;\r\n    height: 30%;\n}\n.avatar {\r\n    height: 200px;\r\n    width: 200px;\n}\n.slide-enter {\r\n    opacity: 0;\n}\n.slide-enter-active {\r\n    transition: opacity 0.5s;\n}\n.slide-leave-active {\r\n    transition: opacity 0.5s;\n}\n.slide-leave-to {\r\n    opacity: 0;\n}\na {\r\n    text-decoration: none;\r\n    color: #526628;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -39636,7 +39812,223 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div")
+  return _c("div", [
+    _vm.errors
+      ? _c("div", { staticClass: "alert alert-danger" }, [
+          _c(
+            "ul",
+            _vm._l(_vm.errors, function (error, idx) {
+              return _c("li", { key: idx }, [
+                _vm._v(
+                  "\n                " + _vm._s(error[0]) + "\n            "
+                ),
+              ])
+            }),
+            0
+          ),
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        staticClass: "btn btn-success mt-2 mb-2",
+        on: {
+          click: function ($event) {
+            return _vm.$router.go(-1)
+          },
+        },
+      },
+      [_vm._v("\n        Назад\n    ")]
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "mb-3" }, [
+      _c("label", { staticClass: "form-label" }, [_vm._v(" Имя продукта ")]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model.trim",
+            value: _vm.product.name,
+            expression: "product.name",
+            modifiers: { trim: true },
+          },
+        ],
+        ref: "fInp",
+        staticClass: "form-control w-50",
+        attrs: { required: "", placeholder: "Введите имя продукта" },
+        domProps: { value: _vm.product.name },
+        on: {
+          input: function ($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.product, "name", $event.target.value.trim())
+          },
+          blur: function ($event) {
+            return _vm.$forceUpdate()
+          },
+        },
+      }),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "mb-3" }, [
+      _c("label", { staticClass: "form-label" }, [
+        _vm._v(" Описание продукта "),
+      ]),
+      _vm._v(" "),
+      _c("textarea", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model.trim",
+            value: _vm.product.description,
+            expression: "product.description",
+            modifiers: { trim: true },
+          },
+        ],
+        staticClass: "form-control w-50",
+        attrs: {
+          required: "",
+          row: "3",
+          placeholder: "Введите описание продукта",
+        },
+        domProps: { value: _vm.product.description },
+        on: {
+          input: function ($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.product, "description", $event.target.value.trim())
+          },
+          blur: function ($event) {
+            return _vm.$forceUpdate()
+          },
+        },
+      }),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "mb-3" }, [
+      _c("label", { staticClass: "form-label" }, [_vm._v(" Цена продукта ")]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model.trim",
+            value: _vm.product.price,
+            expression: "product.price",
+            modifiers: { trim: true },
+          },
+        ],
+        staticClass: "form-control w-50",
+        attrs: { required: "", placeholder: "Введите цену" },
+        domProps: { value: _vm.product.price },
+        on: {
+          input: function ($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.product, "price", $event.target.value.trim())
+          },
+          blur: function ($event) {
+            return _vm.$forceUpdate()
+          },
+        },
+      }),
+    ]),
+    _vm._v(" "),
+    _c("img", {
+      staticClass: "avatar",
+      attrs: { src: "/storage/img/products/" + _vm.picture },
+    }),
+    _vm._v(" "),
+    _c("div", { staticClass: "mb-3" }, [
+      _c("label", { staticClass: "form-label" }, [
+        _vm._v(" Выберите картинку для продукта "),
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("input", {
+        ref: "file",
+        staticClass: "form-control w-50",
+        attrs: { id: "file", type: "file" },
+        on: {
+          change: function ($event) {
+            return _vm.handleFileUpload()
+          },
+        },
+      }),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "gx-3 gy-2 mb-3 row align-items-center" }, [
+      _c("div", { staticClass: "col-sm-3" }, [
+        _c("label", { staticClass: "form-label" }, [_vm._v(" Категория ")]),
+        _vm._v(" "),
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.product.categoryID,
+                expression: "product.categoryID",
+              },
+            ],
+            staticClass: "form-select",
+            on: {
+              change: function ($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function (o) {
+                    return o.selected
+                  })
+                  .map(function (o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.$set(
+                  _vm.product,
+                  "categoryID",
+                  $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                )
+              },
+            },
+          },
+          _vm._l(_vm.categories, function (category) {
+            return _c(
+              "option",
+              { key: category.id, domProps: { value: category.id } },
+              [
+                _vm._v(
+                  "\n                    " +
+                    _vm._s(category.name) +
+                    "\n                "
+                ),
+              ]
+            )
+          }),
+          0
+        ),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        staticClass: "btn btn-success w-50",
+        attrs: { disabled: !_vm.validationForm },
+        on: {
+          click: function ($event) {
+            return _vm.sendForm()
+          },
+        },
+      },
+      [_vm._v("\n        Принять изменения\n    ")]
+    ),
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -40445,20 +40837,20 @@ var render = function () {
           {
             name: "model",
             rawName: "v-model.trim",
-            value: _vm.name,
-            expression: "name",
+            value: _vm.category.name,
+            expression: "category.name",
             modifiers: { trim: true },
           },
         ],
         staticClass: "form-control w-50",
         attrs: { required: "", placeholder: "Введите имя категории" },
-        domProps: { value: _vm.name },
+        domProps: { value: _vm.category.name },
         on: {
           input: function ($event) {
             if ($event.target.composing) {
               return
             }
-            _vm.name = $event.target.value.trim()
+            _vm.$set(_vm.category, "name", $event.target.value.trim())
           },
           blur: function ($event) {
             return _vm.$forceUpdate()
@@ -40477,8 +40869,8 @@ var render = function () {
           {
             name: "model",
             rawName: "v-model.trim",
-            value: _vm.description,
-            expression: "description",
+            value: _vm.category.description,
+            expression: "category.description",
             modifiers: { trim: true },
           },
         ],
@@ -40488,13 +40880,13 @@ var render = function () {
           row: "3",
           placeholder: "Введите описание категории",
         },
-        domProps: { value: _vm.description },
+        domProps: { value: _vm.category.description },
         on: {
           input: function ($event) {
             if ($event.target.composing) {
               return
             }
-            _vm.description = $event.target.value.trim()
+            _vm.$set(_vm.category, "description", $event.target.value.trim())
           },
           blur: function ($event) {
             return _vm.$forceUpdate()
@@ -40505,7 +40897,7 @@ var render = function () {
     _vm._v(" "),
     _c("img", {
       staticClass: "avatar",
-      attrs: { src: "/storage/img/categories/" + _vm.picture },
+      attrs: { src: "/storage/img/categories/" + _vm.category.picture },
     }),
     _vm._v(" "),
     _c("div", { staticClass: "mb-3" }, [
@@ -40531,7 +40923,7 @@ var render = function () {
       "button",
       {
         staticClass: "btn btn-success",
-        attrs: { disabled: _vm.validationForm },
+        attrs: { disabled: !_vm.validationForm },
         on: {
           click: function ($event) {
             return _vm.sendForm()
@@ -40895,7 +41287,31 @@ var render = function () {
                             }),
                           ]),
                           _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(product.name))]),
+                          _c(
+                            "td",
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "EditProduct",
+                                      params: {
+                                        id: product.id,
+                                        name: product.name,
+                                        description: product.description,
+                                        price: product.price,
+                                        picture: product.picture,
+                                        categoryID: product.category_id,
+                                      },
+                                    },
+                                  },
+                                },
+                                [_vm._v(_vm._s(product.name))]
+                              ),
+                            ],
+                            1
+                          ),
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(product.description))]),
                           _vm._v(" "),

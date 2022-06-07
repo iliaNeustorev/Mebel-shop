@@ -50,7 +50,22 @@
                                 v-model="checkedIdforDelete"
                             />
                         </td>
-                        <td>{{ product.name }}</td>
+                        <td>
+                            <router-link
+                                :to="{
+                                    name: 'EditProduct',
+                                    params: {
+                                        id: product.id,
+                                        name: product.name,
+                                        description: product.description,
+                                        price: product.price,
+                                        picture: product.picture,
+                                        categoryID: product.category_id,
+                                    },
+                                }"
+                                >{{ product.name }}</router-link
+                            >
+                        </td>
                         <td>{{ product.description }}</td>
                         <td>{{ product.price }}</td>
                         <td>
@@ -143,4 +158,6 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

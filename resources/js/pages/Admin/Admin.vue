@@ -52,4 +52,8 @@ export default {}
 .slide-leave-to {
     opacity: 0;
 }
+a {
+    text-decoration: none;
+    color: #526628;
+}
 </style>

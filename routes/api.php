@@ -83,9 +83,9 @@ Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function()
 
     Route::prefix('/products')->group(function() {
         Route::get('/', [AdminController::class, 'getProducts']);
-        Route::get('/{category}/{id?}', [AdminController::class, 'get_product'])->name('admin_get_product');
+        Route::get('/{category}/{id?}', [AdminController::class, 'get_product']);
         Route::post('/addProduct', [AdminController::class, 'addProduct']);
-        Route::post('/upd_product', [AdminController::class, 'upd_product'])->name('upd_product');
+        Route::post('/updProduct', [AdminController::class, 'updProduct']);
         Route::post('/delProducts', [AdminController::class, 'delProducts']);
            
        
