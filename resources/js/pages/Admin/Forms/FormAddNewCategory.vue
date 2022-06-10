@@ -45,13 +45,12 @@
                 v-on:change="handleFileUpload()"
             />
         </div>
-        <button
-            :disabled="!validationForm"
-            @click="sendForm()"
-            class="btn btn-success"
-        >
-            Добавить категорию
-        </button>
+        <button-send-form
+            :validation-form="validationForm"
+            name-button-accepted="Добавить категорию"
+            name-button-denied="Заполните поля"
+            @acceptedForm="sendForm"
+        ></button-send-form>
     </div>
 </template>
 

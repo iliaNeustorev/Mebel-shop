@@ -68,19 +68,25 @@
                 </select>
             </div>
         </div>
-        <button
-            @click="sendForm()"
-            :disabled="!validationForm"
-            class="btn btn-success w-50"
-        >
-            Принять изменения
-        </button>
+        <button-send-form
+            :validation-form="validationForm"
+            name-button-accepted="Принять изменения"
+            name-button-denied="Внесите изменения"
+            @acceptedForm="sendForm()"
+        ></button-send-form>
     </div>
 </template>
 
 <script>
 export default {
-    props: ["name", "price", "description", "categoryID", "id", "picture"],
+    props: {
+        name: { type: String, required: true },
+        price: { type: Number, required: true },
+        description: { type: String, required: true },
+        categoryID: { type: Number, required: true },
+        id: { type: Number, required: true },
+        picture: { type: String, required: true },
+    },
     data() {
         return {
             oldData: {

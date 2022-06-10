@@ -5232,6 +5232,60 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/ButtonSendForm.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/ButtonSendForm.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    validationForm: {
+      type: Boolean,
+      "default": false
+    },
+    nameButtonAccepted: {
+      type: String,
+      required: true
+    },
+    nameButtonDenied: {
+      type: String,
+      required: true
+    }
+  },
+  computed: {
+    StyleButton: function StyleButton() {
+      return !this.validationForm ? "btn-danger" : "btn-success";
+    },
+    ButtonName: function ButtonName() {
+      return !this.validationForm ? "✘ " + this.nameButtonDenied : this.nameButtonAccepted;
+    }
+  },
+  methods: {
+    sendForm: function sendForm() {
+      this.$emit("acceptedForm");
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/ExampleComponent.vue?vue&type=script&lang=js&":
 /*!***********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/ExampleComponent.vue?vue&type=script&lang=js& ***!
@@ -5532,11 +5586,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    categoryId: Number,
-    categoryName: String
+    categoryId: {
+      type: Number,
+      "default": 1
+    }
   },
   data: function data() {
     return {
@@ -5548,7 +5603,8 @@ __webpack_require__.r(__webpack_exports__);
       },
       categories: [],
       file: {},
-      changeCategory: false
+      changeCategory: false,
+      newID: 0
     };
   },
   computed: {
@@ -5705,9 +5761,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ["name", "price", "description", "categoryID", "id", "picture"],
+  props: {
+    name: {
+      type: String,
+      required: true
+    },
+    price: {
+      type: Number,
+      required: true
+    },
+    description: {
+      type: String,
+      required: true
+    },
+    categoryID: {
+      type: Number,
+      required: true
+    },
+    id: {
+      type: Number,
+      required: true
+    },
+    picture: {
+      type: String,
+      required: true
+    }
+  },
   data: function data() {
     return {
       oldData: {
@@ -6279,7 +6359,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -6354,7 +6433,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-//
 //
 //
 //
@@ -6765,15 +6843,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       showForm: false,
       loading: true,
       products: [],
-      categoryName: "",
       categoryId: 0,
+      categoryName: "",
       checkedIdforDelete: []
     };
   },
@@ -8116,6 +8193,7 @@ vue__WEBPACK_IMPORTED_MODULE_0__["default"].component("navbar-component", (__web
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].component("addProduct-component", (__webpack_require__(/*! ./components/Forms/addProduct.vue */ "./resources/js/components/Forms/addProduct.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].component("editProduct-component", (__webpack_require__(/*! ./components/Forms/editProduct.vue */ "./resources/js/components/Forms/editProduct.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].component("progress-bar-component", (__webpack_require__(/*! ./components/ProgressBarComponent.vue */ "./resources/js/components/ProgressBarComponent.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_0__["default"].component("button-send-form", (__webpack_require__(/*! ./components/ButtonSendForm.vue */ "./resources/js/components/ButtonSendForm.vue")["default"]));
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -37802,6 +37880,45 @@ module.exports = function (list, options) {
 
 /***/ }),
 
+/***/ "./resources/js/components/ButtonSendForm.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/components/ButtonSendForm.vue ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ButtonSendForm_vue_vue_type_template_id_476a3c2e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ButtonSendForm.vue?vue&type=template&id=476a3c2e& */ "./resources/js/components/ButtonSendForm.vue?vue&type=template&id=476a3c2e&");
+/* harmony import */ var _ButtonSendForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ButtonSendForm.vue?vue&type=script&lang=js& */ "./resources/js/components/ButtonSendForm.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ButtonSendForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ButtonSendForm_vue_vue_type_template_id_476a3c2e___WEBPACK_IMPORTED_MODULE_0__.render,
+  _ButtonSendForm_vue_vue_type_template_id_476a3c2e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/ButtonSendForm.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/ExampleComponent.vue":
 /*!******************************************************!*\
   !*** ./resources/js/components/ExampleComponent.vue ***!
@@ -38559,6 +38676,22 @@ component.options.__file = "resources/js/pages/Profile.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/ButtonSendForm.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/ButtonSendForm.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ButtonSendForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ButtonSendForm.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/ButtonSendForm.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ButtonSendForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/ExampleComponent.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************!*\
   !*** ./resources/js/components/ExampleComponent.vue?vue&type=script&lang=js& ***!
@@ -38967,6 +39100,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/ButtonSendForm.vue?vue&type=template&id=476a3c2e&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/ButtonSendForm.vue?vue&type=template&id=476a3c2e& ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ButtonSendForm_vue_vue_type_template_id_476a3c2e___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ButtonSendForm_vue_vue_type_template_id_476a3c2e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ButtonSendForm_vue_vue_type_template_id_476a3c2e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ButtonSendForm.vue?vue&type=template&id=476a3c2e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/ButtonSendForm.vue?vue&type=template&id=476a3c2e&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/ExampleComponent.vue?vue&type=template&id=299e239e&scoped=true&":
 /*!*************************************************************************************************!*\
   !*** ./resources/js/components/ExampleComponent.vue?vue&type=template&id=299e239e&scoped=true& ***!
@@ -39290,6 +39440,44 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/ButtonSendForm.vue?vue&type=template&id=476a3c2e&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/ButtonSendForm.vue?vue&type=template&id=476a3c2e& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "button",
+    {
+      staticClass: "btn",
+      class: _vm.StyleButton,
+      attrs: { disabled: !_vm.validationForm },
+      on: {
+        click: function ($event) {
+          return _vm.sendForm()
+        },
+      },
+    },
+    [_vm._v("\n    " + _vm._s(_vm.ButtonName) + "\n")]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/ExampleComponent.vue?vue&type=template&id=299e239e&scoped=true&":
 /*!****************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/ExampleComponent.vue?vue&type=template&id=299e239e&scoped=true& ***!
@@ -39541,253 +39729,256 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _vm.errors
-      ? _c("div", { staticClass: "alert alert-danger" }, [
+  return _c(
+    "div",
+    [
+      _vm.errors
+        ? _c("div", { staticClass: "alert alert-danger" }, [
+            _c(
+              "ul",
+              _vm._l(_vm.errors, function (error, idx) {
+                return _c("li", { key: idx }, [
+                  _vm._v(
+                    "\n                " + _vm._s(error[0]) + "\n            "
+                  ),
+                ])
+              }),
+              0
+            ),
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "mb-3" }, [
+        _c("label", { staticClass: "form-label" }, [_vm._v(" Имя продукта ")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model.trim",
+              value: _vm.product.name,
+              expression: "product.name",
+              modifiers: { trim: true },
+            },
+          ],
+          ref: "fInp",
+          staticClass: "form-control w-50",
+          attrs: { required: "", placeholder: "Введите имя продукта" },
+          domProps: { value: _vm.product.name },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.product, "name", $event.target.value.trim())
+            },
+            blur: function ($event) {
+              return _vm.$forceUpdate()
+            },
+          },
+        }),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "mb-3" }, [
+        _c("label", { staticClass: "form-label" }, [
+          _vm._v(" Описание продукта "),
+        ]),
+        _vm._v(" "),
+        _c("textarea", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model.trim",
+              value: _vm.product.description,
+              expression: "product.description",
+              modifiers: { trim: true },
+            },
+          ],
+          staticClass: "form-control w-50",
+          attrs: {
+            required: "",
+            row: "3",
+            placeholder: "Введите описание продукта",
+          },
+          domProps: { value: _vm.product.description },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.product, "description", $event.target.value.trim())
+            },
+            blur: function ($event) {
+              return _vm.$forceUpdate()
+            },
+          },
+        }),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "mb-3" }, [
+        _c("label", { staticClass: "form-label" }, [_vm._v(" Цена продукта ")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model.trim",
+              value: _vm.product.price,
+              expression: "product.price",
+              modifiers: { trim: true },
+            },
+          ],
+          staticClass: "form-control w-50",
+          attrs: { required: "", placeholder: "Введите цену" },
+          domProps: { value: _vm.product.price },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.product, "price", $event.target.value.trim())
+            },
+            blur: function ($event) {
+              return _vm.$forceUpdate()
+            },
+          },
+        }),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "mb-3" }, [
+        _c("label", { staticClass: "form-label" }, [
+          _vm._v(" Выберите картинку для продукта "),
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("input", {
+          ref: "file",
+          staticClass: "form-control w-50",
+          attrs: { id: "file", type: "file" },
+          on: {
+            change: function ($event) {
+              return _vm.handleFileUpload()
+            },
+          },
+        }),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "gx-3 gy-2 mb-3 row align-items-center" }, [
+        _c("div", { staticClass: "col-sm-3" }, [
+          _c("label", { staticClass: "form-label" }, [_vm._v(" Категория ")]),
+          _vm._v(" "),
           _c(
-            "ul",
-            _vm._l(_vm.errors, function (error, idx) {
-              return _c("li", { key: idx }, [
-                _vm._v(
-                  "\n                " + _vm._s(error[0]) + "\n            "
-                ),
-              ])
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.categoryId,
+                  expression: "categoryId",
+                },
+              ],
+              staticClass: "form-select",
+              attrs: { disabled: !_vm.changeCategory },
+              on: {
+                change: function ($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function (o) {
+                      return o.selected
+                    })
+                    .map(function (o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.categoryId = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                },
+              },
+            },
+            _vm._l(_vm.categories, function (category) {
+              return _c(
+                "option",
+                { key: category.id, domProps: { value: category.id } },
+                [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(category.name) +
+                      "\n                "
+                  ),
+                ]
+              )
             }),
             0
           ),
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _c("div", { staticClass: "mb-3" }, [
-      _c("label", { staticClass: "form-label" }, [_vm._v(" Имя продукта ")]),
-      _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model.trim",
-            value: _vm.product.name,
-            expression: "product.name",
-            modifiers: { trim: true },
-          },
-        ],
-        ref: "fInp",
-        staticClass: "form-control w-50",
-        attrs: { required: "", placeholder: "Введите имя продукта" },
-        domProps: { value: _vm.product.name },
-        on: {
-          input: function ($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.$set(_vm.product, "name", $event.target.value.trim())
-          },
-          blur: function ($event) {
-            return _vm.$forceUpdate()
-          },
-        },
-      }),
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "mb-3" }, [
-      _c("label", { staticClass: "form-label" }, [
-        _vm._v(" Описание продукта "),
-      ]),
-      _vm._v(" "),
-      _c("textarea", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model.trim",
-            value: _vm.product.description,
-            expression: "product.description",
-            modifiers: { trim: true },
-          },
-        ],
-        staticClass: "form-control w-50",
-        attrs: {
-          required: "",
-          row: "3",
-          placeholder: "Введите описание продукта",
-        },
-        domProps: { value: _vm.product.description },
-        on: {
-          input: function ($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.$set(_vm.product, "description", $event.target.value.trim())
-          },
-          blur: function ($event) {
-            return _vm.$forceUpdate()
-          },
-        },
-      }),
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "mb-3" }, [
-      _c("label", { staticClass: "form-label" }, [_vm._v(" Цена продукта ")]),
-      _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model.trim",
-            value: _vm.product.price,
-            expression: "product.price",
-            modifiers: { trim: true },
-          },
-        ],
-        staticClass: "form-control w-50",
-        attrs: { required: "", placeholder: "Введите цену" },
-        domProps: { value: _vm.product.price },
-        on: {
-          input: function ($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.$set(_vm.product, "price", $event.target.value.trim())
-          },
-          blur: function ($event) {
-            return _vm.$forceUpdate()
-          },
-        },
-      }),
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "mb-3" }, [
-      _c("label", { staticClass: "form-label" }, [
-        _vm._v(" Выберите картинку для продукта "),
-      ]),
-      _vm._v(" "),
-      _c("br"),
-      _vm._v(" "),
-      _c("input", {
-        ref: "file",
-        staticClass: "form-control w-50",
-        attrs: { id: "file", type: "file" },
-        on: {
-          change: function ($event) {
-            return _vm.handleFileUpload()
-          },
-        },
-      }),
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "gx-3 gy-2 mb-3 row align-items-center" }, [
-      _c("div", { staticClass: "col-sm-3" }, [
-        _c("label", { staticClass: "form-label" }, [_vm._v(" Категория ")]),
+        ]),
         _vm._v(" "),
-        _c(
-          "select",
-          {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.categoryId,
-                expression: "categoryId",
+        _c("div", { staticClass: "col-auto mt-5" }, [
+          _c("div", { staticClass: "form-check" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.changeCategory,
+                  expression: "changeCategory",
+                },
+              ],
+              staticClass: "form-check-input",
+              attrs: { id: "checkbox", type: "checkbox" },
+              domProps: {
+                checked: Array.isArray(_vm.changeCategory)
+                  ? _vm._i(_vm.changeCategory, null) > -1
+                  : _vm.changeCategory,
               },
-            ],
-            staticClass: "form-select",
-            attrs: { disabled: !_vm.changeCategory },
-            on: {
-              change: function ($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function (o) {
-                    return o.selected
-                  })
-                  .map(function (o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.categoryId = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
-              },
-            },
-          },
-          _vm._l(_vm.categories, function (category) {
-            return _c(
-              "option",
-              { key: category.id, domProps: { value: category.id } },
-              [
-                _vm._v(
-                  "\n                    " +
-                    _vm._s(category.name) +
-                    "\n                "
-                ),
-              ]
-            )
-          }),
-          0
-        ),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-auto mt-5" }, [
-        _c("div", { staticClass: "form-check" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.changeCategory,
-                expression: "changeCategory",
-              },
-            ],
-            staticClass: "form-check-input",
-            attrs: { id: "checkbox", type: "checkbox" },
-            domProps: {
-              checked: Array.isArray(_vm.changeCategory)
-                ? _vm._i(_vm.changeCategory, null) > -1
-                : _vm.changeCategory,
-            },
-            on: {
-              change: function ($event) {
-                var $$a = _vm.changeCategory,
-                  $$el = $event.target,
-                  $$c = $$el.checked ? true : false
-                if (Array.isArray($$a)) {
-                  var $$v = null,
-                    $$i = _vm._i($$a, $$v)
-                  if ($$el.checked) {
-                    $$i < 0 && (_vm.changeCategory = $$a.concat([$$v]))
+              on: {
+                change: function ($event) {
+                  var $$a = _vm.changeCategory,
+                    $$el = $event.target,
+                    $$c = $$el.checked ? true : false
+                  if (Array.isArray($$a)) {
+                    var $$v = null,
+                      $$i = _vm._i($$a, $$v)
+                    if ($$el.checked) {
+                      $$i < 0 && (_vm.changeCategory = $$a.concat([$$v]))
+                    } else {
+                      $$i > -1 &&
+                        (_vm.changeCategory = $$a
+                          .slice(0, $$i)
+                          .concat($$a.slice($$i + 1)))
+                    }
                   } else {
-                    $$i > -1 &&
-                      (_vm.changeCategory = $$a
-                        .slice(0, $$i)
-                        .concat($$a.slice($$i + 1)))
+                    _vm.changeCategory = $$c
                   }
-                } else {
-                  _vm.changeCategory = $$c
-                }
+                },
               },
-            },
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            { staticClass: "form-check-label", attrs: { for: "checkbox" } },
-            [_vm._v("Изменить категорию")]
-          ),
+            }),
+            _vm._v(" "),
+            _c(
+              "label",
+              { staticClass: "form-check-label", attrs: { for: "checkbox" } },
+              [_vm._v("Изменить категорию")]
+            ),
+          ]),
         ]),
       ]),
-    ]),
-    _vm._v(" "),
-    _c(
-      "button",
-      {
-        staticClass: "btn btn-success w-50",
-        attrs: { disabled: !_vm.validationForm },
+      _vm._v(" "),
+      _c("button-send-form", {
+        attrs: {
+          "validation-form": _vm.validationForm,
+          "name-button-accepted": "Добавить продукт в категорию",
+          "name-button-denied": "Заполните поля",
+        },
         on: {
-          click: function ($event) {
+          acceptedForm: function ($event) {
             return _vm.sendForm()
           },
         },
-      },
-      [_vm._v("\n        Добавить продукт в категорию\n    ")]
-    ),
-  ])
+      }),
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -39812,223 +40003,226 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _vm.errors
-      ? _c("div", { staticClass: "alert alert-danger" }, [
+  return _c(
+    "div",
+    [
+      _vm.errors
+        ? _c("div", { staticClass: "alert alert-danger" }, [
+            _c(
+              "ul",
+              _vm._l(_vm.errors, function (error, idx) {
+                return _c("li", { key: idx }, [
+                  _vm._v(
+                    "\n                " + _vm._s(error[0]) + "\n            "
+                  ),
+                ])
+              }),
+              0
+            ),
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-success mt-2 mb-2",
+          on: {
+            click: function ($event) {
+              return _vm.$router.go(-1)
+            },
+          },
+        },
+        [_vm._v("\n        Назад\n    ")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "mb-3" }, [
+        _c("label", { staticClass: "form-label" }, [_vm._v(" Имя продукта ")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model.trim",
+              value: _vm.product.name,
+              expression: "product.name",
+              modifiers: { trim: true },
+            },
+          ],
+          ref: "fInp",
+          staticClass: "form-control w-50",
+          attrs: { required: "", placeholder: "Введите имя продукта" },
+          domProps: { value: _vm.product.name },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.product, "name", $event.target.value.trim())
+            },
+            blur: function ($event) {
+              return _vm.$forceUpdate()
+            },
+          },
+        }),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "mb-3" }, [
+        _c("label", { staticClass: "form-label" }, [
+          _vm._v(" Описание продукта "),
+        ]),
+        _vm._v(" "),
+        _c("textarea", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model.trim",
+              value: _vm.product.description,
+              expression: "product.description",
+              modifiers: { trim: true },
+            },
+          ],
+          staticClass: "form-control w-50",
+          attrs: {
+            required: "",
+            row: "3",
+            placeholder: "Введите описание продукта",
+          },
+          domProps: { value: _vm.product.description },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.product, "description", $event.target.value.trim())
+            },
+            blur: function ($event) {
+              return _vm.$forceUpdate()
+            },
+          },
+        }),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "mb-3" }, [
+        _c("label", { staticClass: "form-label" }, [_vm._v(" Цена продукта ")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model.trim",
+              value: _vm.product.price,
+              expression: "product.price",
+              modifiers: { trim: true },
+            },
+          ],
+          staticClass: "form-control w-50",
+          attrs: { required: "", placeholder: "Введите цену" },
+          domProps: { value: _vm.product.price },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.product, "price", $event.target.value.trim())
+            },
+            blur: function ($event) {
+              return _vm.$forceUpdate()
+            },
+          },
+        }),
+      ]),
+      _vm._v(" "),
+      _c("img", {
+        staticClass: "avatar",
+        attrs: { src: "/storage/img/products/" + _vm.picture },
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "mb-3" }, [
+        _c("label", { staticClass: "form-label" }, [
+          _vm._v(" Выберите картинку для продукта "),
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("input", {
+          ref: "file",
+          staticClass: "form-control w-50",
+          attrs: { id: "file", type: "file" },
+          on: {
+            change: function ($event) {
+              return _vm.handleFileUpload()
+            },
+          },
+        }),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "gx-3 gy-2 mb-3 row align-items-center" }, [
+        _c("div", { staticClass: "col-sm-3" }, [
+          _c("label", { staticClass: "form-label" }, [_vm._v(" Категория ")]),
+          _vm._v(" "),
           _c(
-            "ul",
-            _vm._l(_vm.errors, function (error, idx) {
-              return _c("li", { key: idx }, [
-                _vm._v(
-                  "\n                " + _vm._s(error[0]) + "\n            "
-                ),
-              ])
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.product.categoryID,
+                  expression: "product.categoryID",
+                },
+              ],
+              staticClass: "form-select",
+              on: {
+                change: function ($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function (o) {
+                      return o.selected
+                    })
+                    .map(function (o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.$set(
+                    _vm.product,
+                    "categoryID",
+                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                  )
+                },
+              },
+            },
+            _vm._l(_vm.categories, function (category) {
+              return _c(
+                "option",
+                { key: category.id, domProps: { value: category.id } },
+                [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(category.name) +
+                      "\n                "
+                  ),
+                ]
+              )
             }),
             0
           ),
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _c(
-      "button",
-      {
-        staticClass: "btn btn-success mt-2 mb-2",
-        on: {
-          click: function ($event) {
-            return _vm.$router.go(-1)
-          },
-        },
-      },
-      [_vm._v("\n        Назад\n    ")]
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "mb-3" }, [
-      _c("label", { staticClass: "form-label" }, [_vm._v(" Имя продукта ")]),
-      _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model.trim",
-            value: _vm.product.name,
-            expression: "product.name",
-            modifiers: { trim: true },
-          },
-        ],
-        ref: "fInp",
-        staticClass: "form-control w-50",
-        attrs: { required: "", placeholder: "Введите имя продукта" },
-        domProps: { value: _vm.product.name },
-        on: {
-          input: function ($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.$set(_vm.product, "name", $event.target.value.trim())
-          },
-          blur: function ($event) {
-            return _vm.$forceUpdate()
-          },
-        },
-      }),
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "mb-3" }, [
-      _c("label", { staticClass: "form-label" }, [
-        _vm._v(" Описание продукта "),
+        ]),
       ]),
       _vm._v(" "),
-      _c("textarea", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model.trim",
-            value: _vm.product.description,
-            expression: "product.description",
-            modifiers: { trim: true },
-          },
-        ],
-        staticClass: "form-control w-50",
+      _c("button-send-form", {
         attrs: {
-          required: "",
-          row: "3",
-          placeholder: "Введите описание продукта",
+          "validation-form": _vm.validationForm,
+          "name-button-accepted": "Принять изменения",
+          "name-button-denied": "Внесите изменения",
         },
-        domProps: { value: _vm.product.description },
         on: {
-          input: function ($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.$set(_vm.product, "description", $event.target.value.trim())
-          },
-          blur: function ($event) {
-            return _vm.$forceUpdate()
-          },
-        },
-      }),
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "mb-3" }, [
-      _c("label", { staticClass: "form-label" }, [_vm._v(" Цена продукта ")]),
-      _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model.trim",
-            value: _vm.product.price,
-            expression: "product.price",
-            modifiers: { trim: true },
-          },
-        ],
-        staticClass: "form-control w-50",
-        attrs: { required: "", placeholder: "Введите цену" },
-        domProps: { value: _vm.product.price },
-        on: {
-          input: function ($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.$set(_vm.product, "price", $event.target.value.trim())
-          },
-          blur: function ($event) {
-            return _vm.$forceUpdate()
-          },
-        },
-      }),
-    ]),
-    _vm._v(" "),
-    _c("img", {
-      staticClass: "avatar",
-      attrs: { src: "/storage/img/products/" + _vm.picture },
-    }),
-    _vm._v(" "),
-    _c("div", { staticClass: "mb-3" }, [
-      _c("label", { staticClass: "form-label" }, [
-        _vm._v(" Выберите картинку для продукта "),
-      ]),
-      _vm._v(" "),
-      _c("br"),
-      _vm._v(" "),
-      _c("input", {
-        ref: "file",
-        staticClass: "form-control w-50",
-        attrs: { id: "file", type: "file" },
-        on: {
-          change: function ($event) {
-            return _vm.handleFileUpload()
-          },
-        },
-      }),
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "gx-3 gy-2 mb-3 row align-items-center" }, [
-      _c("div", { staticClass: "col-sm-3" }, [
-        _c("label", { staticClass: "form-label" }, [_vm._v(" Категория ")]),
-        _vm._v(" "),
-        _c(
-          "select",
-          {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.product.categoryID,
-                expression: "product.categoryID",
-              },
-            ],
-            staticClass: "form-select",
-            on: {
-              change: function ($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function (o) {
-                    return o.selected
-                  })
-                  .map(function (o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.$set(
-                  _vm.product,
-                  "categoryID",
-                  $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                )
-              },
-            },
-          },
-          _vm._l(_vm.categories, function (category) {
-            return _c(
-              "option",
-              { key: category.id, domProps: { value: category.id } },
-              [
-                _vm._v(
-                  "\n                    " +
-                    _vm._s(category.name) +
-                    "\n                "
-                ),
-              ]
-            )
-          }),
-          0
-        ),
-      ]),
-    ]),
-    _vm._v(" "),
-    _c(
-      "button",
-      {
-        staticClass: "btn btn-success w-50",
-        attrs: { disabled: !_vm.validationForm },
-        on: {
-          click: function ($event) {
+          acceptedForm: function ($event) {
             return _vm.sendForm()
           },
         },
-      },
-      [_vm._v("\n        Принять изменения\n    ")]
-    ),
-  ])
+      }),
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -40759,19 +40953,14 @@ var render = function () {
         }),
       ]),
       _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-success",
-          attrs: { disabled: !_vm.validationForm },
-          on: {
-            click: function ($event) {
-              return _vm.sendForm()
-            },
-          },
+      _c("button-send-form", {
+        attrs: {
+          "validation-form": _vm.validationForm,
+          "name-button-accepted": "Добавить категорию",
+          "name-button-denied": "Заполните поля",
         },
-        [_vm._v("\n        Добавить категорию\n    ")]
-      ),
+        on: { acceptedForm: _vm.sendForm },
+      }),
     ],
     1
   )
@@ -40799,140 +40988,139 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _vm.errors
-      ? _c("div", { staticClass: "alert alert-danger" }, [
-          _c(
-            "ul",
-            _vm._l(_vm.errors, function (error, idx) {
-              return _c("li", { key: idx }, [
-                _vm._v(
-                  "\n                " + _vm._s(error[0]) + "\n            "
-                ),
-              ])
-            }),
-            0
-          ),
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "mb-3" },
-      [
-        _c("router-link", { attrs: { to: "/admin/categoriesAdmin" } }, [
-          _c("button", { staticClass: "btn btn-success mt-2" }, [
-            _vm._v("Назад"),
+  return _c(
+    "div",
+    [
+      _vm.errors
+        ? _c("div", { staticClass: "alert alert-danger" }, [
+            _c(
+              "ul",
+              _vm._l(_vm.errors, function (error, idx) {
+                return _c("li", { key: idx }, [
+                  _vm._v(
+                    "\n                " + _vm._s(error[0]) + "\n            "
+                  ),
+                ])
+              }),
+              0
+            ),
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "mb-3" },
+        [
+          _c("router-link", { attrs: { to: "/admin/categoriesAdmin" } }, [
+            _c("button", { staticClass: "btn btn-success mt-2" }, [
+              _vm._v("Назад"),
+            ]),
           ]),
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "mb-3" }, [
+        _c("label", { staticClass: "form-label" }, [_vm._v(" Имя категории ")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model.trim",
+              value: _vm.category.name,
+              expression: "category.name",
+              modifiers: { trim: true },
+            },
+          ],
+          staticClass: "form-control w-50",
+          attrs: { required: "", placeholder: "Введите имя категории" },
+          domProps: { value: _vm.category.name },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.category, "name", $event.target.value.trim())
+            },
+            blur: function ($event) {
+              return _vm.$forceUpdate()
+            },
+          },
+        }),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "mb-3" }, [
+        _c("label", { staticClass: "form-label" }, [
+          _vm._v(" Описание категории "),
         ]),
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "mb-3" }, [
-      _c("label", { staticClass: "form-label" }, [_vm._v(" Имя категории ")]),
-      _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model.trim",
-            value: _vm.category.name,
-            expression: "category.name",
-            modifiers: { trim: true },
+        _vm._v(" "),
+        _c("textarea", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model.trim",
+              value: _vm.category.description,
+              expression: "category.description",
+              modifiers: { trim: true },
+            },
+          ],
+          staticClass: "form-control w-50",
+          attrs: {
+            required: "",
+            row: "3",
+            placeholder: "Введите описание категории",
           },
-        ],
-        staticClass: "form-control w-50",
-        attrs: { required: "", placeholder: "Введите имя категории" },
-        domProps: { value: _vm.category.name },
-        on: {
-          input: function ($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.$set(_vm.category, "name", $event.target.value.trim())
+          domProps: { value: _vm.category.description },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.category, "description", $event.target.value.trim())
+            },
+            blur: function ($event) {
+              return _vm.$forceUpdate()
+            },
           },
-          blur: function ($event) {
-            return _vm.$forceUpdate()
-          },
-        },
-      }),
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "mb-3" }, [
-      _c("label", { staticClass: "form-label" }, [
-        _vm._v(" Описание категории "),
+        }),
       ]),
       _vm._v(" "),
-      _c("textarea", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model.trim",
-            value: _vm.category.description,
-            expression: "category.description",
-            modifiers: { trim: true },
+      _c("img", {
+        staticClass: "avatar",
+        attrs: { src: "/storage/img/categories/" + _vm.category.picture },
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "mb-3" }, [
+        _c("label", { staticClass: "form-label" }, [
+          _vm._v(" Выберите картинку для категории "),
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("input", {
+          ref: "file",
+          staticClass: "form-control w-50",
+          attrs: { id: "file", type: "file" },
+          on: {
+            change: function ($event) {
+              return _vm.handleFileUpload()
+            },
           },
-        ],
-        staticClass: "form-control w-50",
+        }),
+      ]),
+      _vm._v(" "),
+      _c("button-send-form", {
         attrs: {
-          required: "",
-          row: "3",
-          placeholder: "Введите описание категории",
+          "validation-form": _vm.validationForm,
+          "name-button-accepted": "Принять изменения",
+          "name-button-denied": "Внесите изменения",
         },
-        domProps: { value: _vm.category.description },
-        on: {
-          input: function ($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.$set(_vm.category, "description", $event.target.value.trim())
-          },
-          blur: function ($event) {
-            return _vm.$forceUpdate()
-          },
-        },
+        on: { acceptedForm: _vm.sendForm },
       }),
-    ]),
-    _vm._v(" "),
-    _c("img", {
-      staticClass: "avatar",
-      attrs: { src: "/storage/img/categories/" + _vm.category.picture },
-    }),
-    _vm._v(" "),
-    _c("div", { staticClass: "mb-3" }, [
-      _c("label", { staticClass: "form-label" }, [
-        _vm._v(" Выберите картинку для категории "),
-      ]),
-      _vm._v(" "),
-      _c("br"),
-      _vm._v(" "),
-      _c("input", {
-        ref: "file",
-        staticClass: "form-control w-50",
-        attrs: { id: "file", type: "file" },
-        on: {
-          change: function ($event) {
-            return _vm.handleFileUpload()
-          },
-        },
-      }),
-    ]),
-    _vm._v(" "),
-    _c(
-      "button",
-      {
-        staticClass: "btn btn-success",
-        attrs: { disabled: !_vm.validationForm },
-        on: {
-          click: function ($event) {
-            return _vm.sendForm()
-          },
-        },
-      },
-      [_vm._v("\n        Принять изменения\n    ")]
-    ),
-  ])
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -41220,10 +41408,7 @@ var render = function () {
                 expression: "showForm",
               },
             ],
-            attrs: {
-              "category-id": _vm.categoryId,
-              "category-name": _vm.categoryName,
-            },
+            attrs: { "category-id": _vm.categoryId },
           }),
         ],
         1

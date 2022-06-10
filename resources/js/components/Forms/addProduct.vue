@@ -82,19 +82,20 @@
                 </div>
             </div>
         </div>
-        <button
-            @click="sendForm()"
-            :disabled="!validationForm"
-            class="btn btn-success w-50"
-        >
-            Добавить продукт в категорию
-        </button>
+        <button-send-form
+            :validation-form="validationForm"
+            name-button-accepted="Добавить продукт в категорию"
+            name-button-denied="Заполните поля"
+            @acceptedForm="sendForm()"
+        ></button-send-form>
     </div>
 </template>
 
 <script>
 export default {
-    props: { categoryId: Number, categoryName: String },
+    props: {
+        categoryId: { type: Number, default: 1 },
+    },
     data() {
         return {
             errors: null,
@@ -106,6 +107,7 @@ export default {
             categories: [],
             file: {},
             changeCategory: false,
+            newID: 0,
         }
     },
     computed: {

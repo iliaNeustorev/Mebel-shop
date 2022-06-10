@@ -47,13 +47,12 @@
                 v-on:change="handleFileUpload()"
             />
         </div>
-        <button
-            :disabled="!validationForm"
-            @click="sendForm()"
-            class="btn btn-success"
-        >
-            Принять изменения
-        </button>
+        <button-send-form
+            :validation-form="validationForm"
+            name-button-accepted="Принять изменения"
+            name-button-denied="Внесите изменения"
+            @acceptedForm="sendForm"
+        ></button-send-form>
     </div>
 </template>
 

@@ -9,10 +9,10 @@ use App\Jobs\importProducts;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
-use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
@@ -169,14 +169,15 @@ class AdminController extends Controller
     //add new Product
     public function addProduct (Request $request)
     {
+        $input = $request->all();
         $request->validate([
-            'name' => 'required|max:255|unique:products,name',
+            'name' => ['required','max:255', Rule::unique('products','name')->where('category_id', $input['categoryId'])],
             'description' => 'required|max:1000',
             'price' => 'required|numeric|max:30000000',
             'categoryId' => 'required',
         ]);
 
-        $input = $request->all();
+       
         $file = $request->file('picture');
         $product = new Product();
 
@@ -203,6 +204,8 @@ class AdminController extends Controller
         $product->save();
         return true;
     }
+
+    //update product
 
     public function updProduct (Request $request)
     {
@@ -244,7 +247,7 @@ class AdminController extends Controller
         
         return true;
     }
-
+    //dell array products
     public function delProducts (Request $request)
     {
         $res = $request->input('idProductsDelete');

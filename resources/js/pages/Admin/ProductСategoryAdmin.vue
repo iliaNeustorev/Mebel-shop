@@ -16,7 +16,6 @@
         <transition name="slide">
             <addProduct-component
                 :category-id="categoryId"
-                :category-name="categoryName"
                 v-show="showForm"
             ></addProduct-component>
         </transition>
@@ -108,8 +107,8 @@ export default {
             showForm: false,
             loading: true,
             products: [],
-            categoryName: "",
             categoryId: 0,
+            categoryName: "",
             checkedIdforDelete: [],
         }
     },
@@ -158,6 +157,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
