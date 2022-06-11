@@ -152,6 +152,7 @@ export default {
                         title: "Удаление прошло успешно",
                         icon: "info",
                     }).then(() => {})
+                    this.checkedIdforDelete = []
                     this.products = response.data.products
                 })
                 .catch((error) => {
