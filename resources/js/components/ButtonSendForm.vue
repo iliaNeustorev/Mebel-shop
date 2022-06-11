@@ -15,10 +15,14 @@ export default {
         validationForm: { type: Boolean, default: false },
         nameButtonAccepted: { type: String, required: true },
         nameButtonDenied: { type: String, required: true },
+        classButtonDenied: { type: String, default: "btn-danger" },
+        classButtonAccepted: { type: String, default: "btn-success" },
     },
     computed: {
         StyleButton() {
-            return !this.validationForm ? "btn-danger" : "btn-success"
+            return !this.validationForm
+                ? this.classButtonDenied
+                : this.classButtonAccepted
         },
         ButtonName() {
             return !this.validationForm

@@ -81,12 +81,14 @@
                     </tr>
                     <tr>
                         <td colspan="7" class="text-start">
-                            <button
-                                class="btn btn-danger"
-                                @click="deleteProducts()"
-                            >
-                                Удалить выбраное
-                            </button>
+                            <button-send-form
+                                :validation-form="validationForm"
+                                name-button-accepted="Удалить выбраное"
+                                name-button-denied="Выберите продукты"
+                                class-button-denied="btn-warning"
+                                class-button-accepted="btn-danger"
+                                @acceptedForm="deleteProducts()"
+                            ></button-send-form>
                         </td>
                     </tr>
                 </tbody>
@@ -117,6 +119,9 @@ export default {
             return this.showForm
                 ? "К списку продуктов"
                 : "Добавить продукт в категорию"
+        },
+        validationForm() {
+            return this.checkedIdforDelete.length !== 0
         },
     },
     created() {

@@ -107,7 +107,6 @@ export default {
             categories: [],
             file: {},
             changeCategory: false,
-            newID: 0,
         }
     },
     computed: {

@@ -51,7 +51,7 @@
             :validation-form="validationForm"
             name-button-accepted="Принять изменения"
             name-button-denied="Внесите изменения"
-            @acceptedForm="sendForm"
+            @acceptedForm="sendForm()"
         ></button-send-form>
     </div>
 </template>

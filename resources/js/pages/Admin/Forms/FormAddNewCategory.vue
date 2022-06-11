@@ -49,7 +49,7 @@
             :validation-form="validationForm"
             name-button-accepted="Добавить категорию"
             name-button-denied="Заполните поля"
-            @acceptedForm="sendForm"
+            @acceptedForm="sendForm()"
         ></button-send-form>
     </div>
 </template>

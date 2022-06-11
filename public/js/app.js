@@ -5267,11 +5267,19 @@ __webpack_require__.r(__webpack_exports__);
     nameButtonDenied: {
       type: String,
       required: true
+    },
+    classButtonDenied: {
+      type: String,
+      "default": "btn-danger"
+    },
+    classButtonAccepted: {
+      type: String,
+      "default": "btn-success"
     }
   },
   computed: {
     StyleButton: function StyleButton() {
-      return !this.validationForm ? "btn-danger" : "btn-success";
+      return !this.validationForm ? this.classButtonDenied : this.classButtonAccepted;
     },
     ButtonName: function ButtonName() {
       return !this.validationForm ? "✘ " + this.nameButtonDenied : this.nameButtonAccepted;
@@ -5603,8 +5611,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       categories: [],
       file: {},
-      changeCategory: false,
-      newID: 0
+      changeCategory: false
     };
   },
   computed: {
@@ -6843,6 +6850,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -6857,6 +6866,9 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     titleButton: function titleButton() {
       return this.showForm ? "К списку продуктов" : "Добавить продукт в категорию";
+    },
+    validationForm: function validationForm() {
+      return this.checkedIdforDelete.length !== 0;
     }
   },
   created: function created() {
@@ -40959,7 +40971,11 @@ var render = function () {
           "name-button-accepted": "Добавить категорию",
           "name-button-denied": "Заполните поля",
         },
-        on: { acceptedForm: _vm.sendForm },
+        on: {
+          acceptedForm: function ($event) {
+            return _vm.sendForm()
+          },
+        },
       }),
     ],
     1
@@ -41116,7 +41132,11 @@ var render = function () {
           "name-button-accepted": "Принять изменения",
           "name-button-denied": "Внесите изменения",
         },
-        on: { acceptedForm: _vm.sendForm },
+        on: {
+          acceptedForm: function ($event) {
+            return _vm.sendForm()
+          },
+        },
       }),
     ],
     1
@@ -41526,23 +41546,22 @@ var render = function () {
                             attrs: { colspan: "7" },
                           },
                           [
-                            _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-danger",
-                                on: {
-                                  click: function ($event) {
-                                    return _vm.deleteProducts()
-                                  },
+                            _c("button-send-form", {
+                              attrs: {
+                                "validation-form": _vm.validationForm,
+                                "name-button-accepted": "Удалить выбраное",
+                                "name-button-denied": "Выберите продукты",
+                                "class-button-denied": "btn-warning",
+                                "class-button-accepted": "btn-danger",
+                              },
+                              on: {
+                                acceptedForm: function ($event) {
+                                  return _vm.deleteProducts()
                                 },
                               },
-                              [
-                                _vm._v(
-                                  "\n                            Удалить выбраное\n                        "
-                                ),
-                              ]
-                            ),
-                          ]
+                            }),
+                          ],
+                          1
                         ),
                       ]),
                     ],
