@@ -48,8 +48,6 @@ export default {}
 
 .slide-leave-active {
     transition: opacity 0.5s;
-}
-.slide-leave-to {
     opacity: 0;
 }
 a {

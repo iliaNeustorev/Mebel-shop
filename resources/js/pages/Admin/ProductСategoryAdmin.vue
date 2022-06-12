@@ -1,17 +1,40 @@
 <template>
     <div>
-        <h2>
+        <span class="buttonGroups mb-2">
+            <button
+                @click="showForm = !showForm"
+                class="btn btn-success itemButtonGroups"
+            >
+                {{ titleButton }}
+            </button>
+
+            <button-send-form
+                :hidden="showForm"
+                class="itemButtonGroups"
+                :validation-form="validationForm"
+                name-button-accepted="Удалить выбраное"
+                name-button-denied="Выберите продукты для удаления"
+                class-button-denied="btn-warning"
+                class-button-accepted="btn-danger"
+                @acceptedForm="deleteProducts()"
+                ><template v-slot:mainModal
+                    ><p class="container">
+                        Удалить в количестве {{ sizeM }}
+                    </p></template
+                ></button-send-form
+            >
+            <button
+                @click="$router.go(-1)"
+                class="btn btn-success itemButtonGroups"
+            >
+                Назад
+            </button>
+        </span>
+        <h2 class="text-center">
             Продукты категории
             <strong
                 ><em>{{ categoryName }}</em></strong
             >
-            <button @click="showForm = !showForm" class="btn btn-success">
-                {{ titleButton }}
-            </button>
-
-            <button @click="$router.go(-1)" class="btn btn-success">
-                Назад
-            </button>
         </h2>
         <transition name="slide">
             <addProduct-component
@@ -19,7 +42,6 @@
                 v-show="showForm"
             ></addProduct-component>
         </transition>
-
         <div v-if="loading" class="text-center">
             <span>
                 <img
@@ -79,18 +101,6 @@
                         <td>{{ product.created_at }}</td>
                         <td>{{ product.updated_at }}</td>
                     </tr>
-                    <tr>
-                        <td colspan="7" class="text-start">
-                            <button-send-form
-                                :validation-form="validationForm"
-                                name-button-accepted="Удалить выбраное"
-                                name-button-denied="Выберите продукты"
-                                class-button-denied="btn-warning"
-                                class-button-accepted="btn-danger"
-                                @acceptedForm="deleteProducts()"
-                            ></button-send-form>
-                        </td>
-                    </tr>
                 </tbody>
                 <tbody v-else>
                     <tr>
@@ -115,6 +125,9 @@ export default {
         }
     },
     computed: {
+        sizeM() {
+            return Object.keys(this.checkedIdforDelete).length
+        },
         titleButton() {
             return this.showForm
                 ? "К списку продуктов"
@@ -163,4 +176,12 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.buttonGroups {
+    display: flex;
+    flex-direction: row;
+}
+.itemButtonGroups {
+    margin: 3px;
+}
+</style>

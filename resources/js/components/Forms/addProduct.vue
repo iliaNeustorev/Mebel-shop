@@ -87,7 +87,28 @@
             name-button-accepted="Добавить продукт в категорию"
             name-button-denied="Заполните поля"
             @acceptedForm="sendForm()"
-        ></button-send-form>
+        >
+            <template v-slot:mainModal>
+                <div class="container">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <td>Имя продукта</td>
+                                <td>Описание</td>
+                                <td>Цена</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td v-for="(item, i) in product" :key="i">
+                                    {{ item }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </template></button-send-form
+        >
     </div>
 </template>
 

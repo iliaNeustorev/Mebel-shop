@@ -1,7 +1,7 @@
 <template>
     <div>
         <div>
-            <div class="d-grid gap-2 d-md-block text-center mb-3">
+            <div class="d-grid gap-2 d-md-block mb-3">
                 <button
                     @click="exportCategories()"
                     class="btn btn-primary btn-xl mb-2"
@@ -129,7 +129,6 @@ export default {
             this.processing = true
             axios
                 .post("/api/admin/exportCategories")
-                .then(() => {})
                 .catch((error) => {
                     this.errors = error.response.data.errors
                 })

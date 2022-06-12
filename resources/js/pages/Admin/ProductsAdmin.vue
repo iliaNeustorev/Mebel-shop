@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="d-grid gap-2 d-md-block text-center mb-3">
+        <div class="d-grid gap-2 d-md-block mb-3">
             <button
                 @click="exportProducts()"
                 class="btn btn-primary btn-xl mb-2"
@@ -10,7 +10,21 @@
             <button type="submit" class="btn btn-link btn-xl mb-2">
                 Загрузить список продуктов
             </button>
-            <button @click="$router.go(-1)" class="btn btn-success">
+            <button-send-form
+                class="btn btn-link btn-xl mb-2"
+                :validation-form="validationForm"
+                name-button-accepted="Удалить выбраное"
+                name-button-denied="Выберите продукты для удаления"
+                class-button-denied="btn-warning"
+                class-button-accepted="btn-danger"
+                @acceptedForm="deleteProducts()"
+                ><template v-slot:mainModal
+                    ><p class="container">
+                        Удалить в количестве {{ sizeM }}
+                    </p></template
+                ></button-send-form
+            >
+            <button @click="$router.go(-1)" class="btn btn-success mb-2">
                 Назад
             </button>
             <div v-if="processing" class="alert alert-warning text-center">
@@ -50,19 +64,11 @@
             <tbody v-else>
                 <tr v-for="product in products" :key="product.id">
                     <td>
-                        <div class="form-check">
-                            <input
-                                class="form-check-input"
-                                type="checkbox"
-                                name="check_delete[]"
-                                value=""
-                                id="flexCheckDefault"
-                            />
-                            <label
-                                class="form-check-label"
-                                for="flexCheckDefault"
-                            ></label>
-                        </div>
+                        <input
+                            type="checkbox"
+                            :value="product.id"
+                            v-model="checkedIdforDelete"
+                        />
                     </td>
                     <td>
                         <a href="" title="Редактировать продукт">{{
@@ -82,11 +88,7 @@
                     <td>{{ product.updated_at }}</td>
                 </tr>
                 <tr>
-                    <td class="text-start" colspan="8">
-                        <button type="submit" class="btn btn-danger">
-                            Удалить выбраные записи
-                        </button>
-                    </td>
+                    <td class="text-start" colspan="8"></td>
                 </tr>
             </tbody>
         </table>
@@ -102,7 +104,16 @@ export default {
             exportFinished: false,
             downloadLink: null,
             products: [],
+            checkedIdforDelete: [],
         }
+    },
+    computed: {
+        sizeM() {
+            return Object.keys(this.checkedIdforDelete).length
+        },
+        validationForm() {
+            return this.checkedIdforDelete.length !== 0
+        },
     },
     methods: {
         exportProducts() {
@@ -115,6 +126,20 @@ export default {
                 })
                 .finally(() => {
                     this.exportFinished = false
+                })
+        },
+        deleteProducts() {
+            const params = {
+                idProductsDelete: this.checkedIdforDelete,
+            }
+            axios
+                .post("/api/admin/products/delProducts", params)
+                .then((response) => {
+                    this.checkedIdforDelete = []
+                    this.products = response.data.products
+                })
+                .catch((error) => {
+                    this.errors = error.response.data.errors
                 })
         },
     },

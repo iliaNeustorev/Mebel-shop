@@ -249,11 +249,17 @@ class AdminController extends Controller
     }
     //dell array products
     public function delProducts (Request $request)
-    {
+    {   
+        
         $res = $request->input('idProductsDelete');
         Product::whereIn("id",$res)->delete();
-        $category = Category::where('id', $request->input('categoryId'))->first();
-        $products = $category->products->sortBy('created_at', SORT_DESC, 3)->values()->all();
+        
+        if($request->input('categoryId')) {
+            $category = Category::where('id', $request->input('categoryId'))->first();
+            $products = $category->products->sortBy('created_at', SORT_DESC, 3)->values()->all();
+        } else {
+            $products = Product::get();
+        }
         return [
             'products' => $products,
             ];
