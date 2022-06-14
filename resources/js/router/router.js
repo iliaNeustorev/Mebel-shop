@@ -7,7 +7,7 @@ const Page404 = { template: "<div>Страница не найдена</div>" }
 
 import HomePage from "../pages/Home"
 import CategoryPage from "../pages/Category"
-import BasketPage from "../pages/Basket"
+import CartPage from "../pages/Cart"
 import LoginPage from "../pages/Auth/Login"
 import RegisterPage from "../pages/Auth/Register"
 import AdminPage from "../pages/Admin/Admin"
@@ -24,21 +24,69 @@ import EditProduct from "../components/Forms/editProduct.vue"
 const routes = [
     { path: "/", component: HomePage },
     { path: "/categories/:id", component: CategoryPage },
-    { path: "/basket", component: BasketPage },
-    { path: "/login", component: LoginPage },
-    { path: "/register", component: RegisterPage },
-    { path: "/admin", component: AdminPage },
-    { path: "/admin/showRegUsers", component: showRegUsersPage },
-    { path: "/admin/categoriesAdmin", component: CategoriesAdminPage },
-    { path: "/admin/addNewCategory", component: AddNewCategory },
-    { path: "/admin/editCategory", component: EditCategory },
-    { path: "/admin/productsAdmin", component: ProductsAdminPage },
-    { path: "/profile", component: ProfilePage },
-    { path: "/orders", component: OrdersPage },
-    { path: "/admin/category/:id/products", component: ProductAdmin },
     {
-        path: "/admin/category/EditProduct/:id",
+        name: "cart",
+        path: "/cart",
+        component: CartPage,
+    },
+    {
+        name: "login",
+        path: "/login",
+        component: LoginPage,
+    },
+    {
+        name: "register",
+        path: "/register",
+        component: RegisterPage,
+    },
+    {
+        name: "admin",
+        path: "/admin",
+        component: AdminPage,
+    },
+    {
+        name: "ShowRegUsers",
+        path: "/admin/showRegUsers",
+        component: showRegUsersPage,
+    },
+    {
+        name: "profile",
+        path: "/profile/:name",
+        component: ProfilePage,
+    },
+    {
+        name: "AdminCategories",
+        path: "/admin/categories",
+        component: CategoriesAdminPage,
+    },
+    {
+        name: "AddNewCategory",
+        path: "/admin/addNewCategory",
+        component: AddNewCategory,
+    },
+    {
+        name: "EditCategory",
+        path: "/admin/editCategory/:name",
+        component: EditCategory,
+    },
+    {
+        name: "AdminProducts",
+        path: "/admin/productsAdmin",
+        component: ProductsAdminPage,
+    },
+    {
+        name: "Orders",
+        path: "/orders",
+        component: OrdersPage,
+    },
+    {
+        name: "ShowOneCategoryWithProducts",
+        path: "/admin/category/:id/products",
+        component: ProductAdmin,
+    },
+    {
         name: "EditProduct",
+        path: "/admin/category/EditProduct/:id",
         component: EditProduct,
         props: true,
     },

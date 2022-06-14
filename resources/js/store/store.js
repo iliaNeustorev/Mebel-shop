@@ -6,11 +6,15 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state: {
-        chekOrders:0,
+        chekOrders: 0,
         user: {},
         basketProductsQuantity: 0,
     },
-    getters: {},
+    getters: {
+        user: (state) => state.user,
+        chekOrders: (state) => state.chekOrders,
+        quantity: (state) => state.basketProductsQuantity,
+    },
     mutations: {
         setBasketProductsQuantity(state, payload) {
             state.basketProductsQuantity = payload
@@ -18,26 +22,30 @@ const store = new Vuex.Store({
         setUser(state, payload) {
             state.user = payload
         },
-        setChekOrders (state, payload) {
+        setChekOrders(state, payload) {
             state.chekOrders = payload
-        }
+        },
     },
     actions: {
         getUser(context, payload) {
-            context.commit('setUser', payload)
+            context.commit("setUser", payload)
         },
         getChekOrders(context, payload) {
-            context.commit('setChekOrders', payload)
+            context.commit("setChekOrders", payload)
         },
         changeBasketProductsQuantity(context, payload) {
             context.commit("setBasketProductsQuantity", payload)
         },
         getBasketProductsQuantity(context) {
             axios.get("/basket/getProductsQuantity").then((response) => {
-                context.commit("setBasketProductsQuantity", response.data)
+                context.commit(
+                    "setBasketProductsQuantity",
+                    response.data.quantity
+                )
             })
         },
     },
+    strict: process.env.NODE_ENV !== "production",
 })
 
 export default store

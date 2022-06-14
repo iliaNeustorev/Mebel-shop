@@ -9,6 +9,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,6 +26,15 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return ['user' => $request->user(),
             'orders' => $request->user()->orders->count()];
+});
+
+Route::post('/tokens/create', function(Request $request) {
+    if(!Auth::attempt($request->only(['email', 'password'])))
+        {
+        return response('Неверные данные', 422);
+        }
+    $token = $request->user()->createToken('api')->plainTextToken;
+    return ['token' => $token];
 });
 
 Route::prefix('categories')->group(function () {

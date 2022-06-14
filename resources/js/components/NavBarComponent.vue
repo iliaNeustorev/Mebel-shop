@@ -20,19 +20,19 @@
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ms-auto">
                     <li v-if="quantity" class="nav-item">
-                        <router-link class="nav-link" to="/basket">
-                            Корзина
+                        <router-link class="nav-link" :to="{ name: 'cart' }">
+                            Корзина ({{ quantity }})
                         </router-link>
                     </li>
                     <!-- Authentication Links -->
                     <li v-if="!user.name" class="nav-item">
-                        <router-link class="nav-link" to="/login"
+                        <router-link class="nav-link" :to="{ name: 'login' }"
                             >Авторизация</router-link
                         >
                     </li>
 
                     <li v-if="!user.name" class="nav-item">
-                        <router-link class="nav-link" to="/register"
+                        <router-link class="nav-link" :to="{ name: 'register' }"
                             >Регистрация</router-link
                         >
                     </li>
@@ -59,16 +59,23 @@
                             class="dropdown-menu dropdown-menu-right"
                             aria-labelledby="navbarDropdown"
                         >
-                            <router-link class="dropdown-item" to="/admin"
+                            <router-link
+                                class="dropdown-item"
+                                :to="{ name: 'admin' }"
                                 >Администрирование</router-link
                             >
-                            <router-link class="dropdown-item" to="/profile"
+                            <router-link
+                                class="dropdown-item"
+                                :to="{
+                                    name: 'profile',
+                                    params: { name: user.name },
+                                }"
                                 >Личный кабинет</router-link
                             >
                             <router-link
-                                v-if="orders > 0"
+                                v-if="chekOrders > 0"
                                 class="dropdown-item"
-                                to="/orders"
+                                :to="{ name: 'Orders' }"
                                 >Заказы</router-link
                             >
                             <button class="dropdown-item" @click="logout()">
@@ -83,21 +90,9 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex"
 export default {
-    data() {
-        return {}
-    },
-    computed: {
-        quantity() {
-            return this.$store.state.basketProductsQuantity
-        },
-        user() {
-            return this.$store.state.user
-        },
-        orders() {
-            return this.$store.state.chekOrders
-        },
-    },
+    computed: { ...mapGetters(["user", "quantity", "chekOrders"]) },
     mounted() {
         this.$store.dispatch("getBasketProductsQuantity", {})
         if (!this.user.name) {

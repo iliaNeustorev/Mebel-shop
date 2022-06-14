@@ -8,21 +8,13 @@
                 {{ titleButton }}
             </button>
 
-            <button-send-form
-                :hidden="showForm"
+            <button-mass-delete
                 class="itemButtonGroups"
+                v-show="!showForm"
                 :validation-form="validationForm"
-                name-button-accepted="Удалить выбраное"
-                name-button-denied="Выберите продукты для удаления"
-                class-button-denied="btn-warning"
-                class-button-accepted="btn-danger"
-                @acceptedForm="deleteProducts()"
-                ><template v-slot:mainModal
-                    ><p class="container">
-                        Удалить в количестве {{ sizeM }}
-                    </p></template
-                ></button-send-form
-            >
+                :count-items="countProducts"
+                @OKdeleteProducts="deleteProducts()"
+            ></button-mass-delete>
             <button
                 @click="$router.go(-1)"
                 class="btn btn-success itemButtonGroups"
@@ -125,7 +117,7 @@ export default {
         }
     },
     computed: {
-        sizeM() {
+        countProducts() {
             return Object.keys(this.checkedIdforDelete).length
         },
         titleButton() {

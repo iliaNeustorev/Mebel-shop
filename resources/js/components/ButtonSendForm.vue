@@ -7,7 +7,7 @@
             class="btn"
             :class="StyleButton"
         >
-            {{ ButtonName }}
+            {{ ButtonName }} <slot name="textModalBtn"></slot>
         </button>
 
         <div
@@ -79,7 +79,7 @@ export default {
     },
     methods: {
         sendForm() {
-            this.$emit("acceptedForm")
+            this.$emit("acceptedForm", { id: 7 })
         },
         cancelSend() {
             this.$emit("cancelSend")

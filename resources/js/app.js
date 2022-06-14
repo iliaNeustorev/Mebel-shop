@@ -49,6 +49,11 @@ Vue.component(
     require("./components/ButtonSendForm.vue").default
 )
 
+Vue.component(
+    "button-mass-delete",
+    require("./components/ButtonMassDelete.vue").default
+)
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

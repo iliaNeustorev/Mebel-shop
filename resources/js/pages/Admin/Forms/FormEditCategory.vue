@@ -8,7 +8,7 @@
             </ul>
         </div>
         <div class="mb-3">
-            <router-link to="/admin/categoriesAdmin">
+            <router-link :to="{ name: 'AdminCategories' }">
                 <button class="btn btn-success mt-2">Назад</button></router-link
             >
         </div>
@@ -113,7 +113,7 @@ export default {
                             title: "Изменения приняты",
                             icon: "success",
                         }).then(() => {})
-                        this.$router.push("/admin/categoriesAdmin")
+                        this.$router.push({ name: "AdminCategories" })
                     })
                     .catch((error) => {
                         this.errors = error.response.data.errors

@@ -95,7 +95,7 @@ export default {
                         title: "Заказ в корзине",
                         icon: "success",
                     }).then(() => {})
-                    this.$router.push("/basket")
+                    this.$router.push("/cart")
                 })
                 .catch((error) => {
                     this.errors = error.response.data.errors

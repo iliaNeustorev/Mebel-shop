@@ -2,21 +2,21 @@
     <div>
         <div class="d-grid gap-2 d-md-block mb-3 text-center">
             <router-link
-                to="/admin/categoriesAdmin"
+                :to="{ name: 'AdminCategories' }"
                 class="btn btn-success btn-lg mb-2"
             >
                 Посмотреть список категорий
             </router-link>
             <br />
             <router-link
-                to="/admin/ProductsAdmin"
+                :to="{ name: 'AdminProducts' }"
                 class="btn btn-warning btn-lg mb-2"
             >
                 Посмотреть список продуктов
             </router-link>
             <br />
             <router-link
-                to="/admin/showRegUsers"
+                :to="{ name: 'ShowRegUsers' }"
                 class="btn btn-info btn-lg mb-2"
             >
                 Посмотреть список пользователей

@@ -10,20 +10,13 @@
             <button type="submit" class="btn btn-link btn-xl mb-2">
                 Загрузить список продуктов
             </button>
-            <button-send-form
+            <button-mass-delete
                 class="btn btn-link btn-xl mb-2"
                 :validation-form="validationForm"
-                name-button-accepted="Удалить выбраное"
-                name-button-denied="Выберите продукты для удаления"
-                class-button-denied="btn-warning"
-                class-button-accepted="btn-danger"
-                @acceptedForm="deleteProducts()"
-                ><template v-slot:mainModal
-                    ><p class="container">
-                        Удалить в количестве {{ sizeM }}
-                    </p></template
-                ></button-send-form
-            >
+                :count-items="countProducts"
+                @acceptedDelete="deleteProducts()"
+            ></button-mass-delete>
+
             <button @click="$router.go(-1)" class="btn btn-success mb-2">
                 Назад
             </button>
@@ -108,7 +101,7 @@ export default {
         }
     },
     computed: {
-        sizeM() {
+        countProducts() {
             return Object.keys(this.checkedIdforDelete).length
         },
         validationForm() {
@@ -135,6 +128,10 @@ export default {
             axios
                 .post("/api/admin/products/delProducts", params)
                 .then((response) => {
+                    this.$swal({
+                        title: "Удаление прошло успешно",
+                        icon: "info",
+                    }).then(() => {})
                     this.checkedIdforDelete = []
                     this.products = response.data.products
                 })

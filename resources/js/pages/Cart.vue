@@ -139,7 +139,7 @@ export default {
                 })
                 .finally(() => {
                     this.processing = false
-                    this.$router.push("/orders")
+                    this.$router.push({ name: "Orders" })
                 })
         },
     },

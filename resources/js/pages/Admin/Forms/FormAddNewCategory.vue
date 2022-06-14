@@ -7,7 +7,7 @@
                 </li>
             </ul>
         </div>
-        <router-link to="/admin/categoriesAdmin">
+        <router-link :to="{ name: 'AdminCategories' }">
             <button class="btn btn-success mt-2">Назад</button></router-link
         >
         <div class="mb-3">
@@ -98,7 +98,7 @@ export default {
                             title: "категория добавлена",
                             icon: "success",
                         }).then(() => {})
-                        this.$router.push("/admin/categoriesAdmin")
+                        this.$router.push({ name: "AdminCategories" })
                     })
                     .catch((error) => {
                         this.errors = error.response.data.errors

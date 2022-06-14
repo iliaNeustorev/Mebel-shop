@@ -12,12 +12,15 @@
                 <button type="submit" class="btn btn-link btn-xl mb-2">
                     Загрузить список категорий
                 </button>
-                <router-link to="/admin/AddNewCategory">
+                <router-link :to="{ name: 'AddNewCategory' }">
                     <button class="btn btn-success">
                         Добавить категорию
                     </button></router-link
                 >
-                <button @click="$router.push('/admin')" class="btn btn-success">
+                <button
+                    @click="$router.push({ name: 'admin' })"
+                    class="btn btn-success"
+                >
                     Назад
                 </button>
                 <div v-if="processing" class="alert alert-warning text-center">
@@ -67,18 +70,22 @@
                     <tr v-for="category in categories" :key="category.id">
                         <td>
                             <router-link
-                                :to="
-                                    '/admin/category/' +
-                                    category.id +
-                                    '/products'
-                                "
+                                :to="{
+                                    name: 'ShowOneCategoryWithProducts',
+                                    params: { id: category.id },
+                                }"
                                 >{{ category.name }}</router-link
                             >
                         </td>
                         <td>
                             <button
                                 class="btn btn-success"
-                                @click="showEditCategoryForm(category.id)"
+                                @click="
+                                    showEditCategoryForm(
+                                        category.id,
+                                        category.name
+                                    )
+                                "
                             >
                                 Edit
                             </button>
@@ -136,10 +143,13 @@ export default {
                     this.exportFinished = false
                 })
         },
-        showEditCategoryForm(category) {
-            this.$router.push("/admin/editCategory")
+        showEditCategoryForm(categoryId, categoryName) {
+            this.$router.push({
+                name: "EditCategory",
+                params: { name: categoryName },
+            })
             axios
-                .get(`/api/admin/categories/category/${category}/edit`)
+                .get(`/api/admin/categories/category/${categoryId}/edit`)
                 .then((response) => {
                     this.$root.$emit("eventing", response.data)
                 })
