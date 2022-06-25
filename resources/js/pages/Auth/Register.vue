@@ -79,7 +79,15 @@
 
                     <div class="row mb-0">
                         <div class="col-md-6 offset-md-4">
+                            <span
+                                v-if="loading"
+                                class="spinner-border text-primary"
+                                role="status"
+                            >
+                                <span class="visually-hidden">Загрузка</span>
+                            </span>
                             <button
+                                v-else
                                 @click="Registration()"
                                 type="submit"
                                 class="btn btn-primary"
@@ -102,10 +110,12 @@ export default {
             email: "",
             password: "",
             password_confirmation: "",
+            loading: false,
         }
     },
     methods: {
         Registration() {
+            this.loading = true
             const params = {
                 name: this.name,
                 email: this.email,
@@ -113,8 +123,9 @@ export default {
                 password_confirmation: this.password_confirmation,
             }
             axios.post("/api/register", params).then((response) => {
+                this.loading = false
                 this.$store.dispatch("getUser", response.data.user)
-                this.$router.push("/")
+                this.$router.push({ name: "Home" })
             })
         },
     },

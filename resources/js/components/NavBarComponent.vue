@@ -1,7 +1,9 @@
 <template>
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
-            <router-link class="navbar-brand" to="/"> Mebel-shop </router-link>
+            <router-link class="navbar-brand" :to="{ name: 'Home' }">
+                Mebel-shop
+            </router-link>
             <button
                 class="navbar-toggler"
                 type="button"
@@ -107,7 +109,7 @@ export default {
             axios.post("/api/logout").then(() => {
                 this.$store.dispatch("getUser", {})
                 this.$store.dispatch("getChekOrders", 0)
-                if (this.$route.path != "/") this.$router.push("/")
+                if (this.$route.path != "/") this.$router.push({ name: "Home" })
             })
         },
     },

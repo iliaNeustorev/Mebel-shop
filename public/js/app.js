@@ -6106,6 +6106,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)(["user", "quantity", "chekOrders"])),
@@ -6131,7 +6133,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         _this2.$store.dispatch("getChekOrders", 0);
 
-        if (_this2.$route.path != "/") _this2.$router.push("/");
+        if (_this2.$route.path != "/") _this2.$router.push({
+          name: "Home"
+        });
       });
     }
   }
@@ -7390,30 +7394,47 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       email: "",
       password: "",
       rememberMe: false,
-      routePasswordRequest: ""
+      routePasswordRequest: "",
+      loading: false
     };
   },
   methods: {
     login: function login() {
       var _this = this;
 
+      this.loading = true;
       axios.get("/sanctum/csrf-cookie").then(function (response) {
         var params = {
           email: _this.email,
           password: _this.password
         };
         axios.post("/api/login", params).then(function (response) {
+          _this.loading = false;
+
           _this.$store.dispatch("getUser", response.data.user);
 
           _this.$store.dispatch("getChekOrders", response.data.orders);
 
-          window.history.length > 1 ? _this.$router.go(-1) : _this.$router.push("/");
+          window.history.length > 1 ? _this.$router.go(-1) : _this.$router.push({
+            name: "Home"
+          });
         });
       });
     }
@@ -7529,19 +7550,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       name: "",
       email: "",
       password: "",
-      password_confirmation: ""
+      password_confirmation: "",
+      loading: false
     };
   },
   methods: {
     Registration: function Registration() {
       var _this = this;
 
+      this.loading = true;
       var params = {
         name: this.name,
         email: this.email,
@@ -7549,9 +7580,13 @@ __webpack_require__.r(__webpack_exports__);
         password_confirmation: this.password_confirmation
       };
       axios.post("/api/register", params).then(function (response) {
+        _this.loading = false;
+
         _this.$store.dispatch("getUser", response.data.user);
 
-        _this.$router.push("/");
+        _this.$router.push({
+          name: "Home"
+        });
       });
     }
   }
@@ -7570,6 +7605,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
 //
 //
 //
@@ -7880,6 +7917,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -7895,7 +7934,7 @@ __webpack_require__.r(__webpack_exports__);
     this.loading = true;
     axios.get("/api/categories/get").then(function (response) {
       _this.categories = response.data;
-    })["catch"](function (error) {})["finally"](function () {
+    })["catch"](function () {})["finally"](function () {
       _this.loading = false;
     });
   }
@@ -8501,9 +8540,11 @@ var Page404 = {
 
 
 var routes = [{
+  name: "Home",
   path: "/",
   component: _pages_Home__WEBPACK_IMPORTED_MODULE_2__["default"]
 }, {
+  name: "ShowCategory",
   path: "/categories/:id",
   component: _pages_Category__WEBPACK_IMPORTED_MODULE_3__["default"]
 }, {
@@ -40866,8 +40907,8 @@ var render = function () {
         [
           _c(
             "router-link",
-            { staticClass: "navbar-brand", attrs: { to: "/" } },
-            [_vm._v(" Mebel-shop ")]
+            { staticClass: "navbar-brand", attrs: { to: { name: "Home" } } },
+            [_vm._v("\n            Mebel-shop\n        ")]
           ),
           _vm._v(" "),
           _vm._m(0),
@@ -42765,22 +42806,35 @@ var render = function () {
           _vm._v(" "),
           _c("div", { staticClass: "row mb-0" }, [
             _c("div", { staticClass: "col-md-8 offset-md-4" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary",
-                  on: {
-                    click: function ($event) {
-                      return _vm.login()
+              _vm.loading
+                ? _c(
+                    "span",
+                    {
+                      staticClass: "spinner-border text-primary",
+                      attrs: { role: "status" },
                     },
-                  },
-                },
-                [
-                  _vm._v(
-                    "\n                            Войти\n                        "
+                    [
+                      _c("span", { staticClass: "visually-hidden" }, [
+                        _vm._v("Загрузка"),
+                      ]),
+                    ]
+                  )
+                : _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      on: {
+                        click: function ($event) {
+                          return _vm.login()
+                        },
+                      },
+                    },
+                    [
+                      _vm._v(
+                        "\n                            Войти\n                        "
+                      ),
+                    ]
                   ),
-                ]
-              ),
               _vm._v(" "),
               _vm.routePasswordRequest
                 ? _c(
@@ -42987,23 +43041,36 @@ var render = function () {
           _vm._v(" "),
           _c("div", { staticClass: "row mb-0" }, [
             _c("div", { staticClass: "col-md-6 offset-md-4" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary",
-                  attrs: { type: "submit" },
-                  on: {
-                    click: function ($event) {
-                      return _vm.Registration()
+              _vm.loading
+                ? _c(
+                    "span",
+                    {
+                      staticClass: "spinner-border text-primary",
+                      attrs: { role: "status" },
                     },
-                  },
-                },
-                [
-                  _vm._v(
-                    "\n                            Регистрация\n                        "
+                    [
+                      _c("span", { staticClass: "visually-hidden" }, [
+                        _vm._v("Загрузка"),
+                      ]),
+                    ]
+                  )
+                : _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "submit" },
+                      on: {
+                        click: function ($event) {
+                          return _vm.Registration()
+                        },
+                      },
+                    },
+                    [
+                      _vm._v(
+                        "\n                            Регистрация\n                        "
+                      ),
+                    ]
                   ),
-                ]
-              ),
             ]),
           ]),
         ]),
@@ -43109,8 +43176,8 @@ var render = function () {
               "em",
               [
                 _vm._v("\n            Нет товаров в корзине\n            "),
-                _c("router-link", { attrs: { to: "/" } }, [
-                  _vm._v(" Перейти в каталог"),
+                _c("router-link", { attrs: { to: { name: "Home" } } }, [
+                  _vm._v("\n                Перейти в каталог"),
                 ]),
               ],
               1
@@ -43437,7 +43504,11 @@ var render = function () {
               [
                 _c(
                   "router-link",
-                  { attrs: { to: "categories/" + category.id } },
+                  {
+                    attrs: {
+                      to: { name: "ShowCategory", params: { id: category.id } },
+                    },
+                  },
                   [
                     _c(
                       "div",

@@ -10,7 +10,9 @@
                 :key="category.id"
                 class="col-3"
             >
-                <router-link :to="'categories/' + category.id">
+                <router-link
+                    :to="{ name: 'ShowCategory', params: { id: category.id } }"
+                >
                     <div class="card mb-4" style="width: 18rem">
                         <img
                             style="width: 100%; height: 300px"
@@ -45,7 +47,7 @@ export default {
             .then((response) => {
                 this.categories = response.data
             })
-            .catch((error) => {})
+            .catch(() => {})
             .finally(() => {
                 this.loading = false
             })

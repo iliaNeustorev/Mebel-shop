@@ -22,8 +22,16 @@ import ProductAdmin from "../pages/Admin/ProductСategoryAdmin.vue"
 import EditProduct from "../components/Forms/editProduct.vue"
 
 const routes = [
-    { path: "/", component: HomePage },
-    { path: "/categories/:id", component: CategoryPage },
+    {
+        name: "Home",
+        path: "/",
+        component: HomePage,
+    },
+    {
+        name: "ShowCategory",
+        path: "/categories/:id",
+        component: CategoryPage,
+    },
     {
         name: "cart",
         path: "/cart",

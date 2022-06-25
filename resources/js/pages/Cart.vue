@@ -41,7 +41,9 @@
         <div class="mb-5 text-center" v-if="!products.length">
             <em>
                 Нет товаров в корзине
-                <router-link to="/"> Перейти в каталог</router-link></em
+                <router-link :to="{ name: 'Home' }">
+                    Перейти в каталог</router-link
+                ></em
             >
         </div>
         <template v-if="products">

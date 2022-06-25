@@ -60,7 +60,18 @@
 
                     <div class="row mb-0">
                         <div class="col-md-8 offset-md-4">
-                            <button @click="login()" class="btn btn-primary">
+                            <span
+                                v-if="loading"
+                                class="spinner-border text-primary"
+                                role="status"
+                            >
+                                <span class="visually-hidden">Загрузка</span>
+                            </span>
+                            <button
+                                v-else
+                                @click="login()"
+                                class="btn btn-primary"
+                            >
                                 Войти
                             </button>
                             <a
@@ -86,21 +97,24 @@ export default {
             password: "",
             rememberMe: false,
             routePasswordRequest: "",
+            loading: false,
         }
     },
     methods: {
         login() {
+            this.loading = true
             axios.get("/sanctum/csrf-cookie").then((response) => {
                 const params = {
                     email: this.email,
                     password: this.password,
                 }
                 axios.post("/api/login", params).then((response) => {
+                    this.loading = false
                     this.$store.dispatch("getUser", response.data.user)
                     this.$store.dispatch("getChekOrders", response.data.orders)
                     window.history.length > 1
                         ? this.$router.go(-1)
-                        : this.$router.push("/")
+                        : this.$router.push({ name: "Home" })
                 })
             })
         },
