@@ -172,7 +172,7 @@ class AdminController extends Controller
         $input = $request->all();
         $request->validate([
             'name' => ['required','max:255', Rule::unique('products','name')->where('category_id', $input['categoryId'])],
-            'description' => 'required|max:1000',
+            'description' => 'required|max:1000|min:10',
             'price' => 'required|numeric|max:30000000',
             'categoryId' => 'required',
         ]);
@@ -212,7 +212,7 @@ class AdminController extends Controller
             
         $request->validate([
             'name' => 'required|max:255|string',
-            'description' => 'required|max:1000',
+            'description' => 'required|max:1000|min:10',
             'price' => 'required|numeric|max:30000000',
             'categoryId' => 'required',
         ]);

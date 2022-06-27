@@ -47,7 +47,7 @@
                 type="file"
                 ref="file"
                 class="form-control w-50"
-                v-on:change="handleFileUpload()"
+                @change="handleFileUpload()"
             />
         </div>
 
@@ -55,10 +55,12 @@
             <div class="col-sm-3">
                 <label class="form-label"> Категория </label>
                 <select
-                    :disabled="!changeCategory"
+                    v-model="selected"
+                    :disabled="!changeCategoryFlag"
                     class="form-select"
-                    v-model="categoryId"
+                    @change="changeCategory()"
                 >
+                    <option disabled value="">---выберите категорию----</option>
                     <option
                         v-for="category in categories"
                         :key="category.id"
@@ -74,7 +76,8 @@
                         class="form-check-input"
                         id="checkbox"
                         type="checkbox"
-                        v-model="changeCategory"
+                        v-model="changeCategoryFlag"
+                        @change="oldCategory()"
                     />
                     <label class="form-check-label" for="checkbox"
                         >Изменить категорию</label
@@ -96,6 +99,7 @@
                                 <td>Имя продукта</td>
                                 <td>Описание</td>
                                 <td>Цена</td>
+                                <td>Категория</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -107,15 +111,15 @@
                         </tbody>
                     </table>
                 </div>
-            </template></button-send-form
-        >
+            </template>
+        </button-send-form>
     </div>
 </template>
 
 <script>
 export default {
     props: {
-        categoryId: { type: Number, default: 1 },
+        categoryId: { type: Number, required: false },
     },
     data() {
         return {
@@ -124,15 +128,24 @@ export default {
                 name: "",
                 description: "",
                 price: "",
+                category: "",
             },
             categories: [],
             file: {},
-            changeCategory: false,
+            changeCategoryFlag: false,
+            changedCategoryId: "",
+            oldCategoryId: "",
         }
     },
     computed: {
-        id() {
-            return this.categoryId
+        selected: {
+            get: function () {
+                return this.changedCategoryId
+            },
+            set: function (value) {
+                var newid = value
+                this.changedCategoryId = newid
+            },
         },
         validationForm() {
             return Object.values(this.product).every((val) => val.length > 0)
@@ -145,7 +158,7 @@ export default {
                 formData.append("name", this.product.name)
                 formData.append("description", this.product.description)
                 formData.append("price", this.product.price)
-                formData.append("categoryId", this.id)
+                formData.append("categoryId", this.selected)
                 formData.append("picture", this.file)
                 axios
                     .post("/api/admin/products/addProduct", formData, {
@@ -175,17 +188,40 @@ export default {
         handleFileUpload() {
             this.file = this.$refs.file.files[0]
         },
+        changeCategory() {
+            this.$emit("newCategoryId", { id: this.selected })
+            this.setNameCategory()
+        },
+        oldCategory() {
+            if (!this.changeCategoryFlag && this.oldCategoryId) {
+                console.log(this.changedCategoryId)
+                this.changedCategoryId = this.oldCategoryId
+                this.setNameCategory()
+            }
+        },
+        setNameCategory() {
+            let item = this.categories.find(
+                (item) => item.id == this.changedCategoryId
+            )
+            this.product.category = item.name
+        },
     },
     created() {
         axios.get("/api/categories/get").then((response) => {
             this.categories = response.data
+            if (this.categoryId) {
+                this.changedCategoryId = this.categoryId
+                this.oldCategoryId = this.categoryId
+                this.setNameCategory()
+            } else {
+                this.changeCategoryFlag = true
+            }
         })
     },
     mounted() {
         for (let error in this.errorList) {
             this.errors.push(this.errorList[error][0])
         }
-        this.$refs.fInp.focus()
     },
 }
 </script>

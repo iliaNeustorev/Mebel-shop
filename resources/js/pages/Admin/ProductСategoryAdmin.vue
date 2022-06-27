@@ -13,7 +13,7 @@
                 v-show="!showForm"
                 :validation-form="validationForm"
                 :count-items="countProducts"
-                @OKdeleteProducts="deleteProducts()"
+                @acceptedDelete="deleteProducts()"
             ></button-mass-delete>
             <button
                 @click="$router.go(-1)"
@@ -30,6 +30,7 @@
         </h2>
         <transition name="slide">
             <addProduct-component
+                @newCategoryId="changeCategoryId($event)"
                 :category-id="categoryId"
                 v-show="showForm"
             ></addProduct-component>
@@ -163,6 +164,9 @@ export default {
                 .catch((error) => {
                     this.errors = error.response.data.errors
                 })
+        },
+        changeCategoryId(e) {
+            this.categoryId = e.id
         },
     },
 }

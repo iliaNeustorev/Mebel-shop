@@ -25,7 +25,7 @@
                         </h5>
                     </div>
                     <div class="modal-body">
-                        <slot name="mainModal"></slot>
+                        <slot class="row" name="mainModal"></slot>
                     </div>
                     <div class="modal-footer" name="footer">
                         <button

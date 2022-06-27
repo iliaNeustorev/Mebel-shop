@@ -52,7 +52,48 @@
             name-button-accepted="Принять изменения"
             name-button-denied="Внесите изменения"
             @acceptedForm="sendForm()"
-        ></button-send-form>
+            ><template v-slot:mainModal>
+                <div class="container">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <td>Имя категория</td>
+                                <td>Описание</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    {{ category.name }}
+                                </td>
+                                <td>
+                                    {{ category.description }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h3>Старые значения</h3>
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <td>Имя категория</td>
+                                <td>Описание</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    {{ oldData.name }}
+                                </td>
+                                <td>
+                                    {{ oldData.description }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </template></button-send-form
+        >
     </div>
 </template>
 

@@ -50,14 +50,18 @@
                 type="file"
                 ref="file"
                 class="form-control w-50"
-                v-on:change="handleFileUpload()"
+                @change="handleFileUpload()"
             />
         </div>
 
         <div class="gx-3 gy-2 mb-3 row align-items-center">
             <div class="col-sm-3">
                 <label class="form-label"> Категория </label>
-                <select class="form-select" v-model="product.categoryID">
+                <select
+                    class="form-select"
+                    v-model="product.categoryID"
+                    @change="setCategoryName(product.categoryID)"
+                >
                     <option
                         v-for="category in categories"
                         :key="category.id"
@@ -73,7 +77,65 @@
             name-button-accepted="Принять изменения"
             name-button-denied="Внесите изменения"
             @acceptedForm="sendForm()"
-        ></button-send-form>
+        >
+            <template v-slot:mainModal>
+                <div class="container">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <td>Имя продукта</td>
+                                <td>Описание</td>
+                                <td>Цена</td>
+                                <td>Категория</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    {{ product.name }}
+                                </td>
+                                <td>
+                                    {{ product.description }}
+                                </td>
+                                <td>
+                                    {{ product.price }}
+                                </td>
+                                <td>
+                                    {{ product.categoryN }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h3>Старые значения</h3>
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <td>Имя продукта</td>
+                                <td>Описание</td>
+                                <td>Цена</td>
+                                <td>Категория</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    {{ oldData.name }}
+                                </td>
+                                <td>
+                                    {{ oldData.description }}
+                                </td>
+                                <td>
+                                    {{ oldData.price }}
+                                </td>
+                                <td>
+                                    {{ oldData.categoryN }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </template></button-send-form
+        >
     </div>
 </template>
 
@@ -94,12 +156,14 @@ export default {
                 price: this.price,
                 description: this.description,
                 categoryID: this.categoryID,
+                categoryN: "",
             },
             product: {
                 name: this.name,
                 price: this.price,
                 description: this.description,
                 categoryID: this.categoryID,
+                categoryN: "",
             },
             errors: null,
             file: {},
@@ -110,7 +174,11 @@ export default {
     computed: {
         validationForm() {
             return (
-                JSON.stringify(this.oldData) !== JSON.stringify(this.product) ||
+                (JSON.stringify(this.oldData) !==
+                    JSON.stringify(this.product) &&
+                    Object.values(this.product).every(
+                        (val) => val.length != 0
+                    )) ||
                 this.checkfile == true
             )
         },
@@ -118,6 +186,7 @@ export default {
     created() {
         axios.get("/api/categories/get").then((response) => {
             this.categories = response.data
+            this.setCategoryName(this.categoryID)
         })
     },
     mounted() {
@@ -163,6 +232,16 @@ export default {
         handleFileUpload() {
             this.file = this.$refs.file.files[0]
             this.checkfile = true
+        },
+
+        setCategoryName(id) {
+            let item = this.categories.find((item) => item.id == id)
+            if (id == this.categoryID) {
+                this.oldData.categoryN = item.name
+                this.product.categoryN = item.name
+            } else {
+                this.product.categoryN = item.name
+            }
         },
     },
 }
