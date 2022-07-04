@@ -100,6 +100,7 @@ export default {
             loading: false,
         }
     },
+    created() {},
     methods: {
         login() {
             this.loading = true
@@ -112,6 +113,7 @@ export default {
                     this.loading = false
                     this.$store.dispatch("getUser", response.data.user)
                     this.$store.dispatch("getChekOrders", response.data.orders)
+                    localStorage.setItem("user", response.data.user.name)
                     window.history.length > 1
                         ? this.$router.go(-1)
                         : this.$router.push({ name: "Home" })

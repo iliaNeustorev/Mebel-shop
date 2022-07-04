@@ -62,6 +62,7 @@
                             aria-labelledby="navbarDropdown"
                         >
                             <router-link
+                                v-if="user.admin"
                                 class="dropdown-item"
                                 :to="{ name: 'admin' }"
                                 >Администрирование</router-link
@@ -95,20 +96,23 @@
 import { mapGetters } from "vuex"
 export default {
     computed: { ...mapGetters(["user", "quantity", "chekOrders"]) },
-    mounted() {
+    created() {
         this.$store.dispatch("getBasketProductsQuantity", {})
         if (!this.user.name) {
             axios.get("/api/user").then((response) => {
                 this.$store.dispatch("getUser", response.data.user)
                 this.$store.dispatch("getChekOrders", response.data.orders)
+                localStorage.setItem("user", response.data.user.name)
             })
         }
     },
+    mounted() {},
     methods: {
         logout() {
             axios.post("/api/logout").then(() => {
                 this.$store.dispatch("getUser", {})
                 this.$store.dispatch("getChekOrders", 0)
+                localStorage.removeItem("user")
                 if (this.$route.path != "/") this.$router.push({ name: "Home" })
             })
         },

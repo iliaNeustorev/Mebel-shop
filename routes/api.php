@@ -22,10 +22,12 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return ['user' => $request->user(),
-            'orders' => $request->user()->orders->count()];
+    $user = $request->session()->get('currentUser');
+    return [
+        'user' => $user,
+        'orders' => Auth::user()->orders->count(),
+        ];
 });
 
 Route::post('/tokens/create', function(Request $request) {

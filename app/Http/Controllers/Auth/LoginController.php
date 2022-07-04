@@ -49,9 +49,19 @@ class LoginController extends Controller
  
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
- 
+
+            $user = Auth::user()->only('id', 'name', 'email', 'picture');
+
+            if(Auth::user()->roles->pluck('name')->contains('Admin'))
+            {
+                $user += ['admin' => true];
+            }
+            else {
+                $user += ['admin' => false];
+            }
+            session(['currentUser' => $user]);
             return [
-                'user' => Auth::user(),
+                'user' => $user,
                 'orders' => Auth::user()->orders->count() ];
         }
  
