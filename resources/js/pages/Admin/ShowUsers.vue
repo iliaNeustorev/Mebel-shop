@@ -55,9 +55,12 @@
                     <td>{{ user.name }}</td>
                     <td>{{ user.email }}</td>
                     <td>
-                        <a :href="`/api/admin/enterAsUser/${user.id}`">
+                        <button
+                            class="btn btn-warning btn-sm"
+                            @click="enterUsUser(user.id)"
+                        >
                             Войти
-                        </a>
+                        </button>
                     </td>
                 </tr>
                 <tr>
@@ -200,6 +203,21 @@ export default {
             this.delay = setTimeout(() => {
                 this.getUsers()
             }, 1000)
+        },
+        enterUsUser(userId) {
+            axios
+                .get("/api/admin/enterAsUser/" + userId)
+                .then((response) => {
+                    this.$store.dispatch("getUser", response.data)
+                    localStorage.setItem("user", response.data.name)
+                    this.$swal({
+                        title: "Вход под пользователем " + response.data.name,
+                        icon: "success",
+                    })
+                })
+                .finally(() => {
+                    this.$router.push({ name: "Home" })
+                })
         },
     },
     mounted() {

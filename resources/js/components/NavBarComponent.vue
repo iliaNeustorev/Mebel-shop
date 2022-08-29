@@ -106,7 +106,7 @@ export default {
             })
         }
     },
-    mounted() {},
+
     methods: {
         logout() {
             axios.post("/api/logout").then(() => {
@@ -116,6 +116,9 @@ export default {
                 if (this.$route.path != "/") this.$router.push({ name: "Home" })
             })
         },
+    },
+    destroyed() {
+        localStorage.removeItem("user")
     },
 }
 </script>

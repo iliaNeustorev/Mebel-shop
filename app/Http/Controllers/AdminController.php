@@ -34,9 +34,8 @@ class AdminController extends Controller
 
     public function enterAsUser ($userId)
     {
-        Auth::loginUsingId($userId);
-        session()->flash('another_user');
-        return redirect()->route('home');
+        $user = Auth::loginUsingId($userId);
+        return $user;
     }
 
     public function exportCategories () 
@@ -117,11 +116,14 @@ class AdminController extends Controller
                 $request->validate([
                     'picture' => 'image',
                 ]);
-                    Storage::delete("public/img/categories/$category->picture");
+                    if($category->picture != 'nopicture.png')
+                    {
+                        Storage::delete("public/img/categories/$category->picture");
+                    }
                     $ext = $file->extension();
                     $file_name = time(). mt_rand(1000, 9999) . '.' . $ext;
-                    Storage::putFileAs('public/img/categories/', $file, $file_name);
                     $category->update(['name' => $input['name'], 'description' => $input['description'], 'picture' => $file_name]);
+                    Storage::putFileAs('public/img/categories/', $file, $file_name);
                 } else {
                     $category->update(['name' => $input['name'], 'description' => $input['description']]);
                 }
@@ -182,7 +184,6 @@ class AdminController extends Controller
         $product = new Product();
 
         if($file)
-             
             {
                 $request->validate([
                     'picture' => 'image',

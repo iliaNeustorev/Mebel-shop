@@ -104,7 +104,7 @@ export default {
     methods: {
         login() {
             this.loading = true
-            axios.get("/sanctum/csrf-cookie").then((response) => {
+            axios.get("/sanctum/csrf-cookie").then(() => {
                 const params = {
                     email: this.email,
                     password: this.password,

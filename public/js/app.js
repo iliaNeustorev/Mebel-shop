@@ -6248,7 +6248,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     }
   },
-  mounted: function mounted() {},
   methods: {
     logout: function logout() {
       var _this2 = this;
@@ -6264,6 +6263,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
       });
     }
+  },
+  destroyed: function destroyed() {
+    localStorage.removeItem("user");
   }
 });
 
@@ -7420,6 +7422,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -7513,6 +7518,24 @@ __webpack_require__.r(__webpack_exports__);
       this.delay = setTimeout(function () {
         _this2.getUsers();
       }, 1000);
+    },
+    enterUsUser: function enterUsUser(userId) {
+      var _this3 = this;
+
+      axios.get("/api/admin/enterAsUser/" + userId).then(function (response) {
+        _this3.$store.dispatch("getUser", response.data);
+
+        localStorage.setItem("user", response.data.name);
+
+        _this3.$swal({
+          title: "Вход под пользователем " + response.data.name,
+          icon: "success"
+        });
+      })["finally"](function () {
+        _this3.$router.push({
+          name: "Home"
+        });
+      });
     }
   },
   mounted: function mounted() {
@@ -7641,7 +7664,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.loading = true;
-      axios.get("/sanctum/csrf-cookie").then(function (response) {
+      axios.get("/sanctum/csrf-cookie").then(function () {
         var params = {
           email: _this.email,
           password: _this.password
@@ -43170,8 +43193,15 @@ var render = function () {
                   _vm._v(" "),
                   _c("td", [
                     _c(
-                      "a",
-                      { attrs: { href: "/api/admin/enterAsUser/" + user.id } },
+                      "button",
+                      {
+                        staticClass: "btn btn-warning btn-sm",
+                        on: {
+                          click: function ($event) {
+                            return _vm.enterUsUser(user.id)
+                          },
+                        },
+                      },
                       [
                         _vm._v(
                           "\n                        Войти\n                    "
