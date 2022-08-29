@@ -7,60 +7,79 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## О Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Laravel – фреймворк веб-приложения с выразительным, элегантным синтаксисом. Веб-фреймворк предлагает структуру и отправную точку для создания вашего приложения, позволяя вам сосредоточиться на создании чего-то удивительного, но пока мы не будем вдаваться в детали.
+Laravel стремится обеспечить потрясающий опыт разработчика, предоставляя при этом мощный функционал: тщательное внедрение зависимостей, выразительный уровень абстракции базы данных, очереди и запланированные задачи, модульное и интеграционное тестирование и многое другое.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+В тестовом проекте используется laravel version v.9
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## установка Laravel
 
-## Learning Laravel
+1)Установка через Composer
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+~~~
+composer create-project laravel/laravel internet-blog
+~~~
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2)Установка компонентов laravel для авторизации/регистрации
 
-## Laravel Sponsors
+~~~
+composer require laravel/ui
+~~~
+~~~
+php artisan ui vue --auth
+~~~
+Эта команда используется для генерации шаблонов регистрации, входа, выхода и сброса пароля, а также добавления маршрутов аутентификации. Шаблоны будут расположены в отдельной папке resources/views/auth. Команда ui также создаст папку resources/views/layouts, содержащую базовый шаблон для вашего приложения, основанный на CSS-фреймворке Bootstrap.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+3)Установка стилей для авторизации/регистрации laravel/ui
 
-### Premium Partners
+~~~
+npm install
+npm run dev
+~~~
+Установка vue-router v3
+~~~
+npm install vue-router ^3
+~~~
+Установка vuex v3
+~~~
+npm install vuex ^3
+~~~
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-- **[Romega Software](https://romegasoftware.com)**
+## Настройка соединения с базой данных
 
-## Contributing
+Редактировать файл `/.env`:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```
+APP_NAME=Mebel-shop
+APP_ENV=local
+APP_URL=http://localhost
 
-## Code of Conduct
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=Laravel
+DB_USERNAME=root
+DB_PASSWORD=root
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.googlemail.com
+MAIL_PORT=465
+MAIL_USERNAME=jjnn95555@gmail.com
+MAIL_PASSWORD="12312341324141"
+MAIL_ENCRYPTION=ssl
+MAIL_FROM_ADDRESS=jjnn95555@gmail.com
+MAIL_FROM_NAME="${APP_NAME}"
+```
+## Запуск проекта на локальном сервере(OpenServer v5.4.0)
+  Перейти в папку с проектом и в консоли openServer или windows ввести команду
+  
+~~~
+php artisan serve
+~~~
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Запуск компилятора фронтенда vuejs
+~~~
+npm run watch
+~~~
