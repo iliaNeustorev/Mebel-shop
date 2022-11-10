@@ -20,23 +20,8 @@ window.Vue = require("vue").default
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component(
-    "example-component",
-    require("./components/ExampleComponent.vue").default
-)
-
-Vue.component(
     "navbar-component",
     require("./components/NavBarComponent.vue").default
-)
-
-Vue.component(
-    "addProduct-component",
-    require("./components/Forms/addProduct.vue").default
-)
-
-Vue.component(
-    "editProduct-component",
-    require("./components/Forms/editProduct.vue").default
 )
 
 Vue.component(
@@ -46,12 +31,50 @@ Vue.component(
 
 Vue.component(
     "button-send-form",
-    require("./components/ButtonSendForm.vue").default
+    require("./components/Buttons/ButtonSendForm.vue").default
 )
 
 Vue.component(
     "button-mass-delete",
-    require("./components/ButtonMassDelete.vue").default
+    require("./components/Buttons/ButtonMassDelete.vue").default
+)
+
+Vue.component("form-input", require("./components/Forms/formInput.vue").default)
+Vue.component(
+    "form-textarea",
+    require("./components/Forms/formTextarea.vue").default
+)
+Vue.component("form-file", require("./components/Forms/formFile.vue").default)
+Vue.component(
+    "form-select",
+    require("./components/Forms/formSelect.vue").default
+)
+Vue.component(
+    "form-checkbox",
+    require("./components/Forms/formCheckbox.vue").default
+)
+Vue.component("loading", require("./components/Loading.vue").default)
+Vue.component(
+    "button-back",
+    require("./components/Buttons/ButtonBack.vue").default
+)
+Vue.component("show-errors", require("./components/ShowErrors.vue").default)
+Vue.component(
+    "import-categories",
+    require("./components/ImportCategories.vue").default
+)
+Vue.component("export", require("./components/Export.vue").default)
+Vue.component(
+    "button-change-cart",
+    require("./components/Buttons/ButtonChangeCart.vue").default
+)
+Vue.component(
+    "change-password",
+    require("./components/ChangePassword.vue").default
+)
+Vue.component(
+    "address-list-component",
+    require("./components/addressListComponent.vue").default
 )
 
 /**
@@ -63,10 +86,8 @@ Vue.component(
 import store from "./store/store.js"
 import router from "./router/router.js"
 import Vue from "vue"
-
 const app = new Vue({
     el: "#app",
     store,
     router,
 })
-

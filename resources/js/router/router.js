@@ -11,16 +11,17 @@ import CategoryPage from "../pages/Category"
 import CartPage from "../pages/Cart"
 import LoginPage from "../pages/Auth/Login"
 import RegisterPage from "../pages/Auth/Register"
-import AdminPage from "../pages/Admin/Admin"
+import AdminPage from "../pages/Admin/Main"
 import showRegUsersPage from "../pages/Admin/ShowUsers"
-import CategoriesAdminPage from "../pages/Admin/CategoriesAdmin"
+import CategoriesAdminPage from "../pages/Admin/AllCategories"
 import ProfilePage from "../pages/Profile"
 import OrdersPage from "../pages/Orders"
-import ProductsAdminPage from "../pages/Admin/ProductsAdmin"
-import AddNewCategory from "../pages/Admin/Forms/FormAddNewCategory"
-import EditCategory from "../pages/Admin/Forms/FormEditCategory"
-import ProductAdmin from "../pages/Admin/ProductСategoryAdmin.vue"
-import EditProduct from "../components/Forms/editProduct.vue"
+import ProductsAdminPage from "../pages/Admin/AllProducts"
+import AddNewCategory from "../pages/Admin/Category/AddCategory"
+import EditCategory from "../pages/Admin/Category/EditCategory"
+import ProductAdmin from "../pages/Admin/CategoryWithProducts"
+import AddProduct from "../pages/Admin/Product/AddProduct"
+import EditProduct from "../pages/Admin/Product/EditProduct"
 
 const routes = [
     {
@@ -76,7 +77,7 @@ const routes = [
     },
     {
         name: "AddNewCategory",
-        path: "/admin/addNewCategory",
+        path: "/admin/addCategory",
         component: AddNewCategory,
         meta: { Admin: true },
     },
@@ -105,10 +106,15 @@ const routes = [
         meta: { Admin: true },
     },
     {
+        name: "AddProduct",
+        path: "/admin/addProduct",
+        component: AddProduct,
+        meta: { Admin: true },
+    },
+    {
         name: "EditProduct",
         path: "/admin/category/EditProduct/:id",
         component: EditProduct,
-        props: true,
         meta: { Admin: true },
     },
     { path: "*", redirect: "404" },

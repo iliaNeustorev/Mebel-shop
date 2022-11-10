@@ -1,5 +1,6 @@
 <template>
     <div>
+        <show-errors v-if="errors" :errors="errors" />
         <div v-if="!orders.length"><h2>У вас еще нет заказов</h2></div>
         <div v-else v-for="order in orders" :key="order.order.order_id">
             <p>
@@ -79,7 +80,6 @@ export default {
             .catch((error) => {
                 this.errors = error.response.data.errors
             })
-            .finally(() => {})
     },
     mounted() {
         for (let error in this.errorList) {
@@ -90,17 +90,17 @@ export default {
         repeatOrder(OrderId) {
             axios
                 .get(`/api/home/orders/repeatOrder${OrderId}`)
-                .then((response) => {
+                .then(() => {
                     this.$swal({
                         title: "Заказ в корзине",
                         icon: "success",
-                    }).then(() => {})
-                    this.$router.push("/cart")
+                    }).then(() => {
+                        this.$router.push("/cart")
+                    })
                 })
                 .catch((error) => {
                     this.errors = error.response.data.errors
                 })
-                .finally(() => {})
         },
     },
 }

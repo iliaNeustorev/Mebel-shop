@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Events\CategoriesExportFinishEvents;
 use App\Models\Category;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -23,10 +22,6 @@ class ExportCategories implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
-    {
-        
-    }
 
     /**
      * Execute the job.
@@ -56,14 +51,12 @@ class ExportCategories implements ShouldQueue
             Storage::append('public/exportCategories.csv',implode(';',$columns));
             $i = 1;
         foreach ($categories as $category) {
-            
             $category['name']  = iconv('utf-8', 'windows-1251//IGNORE', $category['name']);
             $category['description']  = iconv('utf-8', 'windows-1251//IGNORE', $category['description']);
             $category['picture']  = iconv('utf-8', 'windows-1251//IGNORE', $category['picture']);
             Storage::append('public/exportCategories.csv',implode(';',$category));
             $percent = round($i++ / $count * 100, 2);
             $pusher->trigger('counter','ExportCategoriesCounter', $percent);
-            sleep(1);
         }
         $pusher->trigger('general','categories-export-finish', ['message' => 'exportCategories.csv']);
     }

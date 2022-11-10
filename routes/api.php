@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -63,10 +64,11 @@ Route::prefix('home')->middleware('auth')->group(function() {
         Route::prefix('profile')->group(function() {
             Route::get('/', [HomeController::class, 'profile']);
             Route::post('/update', [HomeController::class, 'profile_update']);  
-            Route::post('/del_address', [HomeController::class, 'del_address']);   
+            Route::post('/updatePassword',[HomeController::class, 'updatePassword']);
             Route::post('/updateAvatar', [HomeController::class, 'updateAvatar']);   
-            Route::post('/addAddress', [HomeController::class, 'addAddress']);   
-            Route::post('/updateMainAddress', [HomeController::class, 'updateMainAddress']); 
+            Route::post('/del_address', [AddressController::class, 'del_address']);   
+            Route::post('/addAddress', [AddressController::class, 'addAddress']);   
+            Route::post('/updateMainAddress', [AddressController::class, 'updateMainAddress']); 
              
         });
         Route::prefix('orders')->group(function() {
@@ -95,12 +97,10 @@ Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function()
 
     Route::prefix('/products')->group(function() {
         Route::get('/', [AdminController::class, 'getProducts']);
-        Route::get('/{category}/{id?}', [AdminController::class, 'get_product']);
+        Route::get('/product/{id}', [AdminController::class, 'getProduct']);
         Route::post('/addProduct', [AdminController::class, 'addProduct']);
         Route::post('/updProduct', [AdminController::class, 'updProduct']);
         Route::post('/delProducts', [AdminController::class, 'delProducts']);
-           
-       
     });   
 });
 

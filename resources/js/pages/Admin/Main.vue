@@ -1,9 +1,9 @@
 <template>
     <div>
-        <div class="d-grid gap-2 d-md-block mb-3 text-center">
+        <div class="d-grid gap-2 d-md-block text-center">
             <router-link
                 :to="{ name: 'AdminCategories' }"
-                class="btn btn-success btn-lg mb-2"
+                class="btn btn-secondary btn-lg mb-2"
             >
                 Посмотреть список категорий
             </router-link>
@@ -22,12 +22,11 @@
                 Посмотреть список пользователей
             </router-link>
         </div>
+        <div class="text-center">
+            <button-back class="btn-success btn-lg" />
+        </div>
     </div>
 </template>
-
-<script>
-export default {}
-</script>
 
 <style>
 .loader {

@@ -2,16 +2,14 @@
 
 namespace App\Jobs;
 
-use App\Events\ProductsExportFinishEvents;
-use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
+use Pusher\Pusher;
 
 class ExportProducts implements ShouldQueue
 {
@@ -22,10 +20,6 @@ class ExportProducts implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
-    {
-        //
-    }
 
     /**
      * Execute the job.
@@ -34,13 +28,21 @@ class ExportProducts implements ShouldQueue
      */
     public function handle()
     {
-        {
+        
+            $pusher = new Pusher('app-key', 'app-secret', 'app-id', [
+                'host' => '127.0.0.1',
+                'port' => 6001,
+                'scheme' => 'http',
+                'encrypted' => true,
+                'useTLS' => false,
+            ]);
             $products = Product::get();
             $productsExport = $products->map( function ($product) {
                 $product['name_category'] = $product->category()->value('name');
                 return $product;
               })->toArray();
             Storage::delete('public/exportProducts.csv');
+            $count = count($productsExport);
             $columns = [
                'id',
                'name',
@@ -53,6 +55,7 @@ class ExportProducts implements ShouldQueue
                'name_category'
             ];
             Storage::append('public/exportProducts.csv',implode(';',$columns));
+            $i = 1;
             foreach ($productsExport as $product) {
                 $product['name']  = iconv('utf-8', 'windows-1251//IGNORE',$product['name']);
                 $product['description']  = iconv('utf-8', 'windows-1251//IGNORE', $product['description']);
@@ -61,8 +64,9 @@ class ExportProducts implements ShouldQueue
                 $product['category_id']  = iconv('utf-8', 'windows-1251//IGNORE', $product['category_id']);
                 $product['name_category']  = iconv('utf-8', 'windows-1251//IGNORE', $product['name_category']);
                 Storage::append('public/exportProducts.csv',implode(';',$product));
+                $percent = round($i++ / $count * 100);
+                $pusher->trigger('counter','ExportProductsCounter', $percent);
             }
-            event(new ProductsExportFinishEvents('exportProducts.csv'));
-        }
+            $pusher->trigger('general','products-export-finish', ['message' => 'exportProducts.csv']);
     }
 }

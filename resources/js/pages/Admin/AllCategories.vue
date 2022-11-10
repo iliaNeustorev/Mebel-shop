@@ -1,15 +1,19 @@
 <template>
     <div>
+        <show-errors v-if="errors" :errors="errors" />
         <div>
             <div class="d-grid gap-2 d-md-block mb-3">
                 <button
-                    @click="exportCategories()"
+                    @click="startExport()"
                     class="btn btn-primary btn-xl mb-2"
                 >
                     Выгрузить список категорий
                 </button>
 
-                <button type="submit" class="btn btn-link btn-xl mb-2">
+                <button
+                    @click="showFormImport = !showFormImport"
+                    class="btn btn-link btn-xl mb-2"
+                >
                     Загрузить список категорий
                 </button>
                 <router-link :to="{ name: 'AddNewCategory' }">
@@ -17,37 +21,24 @@
                         Добавить категорию
                     </button></router-link
                 >
-                <button
-                    @click="$router.push({ name: 'admin' })"
-                    class="btn btn-success"
-                >
-                    Назад
-                </button>
-                <div v-if="processing" class="alert alert-warning text-center">
-                    Категории выгружаются
-                    <div class="spinner-border text-success" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <progress-bar-component
-                        v-if="processing"
-                        channel="counter"
+                <button-back />
+                <template v-if="showFormImport"
+                    ><import-categories
+                        @cancelDownload="showFormImport = false"
+                /></template>
+                <template v-if="checkExport"
+                    ><export
+                        name="Категории"
+                        channel="categories-export-finish"
+                        uri="/api/admin/exportCategories"
                         event="ExportCategoriesCounter"
-                    />
-                </div>
-
-                <div
-                    v-else-if="exportFinished"
-                    class="alert alert-success text-center"
-                >
-                    Категории выгружены <a :href="downloadLink">(скачать)</a>
-                </div>
+                        :start="true"
+                /></template>
             </div>
         </div>
-
         <div>
             <hr />
             <h2 class="text-center">Таблица со всеми категориями</h2>
-
             <table class="table table-bordered mt-2 text-center">
                 <thead>
                     <th>Имя</th>
@@ -60,10 +51,7 @@
                 </thead>
                 <tr v-if="loading" class="text-center">
                     <td colspan="7">
-                        <img
-                            class="loader text-center"
-                            src="/storage/img/loaders/loader.gif"
-                        />
+                        <loading />
                     </td>
                 </tr>
                 <tbody v-else>
@@ -78,23 +66,25 @@
                             >
                         </td>
                         <td>
-                            <button
-                                class="btn btn-success"
-                                @click="
-                                    showEditCategoryForm(
-                                        category.id,
-                                        category.name
-                                    )
-                                "
+                            <router-link
+                                :to="{
+                                    name: 'EditCategory',
+                                    params: {
+                                        id: category.id,
+                                        name: category.name,
+                                    },
+                                }"
                             >
-                                Edit
-                            </button>
+                                <button class="btn btn-success">
+                                    Редактировать
+                                </button>
+                            </router-link>
                             <button
                                 v-if="category.products.length == 0"
                                 class="btn btn-danger"
                                 @click="deleteCategory(category.id)"
                             >
-                                Delete
+                                Удалить
                             </button>
                         </td>
                         <td>{{ category.description }}</td>
@@ -126,34 +116,12 @@ export default {
         return {
             loading: true,
             categories: [],
-            processing: false,
-            exportFinished: false,
-            downloadLink: null,
+            errors: null,
+            showFormImport: false,
+            checkExport: false,
         }
     },
     methods: {
-        exportCategories() {
-            this.processing = true
-            axios
-                .post("/api/admin/exportCategories")
-                .catch((error) => {
-                    this.errors = error.response.data.errors
-                })
-                .finally(() => {
-                    this.exportFinished = false
-                })
-        },
-        showEditCategoryForm(categoryId, categoryName) {
-            this.$router.push({
-                name: "EditCategory",
-                params: { name: categoryName },
-            })
-            axios
-                .get(`/api/admin/categories/category/${categoryId}/edit`)
-                .then((response) => {
-                    this.$root.$emit("eventing", response.data)
-                })
-        },
         deleteCategory(categoryId) {
             axios
                 .delete(`/api/admin/categories/category/${categoryId}`)
@@ -163,6 +131,9 @@ export default {
                 .catch((error) => {
                     this.errors = error.response.data.errors
                 })
+        },
+        startExport() {
+            this.checkExport = true
         },
     },
     created() {
@@ -182,17 +153,6 @@ export default {
         for (let error in this.errorList) {
             this.errors.push(this.errorList[error][0])
         }
-
-        Echo.channel("general").listen(".categories-export-finish", (e) => {
-            this.processing = false
-            this.exportFinished = true
-            this.downloadLink = `/storage/${e.message}`
-        })
-    },
-    destroyed() {
-        Echo.channel("general").stopListening(".categories-export-finish")
     },
 }
 </script>
-
-<style scoped></style>

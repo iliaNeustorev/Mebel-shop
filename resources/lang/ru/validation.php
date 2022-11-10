@@ -2,14 +2,21 @@
 
 return [
     'required' => 'Поле :attribute обязательно.',
-    'image' => ':attribute должен быть картинкой.',
+    'image' => 'Вы пытаетесь загрузить не картинку',
     'alpha_num' => ':attribute должен содержать буквы или цифры',
-    'unique' => 'этот :attribute уже существует.',
+    'unique' => 'это :attribute уже существует.',
+    'mimes' => ':attribute должен иметь расширение: :values.',
+    'mimetypes' => ':attribute должен быть: :values.',
+    'current_password' => 'Неправильный пароль',
+    'min' => [
+        'string' => ':attribute должен быть больше :min символов',
+    ],
     'attributes' => [
-        'name' => 'имя',
-        'image' => 'Изображение',
+        'name' => 'Имя',
+        'picture' => 'Изображение',
         'required' => 'Обязательно',
-        'new_address' => 'Адрес'
+        'new_address' => 'Адрес',
+        'file' => 'Файл'
     ],
 ];
 

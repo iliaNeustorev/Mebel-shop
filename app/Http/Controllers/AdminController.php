@@ -41,13 +41,22 @@ class AdminController extends Controller
     public function exportCategories () 
     {
         ExportCategories::dispatch();
+        return response()->json(
+            ['ОК'],
+        200);
     }
 
-    public function importCategories () 
+    public function importCategories (Request $request) 
     {
+        $request->validate([
+            'file' => 'required|mimes:csv,txt',
+        ]);
+        $file = $request->file('file');
+        Storage::putFileAs('public',$file, 'categories.csv');
         ImportCategories::dispatch();
-        session()->flash('startimportCategories');
-        return back();
+        return response()->json(
+            ['ОК'],
+        200);
     }
 
     public function ExportProducts () 
@@ -74,7 +83,7 @@ class AdminController extends Controller
     public function store (Request $request)
     {
         $request->validate([
-            'name' => 'required|max:255|unique:categories,name',
+            'name' => 'required|min:4|max:255|unique:categories,name',
             'description' => 'required|max:1000',
         ]);
 
@@ -104,7 +113,7 @@ class AdminController extends Controller
     public function update (Request $request) : bool {
         
         $request->validate([
-            'name' => 'required|max:255|',
+            'name' => 'required|max:255|min:4',
             'description' => 'required|max:1000',
         ]);
 
@@ -157,6 +166,10 @@ class AdminController extends Controller
        return Product::get();
     }
 
+    public function getProduct ($id) {
+       return Product::findOrFail($id);
+    }
+
     // get products by category_id
     public function getProductsCategory (Category $category)
     {
@@ -173,10 +186,10 @@ class AdminController extends Controller
     {
         $input = $request->all();
         $request->validate([
-            'name' => ['required','max:255', Rule::unique('products','name')->where('category_id', $input['categoryId'])],
+            'name' => ['required','max:255', Rule::unique('products','name')->where('category_id', $input['category_id'])],
             'description' => 'required|max:1000|min:10',
             'price' => 'required|numeric|max:30000000',
-            'categoryId' => 'required',
+            'category_id' => 'required',
         ]);
 
        
@@ -201,7 +214,7 @@ class AdminController extends Controller
         $product->name = $input['name'];
         $product->description = $input['description'];
         $product->price = $input['price'];
-        $product->category_id = $input['categoryId'];
+        $product->category_id = $input['category_id'];
         $product->save();
         return true;
     }
@@ -215,7 +228,7 @@ class AdminController extends Controller
             'name' => 'required|max:255|string',
             'description' => 'required|max:1000|min:10',
             'price' => 'required|numeric|max:30000000',
-            'categoryId' => 'required',
+            'category_id' => 'required',
         ]);
 
         $input = $request->all();
@@ -234,7 +247,7 @@ class AdminController extends Controller
                     'name' => $input['name'],
                     'description' => $input['description'],
                     'price' => $input['price'],
-                    'category_id' => $input['categoryId'],
+                    'category_id' => $input['category_id'],
                     'picture' => $file_name,
                 ]);
             } else {
@@ -242,7 +255,7 @@ class AdminController extends Controller
                         'name' => $input['name'],
                         'description' => $input['description'],
                         'price' => $input['price'],
-                        'category_id' => $input['categoryId'],
+                        'category_id' => $input['category_id'],
                     ]);
                 }
         

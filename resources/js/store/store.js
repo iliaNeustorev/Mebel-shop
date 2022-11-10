@@ -37,11 +37,8 @@ const store = new Vuex.Store({
             context.commit("setBasketProductsQuantity", payload)
         },
         getBasketProductsQuantity(context) {
-            axios.get("/basket/getProductsQuantity").then((response) => {
-                context.commit(
-                    "setBasketProductsQuantity",
-                    response.data.quantity
-                )
+            axios.get("/api/basket/getProductsQuantity").then((response) => {
+                context.commit("setBasketProductsQuantity", response.data)
             })
         },
     },

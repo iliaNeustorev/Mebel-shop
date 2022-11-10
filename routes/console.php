@@ -141,8 +141,37 @@ Artisan::command('import_categories', function(){
      ModelsCategory::insert($insert);
 });
 
-Artisan::command('del_cat', function() {
-    ModelsCategory::where('id', '>', '2')->delete();
+Artisan::command('check', function() {
+    
+    $products = Product::get();
+    $productsExport = $products->map( function ($product) {
+        $product['name_category'] = $product->category()->value('name');
+        return $product;
+      })->toArray();
+    $count = count($productsExport);
+    $columns = [
+       'id',
+       'name',
+       'description',
+       'price',
+       'picture',
+       'category_id',
+       'created_at',
+       'updated_at', 
+       'name_category'
+    ];
+    $i = 1;
+    foreach ($productsExport as $product) {
+        $product['name']  = iconv('utf-8', 'windows-1251//IGNORE',$product['name']);
+        $product['description']  = iconv('utf-8', 'windows-1251//IGNORE', $product['description']);
+        $product['price']  = iconv('utf-8', 'windows-1251//IGNORE', $product['price']);
+        $product['picture']  = iconv('utf-8', 'windows-1251//IGNORE', $product['picture']);
+        $product['category_id']  = iconv('utf-8', 'windows-1251//IGNORE', $product['category_id']);
+        $product['name_category']  = iconv('utf-8', 'windows-1251//IGNORE', $product['name_category']);
+        $percent = round($i++ / $count * 100);
+        echo $percent;
+       
+    }
 });
 
 Artisan::command('test', function(){

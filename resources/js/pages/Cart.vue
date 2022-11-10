@@ -1,36 +1,39 @@
 <template>
     <div>
-        <div v-if="errors" class="alert alert-danger">
-            <ul>
-                <li v-for="(error, idx) in errors" :key="idx">
-                    {{ error[0] }}
-                </li>
-                <template v-if="errors.email">
-                    Ссылка на <a href="">Вход</a>
-                </template>
-            </ul>
-        </div>
-        <table v-if="products.length" class="table table-bordered">
+        <show-errors v-if="errors" :errors="errors">
+            <template v-if="errors.email">
+                Ссылка на
+                <router-link :to="{ name: 'login' }">Вход</router-link>
+            </template></show-errors
+        >
+        <table v-if="products.length" class="table table-bordered text-center">
             <thead>
                 <tr>
                     <th>Название</th>
                     <th>Цена</th>
                     <th>Количество</th>
                     <th>Сумма</th>
+                    <th>Добавить 1 товар/убрать 1 товар</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="product in products" :key="product.id">
-                    <td>{{ product["title"] }}</td>
-                    <td>{{ product["price"] }}</td>
-                    <td>{{ product["quantity"] }}</td>
+                    <td>{{ product.title }}</td>
+                    <td>{{ product.price }}</td>
+                    <td>{{ product.quantity }}</td>
                     <td>
-                        {{ product["quantity"] * product["price"] }}
+                        {{ product.quantity * product.price }}
+                    </td>
+                    <td>
+                        <button-change-cart
+                            :id="product.id"
+                            :quantity="product.quantity"
+                            @newQuantity="changeQuantity(product.id, $event)"
+                        />
                     </td>
                 </tr>
-
                 <tr v-if="products">
-                    <td colspan="4">
+                    <td colspan="5">
                         <span
                             >Общая сумма заказа:<b>{{ sumOrder }}</b></span
                         >
@@ -46,31 +49,27 @@
                 ></em
             >
         </div>
-        <template v-if="products">
+        <form @submit.prevent="submit()" v-if="products">
             <label>Имя</label>
             <input
-                v-model="name"
-                :disabled="isDisabled"
+                :disabled="validationForm"
+                v-model.trim.lazy="userData.name"
                 class="form-control mb-2"
             />
             <label>Адрес</label>
             <input
-                v-model="mainAddress"
-                :disabled="isDisabledAddress"
+                :disabled="validationForm"
+                v-model.trim.lazy="userData.address"
                 class="form-control mb-2"
             />
             <label>Почта</label>
             <input
-                v-model="email"
-                :disabled="isDisabled"
+                :disabled="validationForm"
+                v-model.trim.lazy="userData.email"
                 type="email"
                 class="form-control mb-2"
             />
-            <button
-                @click="submit"
-                :disabled="processing || !products.length || !mainAddress"
-                class="btn btn-success"
-            >
+            <button :disabled="!validationForm" class="btn btn-success">
                 <span
                     v-if="processing"
                     class="spinner-border text-success"
@@ -80,69 +79,90 @@
                 </span>
                 <span v-else>Оформить заказ</span>
             </button>
-        </template>
+        </form>
     </div>
 </template>
 <script>
+import Form from "vform"
 export default {
     data() {
         return {
             processing: false,
             errors: null,
-            isDisabled: true,
-            isDisabledAddress: false,
             products: [],
-            email: "",
-            mainAddress: "",
-            name: "",
-            sumOrder: "",
+            userData: Form.make({
+                email: "",
+                address: "",
+                name: "",
+            }),
         }
+    },
+    computed: {
+        validationForm() {
+            return (
+                this.userData.email.length > 0 &&
+                this.userData.email.length > 0 &&
+                this.userData.address.length > 0 &&
+                this.sumOrder != 0
+            )
+        },
+        sumOrder() {
+            return this.products.reduce((sum, elem) => {
+                return (sum += elem.quantity * elem.price)
+            }, 0)
+        },
     },
     created() {
         axios.get("/api/basket/").then((response) => {
-            this.products = response.data.products
-            this.email = response.data.email
-            this.mainAddress = response.data.mainAddress
-            this.name = response.data.name
-            this.sumOrder = response.data.sumOrder
-            if (response.data.mainAddress != null) {
-                this.isDisabledAddress = true
+            if (response.data.user.name != null) {
+                Object.assign(this.userData, response.data.user)
             }
+            this.products = response.data.products
         })
     },
     mounted() {
         for (let error in this.errorList) {
             this.errors.push(this.errorList[error][0])
         }
-        if (!this.$store.state.user.name) {
-            this.isDisabled = false
-        }
     },
     methods: {
+        changeQuantity(id, e) {
+            let idx = this.products.findIndex((product) => {
+                return product.id == id
+            })
+            this.products[idx].quantity = e.quantityProduct
+            this.$store.dispatch(
+                "changeBasketProductsQuantity",
+                e.allQuantityCart
+            )
+        },
         submit() {
-            this.processing = true
-            this.errors = null
-            const params = {
-                name: this.name,
-                email: this.email,
-                address: this.mainAddress,
+            if (this.validationForm) {
+                this.processing = true
+                this.errors = null
+                axios
+                this.userData
+                    .post("/api/basket/create_order")
+                    .then((response) => {
+                        this.$swal({
+                            icon: "success",
+                            title: "Заказ оформлен!",
+                        }).then(() => {
+                            this.$store.dispatch("getBasketProductsQuantity")
+                            this.$router.push({ name: "Orders" })
+                        })
+                        this.$store.dispatch(
+                            "getChekOrders",
+                            response.data.orders
+                        )
+                    })
+                    .catch((error) => {
+                        this.errors = error.response.data.errors
+                    })
+                    .finally(() => {
+                        this.processing = false
+                    })
             }
-            axios
-                .post("/api/basket/create_order", params)
-                .then((response) => {
-                    this.$swal({
-                        title: "Заказ оформлен!",
-                        icon: "success",
-                    }).then(() => {})
-                    this.$store.dispatch("getChekOrders", response.data.orders)
-                })
-                .catch((error) => {
-                    this.errors = error.response.data.errors
-                })
-                .finally(() => {
-                    this.processing = false
-                    this.$router.push({ name: "Orders" })
-                })
         },
     },
 }

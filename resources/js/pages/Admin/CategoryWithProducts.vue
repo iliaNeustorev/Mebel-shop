@@ -1,50 +1,34 @@
 <template>
     <div>
-        <span class="buttonGroups mb-2">
-            <button
-                @click="showForm = !showForm"
-                class="btn btn-success itemButtonGroups"
+        <show-errors v-if="errors" :errors="errors" />
+        <div class="buttonGroups mb-2">
+            <router-link
+                :to="{ name: 'AddProduct', params: { categoryID: categoryId } }"
             >
-                {{ titleButton }}
-            </button>
-
+                <button class="btn btn-success itemButtonGroups">
+                    Добавить продукт в категорию {{ categoryName }}
+                </button>
+            </router-link>
             <button-mass-delete
                 class="itemButtonGroups"
-                v-show="!showForm"
                 :validation-form="validationForm"
                 :count-items="countProducts"
                 @acceptedDelete="deleteProducts()"
             ></button-mass-delete>
-            <button
-                @click="$router.go(-1)"
-                class="btn btn-success itemButtonGroups"
-            >
-                Назад
-            </button>
-        </span>
+            <button-back class="itemButtonGroups" />
+        </div>
         <h2 class="text-center">
             Продукты категории
             <strong
                 ><em>{{ categoryName }}</em></strong
             >
         </h2>
-        <transition name="slide">
-            <addProduct-component
-                @newCategoryId="changeCategoryId($event)"
-                :category-id="categoryId"
-                v-show="showForm"
-            ></addProduct-component>
-        </transition>
         <div v-if="loading" class="text-center">
             <span>
-                <img
-                    class="loader text-center"
-                    src="/storage/img/loaders/loader.gif"
-                />
+                <loading />
             </span>
         </div>
-
-        <div v-else-if="!showForm">
+        <div>
             <table class="table table-bordered text-center">
                 <thead>
                     <th></th>
@@ -70,15 +54,10 @@
                                     name: 'EditProduct',
                                     params: {
                                         id: product.id,
-                                        name: product.name,
-                                        description: product.description,
-                                        price: product.price,
-                                        picture: product.picture,
-                                        categoryID: product.category_id,
                                     },
                                 }"
-                                >{{ product.name }}</router-link
-                            >
+                                >{{ product.name }}
+                            </router-link>
                         </td>
                         <td>{{ product.description }}</td>
                         <td>{{ product.price }}</td>
@@ -109,22 +88,17 @@
 export default {
     data() {
         return {
-            showForm: false,
             loading: true,
             products: [],
             categoryId: 0,
             categoryName: "",
             checkedIdforDelete: [],
+            errors: null,
         }
     },
     computed: {
         countProducts() {
             return Object.keys(this.checkedIdforDelete).length
-        },
-        titleButton() {
-            return this.showForm
-                ? "К списку продуктов"
-                : "Добавить продукт в категорию"
         },
         validationForm() {
             return this.checkedIdforDelete.length !== 0
@@ -144,7 +118,6 @@ export default {
                 this.loading = false
             })
     },
-    mounted() {},
     methods: {
         deleteProducts() {
             const params = {
@@ -164,9 +137,6 @@ export default {
                 .catch((error) => {
                     this.errors = error.response.data.errors
                 })
-        },
-        changeCategoryId(e) {
-            this.categoryId = e.id
         },
     },
 }

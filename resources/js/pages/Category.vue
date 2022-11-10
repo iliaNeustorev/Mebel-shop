@@ -2,7 +2,7 @@
     <div>
         <div class="row">
             <div class="text-center" v-if="loading">
-                <img src="/storage/img/loaders/loader.gif" />
+                <loading />
             </div>
             <div class="row" v-else>
                 <div class="text-center" v-if="!products.length">
@@ -26,26 +26,16 @@
                             <p class="card-text">
                                 {{ product.description }}...
                             </p>
-                            <div class="card-basket-buttons">
-                                <button
-                                    @click="basket(product.id, 'add')"
-                                    type="submit"
-                                    class="btn btn-success"
-                                >
-                                    +
-                                </button>
-                                <div class="card-counter">
+                            <button-change-cart
+                                :id="product.id"
+                                :quantity="product.quantity"
+                                @newQuantity="
+                                    changeQuantity(product.id, $event)
+                                "
+                                ><div class="card-counter">
                                     {{ product.quantity }}
-                                </div>
-                                <button
-                                    @click="basket(product.id, 'remove')"
-                                    :disabled="product.quantity == 0"
-                                    type="submit"
-                                    class="btn btn-danger"
-                                >
-                                    -
-                                </button>
-                            </div>
+                                </div></button-change-cart
+                            >
                             <p class="card-price mt-1 text-center">
                                 {{ product.price }} руб.
                             </p>
@@ -64,40 +54,28 @@ export default {
             loading: true,
         }
     },
-    computed: {},
-    watch: {},
-    methods: {
-        basket(productId, method, quantity) {
-            if (method == "remove" && quantity == 0) {
-                alert("!!!!!")
-            }
-            const params = {
-                id: productId,
-            }
-            axios
-                .post(`/api/basket/product/${method}`, params)
-                .then(({ data }) => {
-                    const idx = this.products.findIndex((product) => {
-                        return product.id == productId
-                    })
-                    this.products[idx].quantity = data.quantity
-                    this.$store.dispatch(
-                        "changeBasketProductsQuantity",
-                        data.basketProductsQuantity
-                    )
-                })
-        },
-    },
     created() {
         axios
             .get(`/api/categories/${this.$route.params.id}/getProducts`)
             .then((response) => {
                 this.products = response.data
             })
-            .catch((error) => {})
+            .catch(() => {})
             .finally(() => {
                 this.loading = false
             })
+    },
+    methods: {
+        changeQuantity(id, e) {
+            let idx = this.products.findIndex((product) => {
+                return product.id == id
+            })
+            this.products[idx].quantity = e.quantityProduct
+            this.$store.dispatch(
+                "changeBasketProductsQuantity",
+                e.allQuantityCart
+            )
+        },
     },
 }
 </script>

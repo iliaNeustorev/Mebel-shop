@@ -96,29 +96,35 @@
 import { mapGetters } from "vuex"
 export default {
     computed: { ...mapGetters(["user", "quantity", "chekOrders"]) },
-    created() {
-        this.$store.dispatch("getBasketProductsQuantity", {})
-        if (!this.user.name) {
-            axios.get("/api/user").then((response) => {
-                this.$store.dispatch("getUser", response.data.user)
-                this.$store.dispatch("getChekOrders", response.data.orders)
-                localStorage.setItem("user", response.data.user.name)
-            })
+    mounted() {
+        if (!this.user.length) {
+            axios
+                .get("/api/user")
+                .then((response) => {
+                    this.$store.dispatch("getUser", response.data.user)
+                    this.$store.dispatch("getChekOrders", response.data.orders)
+                    localStorage.setItem("user", response.data.user.name)
+                })
+                .catch(() => {
+                    localStorage.removeItem("user")
+                    this.$store.dispatch("getUser", {})
+                })
+        }
+        if (this.quantity == 0) {
+            this.$store.dispatch("getBasketProductsQuantity")
         }
     },
 
     methods: {
         logout() {
             axios.post("/api/logout").then(() => {
+                localStorage.removeItem("user")
                 this.$store.dispatch("getUser", {})
                 this.$store.dispatch("getChekOrders", 0)
-                localStorage.removeItem("user")
+                this.$store.dispatch("changeBasketProductsQuantity", 0)
                 if (this.$route.path != "/") this.$router.push({ name: "Home" })
             })
         },
-    },
-    destroyed() {
-        localStorage.removeItem("user")
     },
 }
 </script>

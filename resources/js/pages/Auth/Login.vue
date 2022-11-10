@@ -1,65 +1,32 @@
 <template>
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-5">
             <div class="card">
                 <div class="card-header">Авторизация</div>
 
                 <div class="card-body">
-                    <div class="row mb-3">
-                        <label
-                            for="email"
-                            class="col-md-4 col-form-label text-md-right"
-                            >Почта</label
-                        >
+                    <form-input
+                        ref="first"
+                        label="Почта"
+                        name="email"
+                        type="email"
+                        placeholder="Введите почту"
+                        :form="loginData"
+                        autocomplete="email"
+                        @validationFiled="fieldValid"
+                    />
 
-                        <div class="col-md-6">
-                            <input
-                                v-model="email"
-                                type="email"
-                                class="form-control"
-                                required
-                                autocomplete="email"
-                                autofocus
-                            />
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <label
-                            for="password"
-                            class="col-md-4 col-form-label text-md-right"
-                            >Пароль</label
-                        >
-
-                        <div class="col-md-6">
-                            <input
-                                v-model="password"
-                                type="password"
-                                class="form-control"
-                                required
-                                autocomplete="current-password"
-                            />
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-md-6 offset-md-4">
-                            <div class="form-check">
-                                <input
-                                    v-model="rememberMe"
-                                    class="form-check-input"
-                                    type="checkbox"
-                                />
-
-                                <label class="form-check-label" for="remember">
-                                    Запомнить меня
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
+                    <form-input
+                        label="Пароль"
+                        type="password"
+                        name="password"
+                        placeholder="Введите пароль"
+                        :form="loginData"
+                        autocomplete="current-password"
+                        @validationFiled="fieldValid"
+                    />
                     <div class="row mb-0">
-                        <div class="col-md-8 offset-md-4">
+                        <div class="col-md-8 offset-md-2">
                             <span
                                 v-if="loading"
                                 class="spinner-border text-primary"
@@ -69,18 +36,12 @@
                             </span>
                             <button
                                 v-else
+                                :disabled="!validationForm"
                                 @click="login()"
-                                class="btn btn-primary"
+                                class="btn btn-primary btn-lg"
                             >
                                 Войти
                             </button>
-                            <a
-                                v-if="routePasswordRequest"
-                                class="btn btn-link"
-                                :href="routePasswordRequest"
-                            >
-                                Забыли пароль
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -90,38 +51,49 @@
 </template>
 
 <script>
+import Form from "vform"
+import addElementBd from "../../mixins/add-element-Bd.js"
 export default {
+    mixins: [addElementBd],
     data() {
         return {
-            email: "",
-            password: "",
-            rememberMe: false,
-            routePasswordRequest: "",
+            loginData: Form.make({
+                email: "",
+                password: "",
+            }),
             loading: false,
+            validation: { email: false, password: false },
         }
     },
-    created() {},
     methods: {
         login() {
-            this.loading = true
-            axios.get("/sanctum/csrf-cookie").then(() => {
-                const params = {
-                    email: this.email,
-                    password: this.password,
-                }
-                axios.post("/api/login", params).then((response) => {
-                    this.loading = false
-                    this.$store.dispatch("getUser", response.data.user)
-                    this.$store.dispatch("getChekOrders", response.data.orders)
-                    localStorage.setItem("user", response.data.user.name)
-                    window.history.length > 1
-                        ? this.$router.go(-1)
-                        : this.$router.push({ name: "Home" })
+            if (this.validationForm) {
+                this.loading = true
+                axios.get("/sanctum/csrf-cookie").then(() => {
+                    axios
+                    this.loginData
+                        .post("/api/login")
+                        .then((response) => {
+                            this.$store.dispatch("getUser", response.data.user)
+                            this.$store.dispatch(
+                                "getChekOrders",
+                                response.data.orders
+                            )
+                            localStorage.setItem(
+                                "user",
+                                response.data.user.name
+                            )
+                            window.history.length > 1
+                                ? this.$router.go(-1)
+                                : this.$router.push({ name: "Home" })
+                        })
+                        .catch(() => {})
+                        .finally(() => {
+                            this.loading = false
+                        })
                 })
-            })
+            }
         },
     },
 }
 </script>
-
-<style></style>

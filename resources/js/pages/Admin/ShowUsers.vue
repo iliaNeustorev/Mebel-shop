@@ -143,7 +143,6 @@ export default {
             textLoad: "Загрузка",
         }
     },
-    computed: {},
     methods: {
         getSortArrow(column) {
             if (column != this.sortColumn.column) {
@@ -166,9 +165,6 @@ export default {
         },
         getUsers(page = 1) {
             this.updating = true
-            // if (page == this.currentPage) {
-            //     return false
-            // }
             const newLink = `/admin/showRegUsers?page=${page}`
             if (this.$route.fullPath != newLink) {
                 this.$router.push(newLink)
@@ -211,8 +207,8 @@ export default {
                     this.$store.dispatch("getUser", response.data)
                     localStorage.setItem("user", response.data.name)
                     this.$swal({
-                        title: "Вход под пользователем " + response.data.name,
                         icon: "success",
+                        title: "Вход под пользователем " + response.data.name,
                     })
                 })
                 .finally(() => {

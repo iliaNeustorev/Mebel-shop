@@ -91,16 +91,13 @@ class BasketController extends Controller
             ];
         })->values();
 
-        $sum_order =  $basket_products->map( function ($product) {
-            return $product['price'] * $product['quantity'];     
-        })->sum();
-
         $date = [
             'products' => $basket_products,
-            'sumOrder' =>  $sum_order,
-            'mainAddress' =>  $main_address,
-            'email' => $email,
-            'name' => $name,
+            'user' => [
+                'address' =>  $main_address,
+                'email' => $email,
+                'name' => $name,
+            ]
         ];
 
         return $date;

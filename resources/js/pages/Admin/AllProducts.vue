@@ -1,10 +1,8 @@
 <template>
     <div>
+        <show-errors v-if="errors" :errors="errors" />
         <div class="d-grid gap-2 d-md-block mb-3">
-            <button
-                @click="exportProducts()"
-                class="btn btn-primary btn-xl mb-2"
-            >
+            <button @click="startExport()" class="btn btn-primary btn-xl mb-2">
                 Выгрузить список продуктов
             </button>
             <button type="submit" class="btn btn-link btn-xl mb-2">
@@ -16,33 +14,24 @@
                 :count-items="countProducts"
                 @acceptedDelete="deleteProducts()"
             ></button-mass-delete>
-            <button
-                class="btn btn-success btn-xl mb-2"
-                @click="showForm = !showForm"
-            >
-                {{ titleButton }}
-            </button>
-            <button @click="$router.go(-1)" class="btn btn-success mb-2">
-                Назад
-            </button>
-            <div v-if="processing" class="alert alert-warning text-center">
-                Продукты выгружаются
-                <div class="spinner-border text-success" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-            </div>
-            <div
-                v-else-if="exportFinished"
-                class="alert alert-success text-center"
-            >
-                Продукты выгружены <a :href="downloadLink">(скачать)</a>
-            </div>
+            <router-link to="AddProduct">
+                <button class="btn btn-success btn-xl mb-2">
+                    Добавить продукт
+                </button>
+            </router-link>
+            <button-back class="mb-2" />
         </div>
+        <template v-if="checkExport"
+            ><export
+                name="Продукты"
+                channel="products-export-finish"
+                uri="/api/admin/exportProducts"
+                event="ExportProductsCounter"
+                :start="true"
+        /></template>
         <hr />
-        <transition name="slide">
-            <addProduct-component v-show="showForm"></addProduct-component>
-        </transition>
-        <div v-show="!showForm">
+
+        <div>
             <h2 class="text-center">Таблица со всеми продуктами</h2>
             <table class="table table-bordered mt-2 text-center">
                 <thead>
@@ -57,10 +46,7 @@
                 </thead>
                 <tr v-if="loading" class="text-center">
                     <td colspan="7">
-                        <img
-                            class="loader text-center"
-                            src="/storage/img/loaders/loader.gif"
-                        />
+                        <loading />
                     </td>
                 </tr>
                 <tbody v-else>
@@ -78,19 +64,14 @@
                                     name: 'EditProduct',
                                     params: {
                                         id: product.id,
-                                        name: product.name,
-                                        description: product.description,
-                                        price: product.price,
-                                        picture: product.picture,
-                                        categoryID: product.category_id,
                                     },
                                 }"
-                                >{{ product.name }}</router-link
-                            >
+                                >{{ product.name }}
+                            </router-link>
                         </td>
                         <td>{{ product.description }}</td>
                         <td>{{ product.price }}</td>
-                        <td></td>
+                        <td>{{ categories[product.category_id] }}</td>
                         <a href="" title="Редактировать продукт"
                             ><img
                                 class="avatar"
@@ -112,16 +93,16 @@
 </template>
 
 <script>
+import loadCategories from "../../mixins/load-categories.js"
 export default {
+    mixins: [loadCategories],
     data() {
         return {
             loading: true,
-            processing: false,
-            exportFinished: false,
-            downloadLink: null,
             products: [],
             checkedIdforDelete: [],
-            showForm: false,
+            errors: null,
+            checkExport: false,
         }
     },
     computed: {
@@ -129,27 +110,13 @@ export default {
             return Object.keys(this.checkedIdforDelete).length
         },
         validationForm() {
-            return this.checkedIdforDelete.length !== 0
+            return this.checkedIdforDelete.length != 0
         },
-        titleButton() {
-            return this.showForm
-                ? "К списку продуктов"
-                : "Добавить продукт в категорию"
-        },
+        // fix() {
+        //     return this.validationForm ? "position-fixed top-50 start-0" : ""
+        // },
     },
     methods: {
-        exportProducts() {
-            this.processing = true
-            axios
-                .post("/api/admin/exportProducts")
-                .then(() => {})
-                .catch((error) => {
-                    this.errors = error.response.data.errors
-                })
-                .finally(() => {
-                    this.exportFinished = false
-                })
-        },
         deleteProducts() {
             const params = {
                 idProductsDelete: this.checkedIdforDelete,
@@ -158,15 +125,18 @@ export default {
                 .post("/api/admin/products/delProducts", params)
                 .then((response) => {
                     this.$swal({
-                        title: "Удаление прошло успешно",
                         icon: "info",
-                    }).then(() => {})
+                        title: "Удаление прошло успешно",
+                    })
                     this.checkedIdforDelete = []
                     this.products = response.data.products
                 })
                 .catch((error) => {
                     this.errors = error.response.data.errors
                 })
+        },
+        startExport() {
+            this.checkExport = true
         },
     },
     created() {
@@ -175,22 +145,10 @@ export default {
             this.loading = false
         })
     },
-
     mounted() {
         for (let error in this.errorList) {
             this.errors.push(this.errorList[error][0])
         }
-
-        Echo.channel("general").listen(".products-export-finish", (e) => {
-            this.processing = false
-            this.exportFinished = true
-            this.downloadLink = `/storage/${e.message}`
-        })
-    },
-    destroyed() {
-        Echo.channel("general").stopListening(".products-export-finish")
     },
 }
 </script>
-
-<style scoped></style>
