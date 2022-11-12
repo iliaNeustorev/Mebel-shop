@@ -79,7 +79,7 @@ export default {
     },
     methods: {
         sendForm() {
-            this.$emit("acceptedForm", { id: 7 })
+            this.$emit("acceptedForm")
         },
         cancelSend() {
             this.$emit("cancelSend")

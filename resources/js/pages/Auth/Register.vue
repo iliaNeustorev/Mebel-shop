@@ -49,7 +49,7 @@
                                 v-else
                                 @click="Registration()"
                                 type="submit"
-                                class="btn btn-primary"
+                                class="btn btn-primary btn-lg"
                             >
                                 Регистрация
                             </button>

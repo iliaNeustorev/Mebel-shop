@@ -5334,6 +5334,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     validationForm: {
@@ -5456,9 +5466,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     sendForm: function sendForm() {
-      this.$emit("acceptedForm", {
-        id: 7
-      });
+      this.$emit("acceptedForm");
     },
     cancelSend: function cancelSend() {
       this.$emit("cancelSend");
@@ -6630,6 +6638,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mixins: [_mixins_load_categories_js__WEBPACK_IMPORTED_MODULE_0__["default"]],
@@ -6648,10 +6658,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     validationForm: function validationForm() {
       return this.checkedIdforDelete.length != 0;
-    } // fix() {
-    //     return this.validationForm ? "position-fixed top-50 start-0" : ""
-    // },
-
+    }
   },
   methods: {
     deleteProducts: function deleteProducts() {
@@ -6666,7 +6673,8 @@ __webpack_require__.r(__webpack_exports__);
           title: "Удаление прошло успешно"
         });
 
-        _this.checkedIdforDelete = [];
+        _this.clearCheckedDelete();
+
         _this.products = response.data.products;
       })["catch"](function (error) {
         _this.errors = error.response.data.errors;
@@ -6674,6 +6682,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     startExport: function startExport() {
       this.checkExport = true;
+    },
+    clearCheckedDelete: function clearCheckedDelete() {
+      this.checkedIdforDelete = [];
     }
   },
   created: function created() {
@@ -42137,49 +42148,70 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("button-send-form", {
-    attrs: {
-      "validation-form": _vm.validationForm,
-      "name-button-accepted": "Удалить выбраное",
-      "name-button-denied": "Выберите необходимое для удаления",
-      "class-button-denied": "btn-warning",
-      "class-button-accepted": "btn-danger",
-    },
-    on: {
-      acceptedForm: function ($event) {
-        return _vm.confirmDelete()
-      },
-    },
-    scopedSlots: _vm._u(
-      [
-        _vm.countItems
-          ? {
-              key: "textModalBtn",
+  return _c(
+    "div",
+    [
+      _c("button-send-form", {
+        attrs: {
+          "validation-form": _vm.validationForm,
+          "name-button-accepted": "Удалить выбраное",
+          "name-button-denied": "Выберите необходимое для удаления",
+          "class-button-denied": "btn-warning ",
+          "class-button-accepted": "btn-danger position-fixed top-50 start-0",
+        },
+        on: {
+          acceptedForm: function ($event) {
+            return _vm.confirmDelete()
+          },
+        },
+        scopedSlots: _vm._u(
+          [
+            _vm.countItems
+              ? {
+                  key: "textModalBtn",
+                  fn: function () {
+                    return [
+                      _c("span", [_vm._v("(" + _vm._s(_vm.countItems) + ")")]),
+                    ]
+                  },
+                  proxy: true,
+                }
+              : null,
+            {
+              key: "mainModal",
               fn: function () {
                 return [
-                  _c("span", [_vm._v("(" + _vm._s(_vm.countItems) + ")")]),
+                  _c("p", { staticClass: "container" }, [
+                    _vm._v("\n                Удалить в количестве "),
+                    _c("span", [_vm._v(_vm._s(_vm.countItems))]),
+                  ]),
                 ]
               },
               proxy: true,
-            }
-          : null,
-        {
-          key: "mainModal",
-          fn: function () {
-            return [
-              _c("p", { staticClass: "container" }, [
-                _vm._v("\n            Удалить в количестве "),
-                _c("span", [_vm._v(_vm._s(_vm.countItems))]),
-              ]),
-            ]
-          },
-          proxy: true,
-        },
-      ],
-      null,
-      true
-    ),
-  })
+            },
+          ],
+          null,
+          true
+        ),
+      }),
+      _vm._v(" "),
+      _vm.countItems
+        ? _c(
+            "button",
+            {
+              staticClass: "btn btn-warning position-fixed bottom-0 start-0",
+              on: {
+                click: function ($event) {
+                  return _vm.$emit("clearDeleted")
+                },
+              },
+            },
+            [_vm._v("\n        Очистить выбраное\n    ")]
+          )
+        : _vm._e(),
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -43665,7 +43697,7 @@ var render = function () {
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "d-grid gap-2 d-md-block mb-3" },
+        { staticClass: "mb-3" },
         [
           _c(
             "button",
@@ -43696,6 +43728,9 @@ var render = function () {
               "count-items": _vm.countProducts,
             },
             on: {
+              clearDeleted: function ($event) {
+                return _vm.clearCheckedDelete()
+              },
               acceptedDelete: function ($event) {
                 return _vm.deleteProducts()
               },
@@ -43756,7 +43791,10 @@ var render = function () {
                               expression: "checkedIdforDelete",
                             },
                           ],
-                          attrs: { type: "checkbox" },
+                          attrs: {
+                            title: "выбрать на удаление",
+                            type: "checkbox",
+                          },
                           domProps: {
                             value: product.id,
                             checked: Array.isArray(_vm.checkedIdforDelete)
@@ -45451,7 +45489,7 @@ var render = function () {
                     : _c(
                         "button",
                         {
-                          staticClass: "btn btn-primary",
+                          staticClass: "btn btn-primary btn-lg",
                           attrs: { type: "submit" },
                           on: {
                             click: function ($event) {

@@ -1,7 +1,7 @@
 <template>
     <div>
         <show-errors v-if="errors" :errors="errors" />
-        <div class="d-grid gap-2 d-md-block mb-3">
+        <div class="mb-3">
             <button @click="startExport()" class="btn btn-primary btn-xl mb-2">
                 Выгрузить список продуктов
             </button>
@@ -12,8 +12,10 @@
                 class="btn btn-link btn-xl mb-2"
                 :validation-form="validationForm"
                 :count-items="countProducts"
+                @clearDeleted="clearCheckedDelete()"
                 @acceptedDelete="deleteProducts()"
-            ></button-mass-delete>
+            >
+            </button-mass-delete>
             <router-link to="AddProduct">
                 <button class="btn btn-success btn-xl mb-2">
                     Добавить продукт
@@ -30,7 +32,6 @@
                 :start="true"
         /></template>
         <hr />
-
         <div>
             <h2 class="text-center">Таблица со всеми продуктами</h2>
             <table class="table table-bordered mt-2 text-center">
@@ -53,6 +54,7 @@
                     <tr v-for="product in products" :key="product.id">
                         <td>
                             <input
+                                title="выбрать на удаление"
                                 type="checkbox"
                                 :value="product.id"
                                 v-model="checkedIdforDelete"
@@ -112,9 +114,6 @@ export default {
         validationForm() {
             return this.checkedIdforDelete.length != 0
         },
-        // fix() {
-        //     return this.validationForm ? "position-fixed top-50 start-0" : ""
-        // },
     },
     methods: {
         deleteProducts() {
@@ -128,7 +127,7 @@ export default {
                         icon: "info",
                         title: "Удаление прошло успешно",
                     })
-                    this.checkedIdforDelete = []
+                    this.clearCheckedDelete()
                     this.products = response.data.products
                 })
                 .catch((error) => {
@@ -137,6 +136,9 @@ export default {
         },
         startExport() {
             this.checkExport = true
+        },
+        clearCheckedDelete() {
+            this.checkedIdforDelete = []
         },
     },
     created() {
