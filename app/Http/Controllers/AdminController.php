@@ -64,11 +64,17 @@ class AdminController extends Controller
         ExportProducts::dispatch();
     }
 
-    public function importProducts () 
+    public function importProducts (Request $request)  
     {
-        importProducts::dispatch();
-        session()->flash('startimportProducts');
-        return back();
+        $request->validate([
+            'file' => 'required|mimes:csv,txt',
+        ]);
+        $file = $request->file('file');
+        Storage::putFileAs('public',$file, 'products.csv');
+        ImportProducts::dispatch();
+        return response()->json(
+            ['ОК'],
+        200);
     }
 
     //return categories with products

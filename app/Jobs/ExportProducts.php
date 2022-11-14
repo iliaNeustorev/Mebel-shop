@@ -38,7 +38,7 @@ class ExportProducts implements ShouldQueue
             ]);
             $products = Product::get();
             $productsExport = $products->map( function ($product) {
-                $product['name_category'] = $product->category()->value('name');
+                $product['category_id'] = $product->category()->value('name');
                 return $product;
               })->toArray();
             Storage::delete('public/exportProducts.csv');
@@ -52,7 +52,6 @@ class ExportProducts implements ShouldQueue
                'category_id',
                'created_at',
                'updated_at', 
-               'name_category'
             ];
             Storage::append('public/exportProducts.csv',implode(';',$columns));
             $i = 1;
@@ -62,7 +61,6 @@ class ExportProducts implements ShouldQueue
                 $product['price']  = iconv('utf-8', 'windows-1251//IGNORE', $product['price']);
                 $product['picture']  = iconv('utf-8', 'windows-1251//IGNORE', $product['picture']);
                 $product['category_id']  = iconv('utf-8', 'windows-1251//IGNORE', $product['category_id']);
-                $product['name_category']  = iconv('utf-8', 'windows-1251//IGNORE', $product['name_category']);
                 Storage::append('public/exportProducts.csv',implode(';',$product));
                 $percent = round($i++ / $count * 100);
                 $pusher->trigger('counter','ExportProductsCounter', $percent);

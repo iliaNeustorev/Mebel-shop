@@ -57,6 +57,7 @@ class ExportCategories implements ShouldQueue
             Storage::append('public/exportCategories.csv',implode(';',$category));
             $percent = round($i++ / $count * 100, 2);
             $pusher->trigger('counter','ExportCategoriesCounter', $percent);
+            sleep(1);
         }
         $pusher->trigger('general','categories-export-finish', ['message' => 'exportCategories.csv']);
     }

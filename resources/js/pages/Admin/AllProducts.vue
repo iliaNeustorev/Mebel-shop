@@ -5,7 +5,11 @@
             <button @click="startExport()" class="btn btn-primary btn-xl mb-2">
                 Выгрузить список продуктов
             </button>
-            <button type="submit" class="btn btn-link btn-xl mb-2">
+            <button
+                @click="showFormImport = !showFormImport"
+                type="submit"
+                class="btn btn-link btn-xl mb-2"
+            >
                 Загрузить список продуктов
             </button>
             <button-mass-delete
@@ -23,6 +27,15 @@
             </router-link>
             <button-back class="mb-2" />
         </div>
+        <template v-if="showFormImport"
+            ><import
+                @cancelDownload="showFormImport = false"
+                name="Продукты"
+                uri="/api/admin/importProducts"
+                channel="products-import-finish"
+                event="ImportProductsCounter"
+            />
+        </template>
         <template v-if="checkExport"
             ><export
                 name="Продукты"
@@ -105,6 +118,7 @@ export default {
             checkedIdforDelete: [],
             errors: null,
             checkExport: false,
+            showFormImport: false,
         }
     },
     computed: {

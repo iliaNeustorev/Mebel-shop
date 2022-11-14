@@ -59,10 +59,7 @@ Vue.component(
     require("./components/Buttons/ButtonBack.vue").default
 )
 Vue.component("show-errors", require("./components/ShowErrors.vue").default)
-Vue.component(
-    "import-categories",
-    require("./components/ImportCategories.vue").default
-)
+Vue.component("import", require("./components/Import.vue").default)
 Vue.component("export", require("./components/Export.vue").default)
 Vue.component(
     "button-change-cart",

@@ -23,16 +23,21 @@
                 >
                 <button-back />
                 <template v-if="showFormImport"
-                    ><import-categories
+                    ><import
                         @cancelDownload="showFormImport = false"
-                /></template>
+                        name="Категории"
+                        uri="/api/admin/importCategories"
+                        channel="categories-import-finish"
+                        event="ImportCategoriesCounter"
+                    />
+                </template>
                 <template v-if="checkExport"
                     ><export
-                        name="Категории"
-                        channel="categories-export-finish"
-                        uri="/api/admin/exportCategories"
-                        event="ExportCategoriesCounter"
                         :start="true"
+                        name="Категории"
+                        uri="/api/admin/exportCategories"
+                        channel="categories-export-finish"
+                        event="ExportCategoriesCounter"
                 /></template>
             </div>
         </div>
@@ -133,7 +138,7 @@ export default {
                 })
         },
         startExport() {
-            this.checkExport = true
+            this.checkExport = !this.checkExport
         },
     },
     created() {

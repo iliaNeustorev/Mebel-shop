@@ -12,9 +12,7 @@
     </div>
     <div v-else-if="exportFinished" class="alert alert-success text-center">
         {{ name }} выгружены <a :href="downloadLink">(скачать)</a
-        ><button class="btn btn-danger btn-sm" @click="exportFinished = false">
-            x
-        </button>
+        ><button class="btn btn-danger btn-sm" @click="hiddenAlert()">x</button>
     </div>
 </template>
 
@@ -41,6 +39,11 @@ export default {
                 .finally(() => {
                     this.exportFinished = false
                 })
+        },
+        hiddenAlert() {
+            this.downloadLink = null
+            this.processing = false
+            this.exportFinished = false
         },
     },
     mounted() {

@@ -2,14 +2,16 @@
 
 namespace App\Jobs;
 
+use App\Models\Category;
 use App\Models\Product;
-use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
+use Pusher\Pusher;
 
 class importProducts implements ShouldQueue
 {
@@ -20,11 +22,6 @@ class importProducts implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
-    {
-        //
-    }
-
     /**
      * Execute the job.
      *
@@ -32,34 +29,44 @@ class importProducts implements ShouldQueue
      */
     public function handle()
     {
-        $file_name ='products.csv';
-        $file = fopen($file_name, 'r');
-
-        $carbon = new Carbon();
-
-        $time = $carbon->now()->toDateTimeString();
-
-        $i = 0;
-        $insert = [];
-        while($data = fgetcsv($file, 1000, ';'))
-        {
+        $pusher = new Pusher('app-key', 'app-secret', 'app-id', [
+            'host' => '127.0.0.1',
+            'port' => 6001,
+            'scheme' => 'http',
+            'encrypted' => true,
+            'useTLS' => false,
+        ]);
+    $file_name ='storage/app/public/products.csv';
+    $file = fopen($file_name, 'r');
+    $categories = Category::all();
+    $categories = $categories->mapWithKeys(function ($item) {
+        return [$item->name => $item->id];
+    })->toArray();
+    $i = 0;
+    $j = 0;
+    $insert = [];
+    while($data = fgetcsv($file, 1000, ';'))
+    {
+        $count = count($data);
         if($i++ == 0) continue;
-        $id = $data[0];
-            if (empty($data[0])) {
-                $id = null;
-            }
+        $id = empty($data[0]) ? null : $data[0];
+        $picture = empty($data[4]) ? 'nopicture.png' : $data[4];
         $insert[] = [
             'id' => $id,
             'name' => $data[1],
             'description' => $data[2],
             'price' => $data[3],
-            'picture' => $data[4],
-            'category_id' => $data[5],
-            'created_at' => $time,
-            'updated_at' => $time
+            'picture' => $picture,
+            'category_id' => $categories[$data[5]],
+        
         ];
-        }
-        Product::upsert($insert,['id'],['name','description','price','picture','category_id']);
-        fclose($file);
+        $percent = round($j++ / $count * 100);
+        $pusher->trigger('counter','ImportProductsCounter', $percent);
+        sleep(1);
+    }
+    Product::upsert($insert,['id'],['name','description','price','picture','category_id']);
+    fclose($file);
+    $pusher->trigger('general','products-import-finish', ['message' => 'Загрузка завершена']);
+    Storage::delete("public/products.csv");
     }
 }
