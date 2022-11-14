@@ -1,21 +1,21 @@
 <template>
     <div class="mb-2 slide">
         <form @submit.prevent="sendForm()">
-            <form-input
+            <form-input-component
                 label="Текущий пароль"
                 name="current"
                 type="password"
                 :form="passwordChange"
                 @validationFiled="fieldValid"
             />
-            <form-input
+            <form-input-component
                 label="Новый пароль"
                 name="password"
                 type="password"
                 :form="passwordChange"
                 @validationFiled="fieldValid"
             />
-            <form-input
+            <form-input-component
                 label="Повторите пароль"
                 name="password_confirmation"
                 type="password"

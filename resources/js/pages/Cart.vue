@@ -1,10 +1,10 @@
 <template>
     <div>
-        <show-errors v-if="errors" :errors="errors">
+        <show-errors-component v-if="errors" :errors="errors">
             <template v-if="errors.email">
                 Ссылка на
                 <router-link :to="{ name: 'login' }">Вход</router-link>
-            </template></show-errors
+            </template></show-errors-component
         >
         <table v-if="products.length" class="table table-bordered text-center">
             <thead>
@@ -25,7 +25,7 @@
                         {{ product.quantity * product.price }}
                     </td>
                     <td>
-                        <button-change-cart
+                        <button-change-cart-component
                             :id="product.id"
                             :quantity="product.quantity"
                             @newQuantity="changeQuantity(product.id, $event)"

@@ -1,10 +1,10 @@
 <template>
     <div>
-        <button-back />
-        <div class="text-center" v-if="loading"><loading /></div>
+        <button-back-component />
+        <div class="text-center" v-if="loading"><loading-component /></div>
         <div v-else>
             <form>
-                <form-input
+                <form-input-component
                     label="Имя категории"
                     name="name"
                     :form="category"
@@ -13,7 +13,7 @@
                     @validationFiled="fieldValid"
                 />
 
-                <form-textarea
+                <form-textarea-component
                     label="Описание категории"
                     name="description"
                     placeholder="Введите описание категории"
@@ -25,7 +25,7 @@
                     class="avatar"
                     :src="`/storage/img/categories/` + oldData.picture"
                 />
-                <form-file
+                <form-file-component
                     label=" Выберите картинку для категории"
                     name="picture"
                     :form="category"
@@ -33,7 +33,7 @@
                     @changeCheckFile="changedPicture"
                 />
             </form>
-            <button-send-form
+            <button-send-form-component
                 :validation-form="validationForm"
                 name-button-accepted="Принять изменения"
                 name-button-denied="Внесите изменения"
@@ -84,7 +84,7 @@
                             </tbody>
                         </table>
                     </div>
-                </template></button-send-form
+                </template></button-send-form-component
             >
         </div>
     </div>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <show-errors v-if="errors" :errors="errors" />
+        <show-errors-component v-if="errors" :errors="errors" />
         <div class="mb-3">
             <button @click="startExport()" class="btn btn-primary btn-xl mb-2">
                 Выгрузить список продуктов
@@ -12,23 +12,23 @@
             >
                 Загрузить список продуктов
             </button>
-            <button-mass-delete
+            <button-mass-delete-component
                 class="btn btn-link btn-xl mb-2"
                 :validation-form="validationForm"
                 :count-items="countProducts"
                 @clearDeleted="clearCheckedDelete()"
                 @acceptedDelete="deleteProducts()"
             >
-            </button-mass-delete>
+            </button-mass-delete-component>
             <router-link to="AddProduct">
                 <button class="btn btn-success btn-xl mb-2">
                     Добавить продукт
                 </button>
             </router-link>
-            <button-back class="mb-2" />
+            <button-back-component class="mb-2" />
         </div>
         <template v-if="showFormImport"
-            ><import
+            ><import-component
                 @cancelDownload="showFormImport = false"
                 name="Продукты"
                 uri="/api/admin/importProducts"
@@ -37,7 +37,7 @@
             />
         </template>
         <template v-if="checkExport"
-            ><export
+            ><export-component
                 name="Продукты"
                 channel="products-export-finish"
                 uri="/api/admin/exportProducts"
@@ -60,7 +60,7 @@
                 </thead>
                 <tr v-if="loading" class="text-center">
                     <td colspan="7">
-                        <loading />
+                        <loading-component />
                     </td>
                 </tr>
                 <tbody v-else>
@@ -87,14 +87,11 @@
                         <td>{{ product.description }}</td>
                         <td>{{ product.price }}</td>
                         <td>{{ categories[product.category_id] }}</td>
-                        <a href="" title="Редактировать продукт"
-                            ><img
-                                class="avatar"
-                                :src="
-                                    `/storage/img/products/` + product.picture
-                                "
-                                :alt="product.name"
-                        /></a>
+                        <img
+                            class="avatar"
+                            :src="`/storage/img/products/` + product.picture"
+                            :alt="product.name"
+                        />
                         <td>{{ product.created_at }}</td>
                         <td>{{ product.updated_at }}</td>
                     </tr>

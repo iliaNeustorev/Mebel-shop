@@ -1,8 +1,8 @@
 <template>
     <div>
-        <button-back class="mb-2" />
+        <button-back-component class="mb-2" />
         <form>
-            <form-input
+            <form-input-component
                 ref="first"
                 label="Имя продукта"
                 name="name"
@@ -10,26 +10,26 @@
                 placeholder="Введите имя продукта"
                 @validationFiled="fieldValid"
             />
-            <form-textarea
+            <form-textarea-component
                 label="Описание продукта"
                 name="description"
                 :form="product"
                 placeholder="Введите описание продукта"
                 @validationFiled="fieldValid"
             />
-            <form-input
+            <form-input-component
                 label="Цена"
                 name="price"
                 :form="product"
                 placeholder="Введите цену"
                 @validationFiled="fieldValid"
             />
-            <form-file
+            <form-file-component
                 label=" Выберите картинку для продукта"
                 name="picture"
                 :form="product"
             />
-            <form-select
+            <form-select-component
                 label="Категория"
                 name="category_id"
                 @validationFiled="fieldValid"
@@ -37,7 +37,7 @@
                 :options="categories"
             />
         </form>
-        <button-send-form
+        <button-send-form-component
             :validation-form="validationForm"
             name-button-accepted="Добавить продукт в категорию"
             name-button-denied="Заполните поля"
@@ -73,7 +73,7 @@
                     </table>
                 </div>
             </template>
-        </button-send-form>
+        </button-send-form-component>
     </div>
 </template>
 

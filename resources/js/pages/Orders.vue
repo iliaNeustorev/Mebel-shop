@@ -1,6 +1,6 @@
 <template>
     <div>
-        <show-errors v-if="errors" :errors="errors" />
+        <show-errors-component v-if="errors" :errors="errors" />
         <div v-if="!orders.length"><h2>У вас еще нет заказов</h2></div>
         <div v-else v-for="order in orders" :key="order.order.order_id">
             <p>
@@ -69,6 +69,7 @@ export default {
     data() {
         return {
             orders: [],
+            errors: null,
         }
     },
     created() {

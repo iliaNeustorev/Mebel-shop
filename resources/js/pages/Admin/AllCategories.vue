@@ -1,6 +1,6 @@
 <template>
     <div>
-        <show-errors v-if="errors" :errors="errors" />
+        <show-errors-component v-if="errors" :errors="errors" />
         <div>
             <div class="d-grid gap-2 d-md-block mb-3">
                 <button
@@ -21,9 +21,9 @@
                         Добавить категорию
                     </button></router-link
                 >
-                <button-back />
+                <button-back-component />
                 <template v-if="showFormImport"
-                    ><import
+                    ><import-component
                         @cancelDownload="showFormImport = false"
                         name="Категории"
                         uri="/api/admin/importCategories"
@@ -32,7 +32,7 @@
                     />
                 </template>
                 <template v-if="checkExport"
-                    ><export
+                    ><export-component
                         :start="true"
                         name="Категории"
                         uri="/api/admin/exportCategories"
@@ -56,7 +56,7 @@
                 </thead>
                 <tr v-if="loading" class="text-center">
                     <td colspan="7">
-                        <loading />
+                        <loading-component />
                     </td>
                 </tr>
                 <tbody v-else>

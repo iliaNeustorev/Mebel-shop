@@ -5,7 +5,7 @@
                 <div class="card-header">Авторизация</div>
 
                 <div class="card-body">
-                    <form-input
+                    <form-input-component
                         ref="first"
                         label="Почта"
                         name="email"
@@ -16,7 +16,7 @@
                         @validationFiled="fieldValid"
                     />
 
-                    <form-input
+                    <form-input-component
                         label="Пароль"
                         type="password"
                         name="password"

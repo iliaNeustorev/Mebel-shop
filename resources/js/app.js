@@ -19,59 +19,65 @@ window.Vue = require("vue").default
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component(
-    "navbar-component",
-    require("./components/NavBarComponent.vue").default
-)
+Vue.component("navbar-component", require("./components/NavBar.vue").default)
 
 Vue.component(
     "progress-bar-component",
-    require("./components/ProgressBarComponent.vue").default
+    require("./components/ProgressBar.vue").default
 )
 
 Vue.component(
-    "button-send-form",
+    "button-send-form-component",
     require("./components/Buttons/ButtonSendForm.vue").default
 )
 
 Vue.component(
-    "button-mass-delete",
+    "button-mass-delete-component",
     require("./components/Buttons/ButtonMassDelete.vue").default
 )
 
-Vue.component("form-input", require("./components/Forms/formInput.vue").default)
 Vue.component(
-    "form-textarea",
+    "form-input-component",
+    require("./components/Forms/formInput.vue").default
+)
+Vue.component(
+    "form-textarea-component",
     require("./components/Forms/formTextarea.vue").default
 )
-Vue.component("form-file", require("./components/Forms/formFile.vue").default)
 Vue.component(
-    "form-select",
+    "form-file-component",
+    require("./components/Forms/formFile.vue").default
+)
+Vue.component(
+    "form-select-component",
     require("./components/Forms/formSelect.vue").default
 )
 Vue.component(
-    "form-checkbox",
+    "form-checkbox-component",
     require("./components/Forms/formCheckbox.vue").default
 )
-Vue.component("loading", require("./components/Loading.vue").default)
+Vue.component("loading-component", require("./components/Loading.vue").default)
 Vue.component(
-    "button-back",
+    "button-back-component",
     require("./components/Buttons/ButtonBack.vue").default
 )
-Vue.component("show-errors", require("./components/ShowErrors.vue").default)
-Vue.component("import", require("./components/Import.vue").default)
-Vue.component("export", require("./components/Export.vue").default)
 Vue.component(
-    "button-change-cart",
+    "show-errors-component",
+    require("./components/ShowErrors.vue").default
+)
+Vue.component("import-component", require("./components/Import.vue").default)
+Vue.component("export-component", require("./components/Export.vue").default)
+Vue.component(
+    "button-change-cart-component",
     require("./components/Buttons/ButtonChangeCart.vue").default
 )
 Vue.component(
-    "change-password",
+    "change-password-component",
     require("./components/ChangePassword.vue").default
 )
 Vue.component(
     "address-list-component",
-    require("./components/addressListComponent.vue").default
+    require("./components/addressList.vue").default
 )
 
 /**

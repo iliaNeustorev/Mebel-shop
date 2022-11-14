@@ -22,12 +22,12 @@
             </button>
         </div>
         <div class="mt-3">
-            <form-input
+            <form-input-component
                 :form="newAddress"
                 name="new_address"
                 label="Новый адрес"
             />
-            <form-checkbox
+            <form-checkbox-component
                 :form="newAddress"
                 name="main_new_address"
                 label="Сделать основным"

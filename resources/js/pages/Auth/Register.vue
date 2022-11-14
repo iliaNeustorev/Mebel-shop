@@ -4,14 +4,14 @@
             <div class="card">
                 <div class="card-header">Регистрация</div>
                 <div class="card-body">
-                    <form-input
+                    <form-input-component
                         label="Имя"
                         name="name"
                         placeholder="Введите имя"
                         :form="registerData"
                         @validationFiled="fieldValid"
                     />
-                    <form-input
+                    <form-input-component
                         label="Почта"
                         name="email"
                         type="email"
@@ -19,7 +19,7 @@
                         :form="registerData"
                         @validationFiled="fieldValid"
                     />
-                    <form-input
+                    <form-input-component
                         label="Пароль"
                         type="password"
                         name="password"
@@ -27,7 +27,7 @@
                         :form="registerData"
                         @validationFiled="fieldValid"
                     />
-                    <form-input
+                    <form-input-component
                         label="Повторите пароль"
                         type="password"
                         name="password_confirmation"

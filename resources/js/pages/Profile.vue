@@ -1,9 +1,9 @@
 <template>
     <div>
-        <show-errors v-if="errors" :errors="errors" />
-        <div class="text-center" v-if="loading"><loading /></div>
+        <show-errors-component v-if="errors" :errors="errors" />
+        <div class="text-center" v-if="loading"><loading-component /></div>
         <div v-else>
-            <form-input
+            <form-input-component
                 label="Почта"
                 name="email"
                 type="email"
@@ -11,7 +11,7 @@
                 :oldValue="oldData.email"
                 @validationFiled="fieldValid"
             />
-            <form-input
+            <form-input-component
                 label="Имя"
                 name="name"
                 :form="userCurrent"
@@ -26,7 +26,7 @@
                     Сменить пароль
                 </button>
                 <transition name="slide">
-                    <change-password
+                    <change-password-component
                         v-show="passwordChange"
                         @completed="passwordChange = false"
                     />
@@ -36,7 +36,7 @@
                         class="avatar"
                         :src="`/storage/img/users/` + userCurrent.picture"
                     />
-                    <form-file
+                    <form-file-component
                         label="Аватар"
                         name="picture"
                         :form="userPicture"

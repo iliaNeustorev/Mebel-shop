@@ -2,7 +2,7 @@
     <div>
         <h1 class="mb-3">Список категорий</h1>
         <div class="text-center" v-if="loading">
-            <loading />
+            <loading-component />
         </div>
         <div v-else class="row">
             <div

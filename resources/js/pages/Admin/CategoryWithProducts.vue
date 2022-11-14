@@ -1,6 +1,6 @@
 <template>
     <div>
-        <show-errors v-if="errors" :errors="errors" />
+        <show-errors-component v-if="errors" :errors="errors" />
         <div class="buttonGroups mb-2">
             <router-link
                 :to="{ name: 'AddProduct', params: { categoryID: categoryId } }"
@@ -9,13 +9,13 @@
                     Добавить продукт в категорию {{ categoryName }}
                 </button>
             </router-link>
-            <button-mass-delete
+            <button-mass-delete-component
                 class="itemButtonGroups"
                 :validation-form="validationForm"
                 :count-items="countProducts"
                 @acceptedDelete="deleteProducts()"
-            ></button-mass-delete>
-            <button-back class="itemButtonGroups" />
+            ></button-mass-delete-component>
+            <button-back-component class="itemButtonGroups" />
         </div>
         <h2 class="text-center">
             Продукты категории
@@ -25,7 +25,7 @@
         </h2>
         <div v-if="loading" class="text-center">
             <span>
-                <loading />
+                <loading-component />
             </span>
         </div>
         <div>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button-send-form
+        <button-send-form-component
             :validation-form="validationForm"
             name-button-accepted="Удалить выбраное"
             name-button-denied="Выберите необходимое для удаления"
@@ -16,7 +16,7 @@
                     Удалить в количестве <span>{{ countItems }}</span>
                 </p>
             </template>
-        </button-send-form>
+        </button-send-form-component>
         <button
             v-if="countItems"
             @click="$emit('clearDeleted')"

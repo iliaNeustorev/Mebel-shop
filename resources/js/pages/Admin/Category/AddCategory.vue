@@ -1,8 +1,8 @@
 <template>
     <div>
-        <button-back />
+        <button-back-component />
         <form>
-            <form-input
+            <form-input-component
                 ref="first"
                 label="Имя категории"
                 name="name"
@@ -10,20 +10,20 @@
                 :form="category"
                 @validationFiled="fieldValid"
             />
-            <form-textarea
+            <form-textarea-component
                 label="Описание категории"
                 name="description"
                 placeholder="Введите описание категории"
                 :form="category"
                 @validationFiled="fieldValid"
             />
-            <form-file
+            <form-file-component
                 label=" Выберите картинку для категории"
                 name="picture"
                 :form="category"
             />
         </form>
-        <button-send-form
+        <button-send-form-component
             :validation-form="validationForm"
             name-button-accepted="Добавить категорию"
             name-button-denied="Заполните поля"
@@ -49,7 +49,7 @@
                         </tbody>
                     </table>
                 </div>
-            </template></button-send-form
+            </template></button-send-form-component
         >
     </div>
 </template>

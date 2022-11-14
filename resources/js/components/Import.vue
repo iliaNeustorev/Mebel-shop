@@ -1,7 +1,7 @@
 <template>
     <div>
         <form v-if="!processing">
-            <form-file
+            <form-file-component
                 label=" Выберите файл CSV или TXT"
                 name="file"
                 :form="form"

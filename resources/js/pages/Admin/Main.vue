@@ -23,7 +23,7 @@
             </router-link>
         </div>
         <div class="text-center">
-            <button-back class="btn-success btn-lg" />
+            <button-back-component class="btn-success btn-lg" />
         </div>
     </div>
 </template>

@@ -1,10 +1,10 @@
 <template>
     <div>
-        <button-back class="mb-2" />
-        <div class="text-center" v-if="loading"><loading /></div>
+        <button-back-component class="mb-2" />
+        <div class="text-center" v-if="loading"><loading-component /></div>
         <div v-else>
             <form>
-                <form-input
+                <form-input-component
                     label="Имя продукта"
                     name="name"
                     :form="product"
@@ -12,7 +12,7 @@
                     :oldValue="oldData.name"
                     @validationFiled="fieldValid"
                 />
-                <form-textarea
+                <form-textarea-component
                     label="Описание продукта"
                     name="description"
                     :form="product"
@@ -20,7 +20,7 @@
                     :oldValue="oldData.description"
                     @validationFiled="fieldValid"
                 />
-                <form-input
+                <form-input-component
                     label="Цена"
                     name="price"
                     :form="product"
@@ -32,14 +32,14 @@
                     class="avatar"
                     :src="`/storage/img/products/` + oldData.picture"
                 />
-                <form-file
+                <form-file-component
                     label=" Выберите картинку для продукта"
                     name="picture"
                     :checkFile="checkFile"
                     @changeCheckFile="changedPicture"
                     :form="product"
                 />
-                <form-select
+                <form-select-component
                     label="Категория"
                     name="category_id"
                     :form="product"
@@ -48,7 +48,7 @@
                     :options="categories"
                 />
             </form>
-            <button-send-form
+            <button-send-form-component
                 :validation-form="validationForm"
                 name-button-accepted="Принять изменения"
                 name-button-denied="Внесите изменения"
@@ -115,7 +115,7 @@
                             </tbody>
                         </table>
                     </div>
-                </template></button-send-form
+                </template></button-send-form-component
             >
         </div>
     </div>

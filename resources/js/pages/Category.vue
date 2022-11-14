@@ -2,7 +2,7 @@
     <div>
         <div class="row">
             <div class="text-center" v-if="loading">
-                <loading />
+                <loading-component />
             </div>
             <div class="row" v-else>
                 <div class="text-center" v-if="!products.length">
@@ -26,7 +26,7 @@
                             <p class="card-text">
                                 {{ product.description }}...
                             </p>
-                            <button-change-cart
+                            <button-change-cart-component
                                 :id="product.id"
                                 :quantity="product.quantity"
                                 @newQuantity="
@@ -34,8 +34,8 @@
                                 "
                                 ><div class="card-counter">
                                     {{ product.quantity }}
-                                </div></button-change-cart
-                            >
+                                </div>
+                            </button-change-cart-component>
                             <p class="card-price mt-1 text-center">
                                 {{ product.price }} руб.
                             </p>
