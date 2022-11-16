@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Jobs\Search;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +28,16 @@ class HomeController extends Controller
         ];
     }
 
+    public function search(){
+        $search = request()->search;
+        if($search == null){
+            return response('Пустая строка', 422);
+        }
+         Search::dispatch($search);
+        
+    }
+    
+    
     public function profile_update (Request $request)
     {
             $request->validate([

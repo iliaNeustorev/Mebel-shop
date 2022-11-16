@@ -79,6 +79,7 @@ Vue.component(
     "address-list-component",
     require("./components/addressList.vue").default
 )
+Vue.component("search-component", require("./components/Search.vue").default)
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

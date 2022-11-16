@@ -4,6 +4,9 @@
             <router-link class="navbar-brand" :to="{ name: 'Home' }">
                 Mebel-shop
             </router-link>
+            <div v-if="hiddenSearch">
+                <search-component @search="search" />
+            </div>
             <button
                 class="navbar-toggler"
                 type="button"
@@ -95,7 +98,12 @@
 <script>
 import { mapGetters } from "vuex"
 export default {
-    computed: { ...mapGetters(["user", "quantity", "chekOrders"]) },
+    computed: {
+        ...mapGetters(["user", "quantity", "chekOrders"]),
+        hiddenSearch() {
+            return this.$route.path != "/result"
+        },
+    },
     mounted() {
         if (!this.user.length) {
             axios
@@ -116,6 +124,12 @@ export default {
     },
 
     methods: {
+        search(field) {
+            this.$router.push({
+                name: "Search",
+                params: { fieldSearch: field, start: true },
+            })
+        },
         logout() {
             axios.post("/api/logout").then(() => {
                 localStorage.removeItem("user")

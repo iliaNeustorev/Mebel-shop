@@ -67,7 +67,7 @@
                     <tr v-for="product in products" :key="product.id">
                         <td>
                             <input
-                                title="выбрать на удаление"
+                                title="выбрать для удаления"
                                 type="checkbox"
                                 :value="product.id"
                                 v-model="checkedIdforDelete"

@@ -22,6 +22,7 @@ import EditCategory from "../pages/Admin/Category/EditCategory"
 import ProductAdmin from "../pages/Admin/CategoryWithProducts"
 import AddProduct from "../pages/Admin/Product/AddProduct"
 import EditProduct from "../pages/Admin/Product/EditProduct"
+import Search from "../pages/Search.vue"
 
 const routes = [
     {
@@ -38,6 +39,11 @@ const routes = [
         name: "cart",
         path: "/cart",
         component: CartPage,
+    },
+    {
+        name: "Search",
+        path: "/result",
+        component: Search,
     },
     {
         name: "login",
@@ -57,6 +63,7 @@ const routes = [
         component: AdminPage,
         meta: { Admin: true },
     },
+
     {
         name: "ShowRegUsers",
         path: "/admin/showRegUsers",
@@ -117,6 +124,7 @@ const routes = [
         component: EditProduct,
         meta: { Admin: true },
     },
+
     { path: "*", redirect: "404" },
     { path: "/404", component: Page404, name: "404" },
 ]
