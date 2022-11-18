@@ -23,6 +23,7 @@ import ProductAdmin from "../pages/Admin/CategoryWithProducts"
 import AddProduct from "../pages/Admin/Product/AddProduct"
 import EditProduct from "../pages/Admin/Product/EditProduct"
 import Search from "../pages/Search.vue"
+import ProductPage from "../pages/Product.vue"
 
 const routes = [
     {
@@ -34,6 +35,11 @@ const routes = [
         name: "ShowCategory",
         path: "/categories/:id",
         component: CategoryPage,
+    },
+    {
+        name: "ShowProduct",
+        path: "/products/:id/:name",
+        component: ProductPage,
     },
     {
         name: "cart",
@@ -136,7 +142,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     let user = localStorage.getItem("user")
-    let admin = store.state.user.admin
+    let admin = store.getters.user.admin
     if (to.matched.some((record) => record.meta.NoAuth)) {
         if (!user) {
             next({

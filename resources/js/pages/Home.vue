@@ -28,6 +28,13 @@
                 </router-link>
             </div>
         </div>
+        <pagination-component
+            class="justify-content-center"
+            :elems="categories"
+            :links="links"
+            :current="currentPage"
+            @changePage="getCategories"
+        />
     </div>
 </template>
 <script>
@@ -36,18 +43,32 @@ export default {
         return {
             categories: [],
             loading: true,
+            links: [],
+            page: this.$route.query.page,
+            currentPage: null,
         }
     },
+    methods: {
+        getCategories(page = 1) {
+            if (page != this.$route.query.page) {
+                this.$router.push({ name: "Home", query: { page } })
+            }
+            this.loading = true
+            axios
+                .get(`/api/categories/get`, { params: { page } })
+                .then((response) => {
+                    this.categories = response.data.data
+                    this.links = response.data.links.slice(1, -1)
+                    this.currentPage = response.data.current_page
+                })
+                .catch(() => {})
+                .finally(() => {
+                    this.loading = false
+                })
+        },
+    },
     created() {
-        axios
-            .get("/api/categories/get")
-            .then((response) => {
-                this.categories = response.data
-            })
-            .catch(() => {})
-            .finally(() => {
-                this.loading = false
-            })
+        this.getCategories(this.page)
     },
 }
 </script>

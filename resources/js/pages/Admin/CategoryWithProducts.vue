@@ -74,12 +74,14 @@
                         <td>{{ product.updated_at }}</td>
                     </tr>
                 </tbody>
-                <tbody v-else>
-                    <tr>
-                        <td colspan="7"><em>Продукты отсутcтвуют</em><br /></td>
-                    </tr>
-                </tbody>
+                <tbody v-else></tbody>
             </table>
+            <pagination-component
+                :elems="products"
+                :links="links"
+                :current="currentPage"
+                @changePage="getCategory"
+            />
         </div>
     </div>
 </template>
@@ -94,6 +96,10 @@ export default {
             categoryName: "",
             checkedIdforDelete: [],
             errors: null,
+            links: [],
+            page: this.$route.query.page,
+            currentPage: null,
+            routeId: this.$route.params.id,
         }
     },
     computed: {
@@ -105,20 +111,34 @@ export default {
         },
     },
     created() {
-        axios
-            .get(
-                `/api/admin/categories/${this.$route.params.id}/getProductsCategory`
-            )
-            .then((response) => {
-                this.products = response.data.products
-                this.categoryName = response.data.categoryName
-                this.categoryId = response.data.categoryId
-            })
-            .finally(() => {
-                this.loading = false
-            })
+        this.getCategory(this.page)
     },
     methods: {
+        getCategory(page = 1) {
+            if (page != this.$route.query.page) {
+                this.$router.push({
+                    name: "ShowOneCategoryWithProducts",
+                    query: { page },
+                    params: { id: this.routeId },
+                })
+            }
+            this.loading = true
+            axios
+                .get(
+                    `/api/admin/categories/${this.routeId}/getProductsCategory`,
+                    { params: { page } }
+                )
+                .then((response) => {
+                    this.products = response.data.products.data
+                    this.links = response.data.products.links.slice(1, -1)
+                    this.currentPage = response.data.products.current_page
+                    this.categoryName = response.data.categoryName
+                    this.categoryId = response.data.categoryId
+                })
+                .finally(() => {
+                    this.loading = false
+                })
+        },
         deleteProducts() {
             const params = {
                 idProductsDelete: this.checkedIdforDelete,

@@ -42,7 +42,6 @@ class ImportCategories implements ShouldQueue
             ];
             $percent = round($j++ / $count * 100);
             $pusher->trigger('counter','ImportCategoriesCounter', $percent);
-            sleep(1);
         }
         Category::upsert($insert,['id'],['name','description','picture']);
         fclose($file);

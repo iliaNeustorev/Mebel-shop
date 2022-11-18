@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -15,7 +14,16 @@ class CategoryController extends Controller
 
     public function getCategories()
     {
-        return Category::get();     
+        return Category::paginate(4);
+    }
+
+    public function getShortCategories()
+    {
+        $shortCategories = collect([]);
+        Category::All()->map(function ($elem) use ($shortCategories) {
+            $shortCategories->put($elem->id, $elem->name);
+        });
+        return $shortCategories;     
     }
 
     public function category(Category $category)

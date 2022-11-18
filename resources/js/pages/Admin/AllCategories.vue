@@ -106,11 +106,14 @@
                         <td>{{ category.created_at }}</td>
                         <td>{{ category.updated_at }}</td>
                     </tr>
-                    <tr>
-                        <td class="text-center" colspan="7"></td>
-                    </tr>
                 </tbody>
             </table>
+            <pagination-component
+                :elems="categories"
+                :links="links"
+                :current="currentPage"
+                @changePage="getCategories"
+            />
         </div>
     </div>
 </template>
@@ -121,6 +124,9 @@ export default {
         return {
             loading: true,
             categories: [],
+            links: [],
+            page: this.$route.query.page,
+            currentPage: null,
             errors: null,
             showFormImport: false,
             checkExport: false,
@@ -140,19 +146,31 @@ export default {
         startExport() {
             this.checkExport = !this.checkExport
         },
+        getCategories(page = 1) {
+            if (page != this.$route.query.page) {
+                this.$router.push({
+                    name: "AdminCategories",
+                    query: { page },
+                })
+            }
+            this.loading = true
+            axios
+                .get("/api/admin/categories/", { params: { page } })
+                .then((response) => {
+                    this.categories = response.data.data
+                    this.links = response.data.links.slice(1, -1)
+                    this.currentPage = response.data.current_page
+                })
+                .catch((error) => {
+                    this.errors = error.response.data.errors
+                })
+                .finally(() => {
+                    this.loading = false
+                })
+        },
     },
     created() {
-        axios
-            .get("/api/admin/categories/")
-            .then((response) => {
-                this.categories = response.data
-            })
-            .catch((error) => {
-                this.errors = error.response.data.errors
-            })
-            .finally(() => {
-                this.loading = false
-            })
+        this.getCategories(this.page)
     },
     mounted() {
         for (let error in this.errorList) {

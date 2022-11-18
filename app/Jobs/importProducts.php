@@ -62,7 +62,6 @@ class importProducts implements ShouldQueue
         ];
         $percent = round($j++ / $count * 100);
         $pusher->trigger('counter','ImportProductsCounter', $percent);
-        sleep(1);
     }
     Product::upsert($insert,['id'],['name','description','price','picture','category_id']);
     fclose($file);

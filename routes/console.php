@@ -142,28 +142,12 @@ Artisan::command('import_categories', function(){
 });
 
 Artisan::command('check', function() {
-
-    $file_name ="storage/app/public/categories.csv";
-    $file = fopen($file_name, 'r');
-    $i = 0;
-    $j = 1;
-    $insert = [];
-    $data = fgetcsv($file, 1000, ';');
-    $count = count($data);
-    while($data)
-    {
-        if($i++ == 0) continue;
-        $id = empty($data[0]) ? null : $data[0];
-        $insert[] = [
-            'id'=> $id,
-            'name' => $data[1],
-            'description' => $data[2],
-            'picture' => $data[3],
-        ];
-        $percent = round($j++ / $count * 100,2);
-    }
-    ModelsCategory::upsert($insert,['id'],['name','description','picture']);
-    fclose($file);
+    $a = collect([]);
+    $categories = ModelsCategory::All();
+    $categories->map(function ($elem) use ($a) {
+        $a->put($elem->id, $elem->name);
+    });
+   dd($a);
 });
 
 Artisan::command('test', function(){

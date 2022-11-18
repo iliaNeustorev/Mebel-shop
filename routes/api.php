@@ -41,10 +41,13 @@ Route::post('/tokens/create', function(Request $request) {
     return ['token' => $token];
 });
 Route::get('/search', [HomeController::class, 'search']);
+
 Route::prefix('categories')->group(function () {
     Route::get('/get', [CategoryController::class, 'getCategories']);
+    Route::get('/shortCategories', [CategoryController::class, 'getShortCategories']);
     Route::get('{category}', [CategoryController::class, 'category']);
     Route::get('{category}/getProducts', [ProductController::class, 'getProducts']);
+    Route::get('/product/{product}', [ProductController::class, 'getProduct']);
 });
 
 Route::prefix('basket')->group(function () {

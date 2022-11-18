@@ -95,11 +95,14 @@
                         <td>{{ product.created_at }}</td>
                         <td>{{ product.updated_at }}</td>
                     </tr>
-                    <tr>
-                        <td class="text-start" colspan="8"></td>
-                    </tr>
                 </tbody>
             </table>
+            <pagination-component
+                :elems="products"
+                :links="links"
+                :current="currentPage"
+                @changePage="getProducts"
+            />
         </div>
     </div>
 </template>
@@ -112,10 +115,13 @@ export default {
         return {
             loading: true,
             products: [],
+            links: [],
             checkedIdforDelete: [],
             errors: null,
             checkExport: false,
             showFormImport: false,
+            page: this.$route.query.page,
+            currentPage: null,
         }
     },
     computed: {
@@ -151,12 +157,31 @@ export default {
         clearCheckedDelete() {
             this.checkedIdforDelete = []
         },
+        getProducts(page = 1) {
+            if (page != this.$route.query.page) {
+                this.$router.push({
+                    name: "AdminProducts",
+                    query: { page },
+                })
+            }
+            this.loading = true
+            axios
+                .get("/api/admin/products", { params: { page } })
+                .then((response) => {
+                    this.products = response.data.data
+                    this.links = response.data.links.slice(1, -1)
+                    this.currentPage = response.data.current_page
+                })
+                .catch((error) => {
+                    this.errors = error.response.data.errors
+                })
+                .finally(() => {
+                    this.loading = false
+                })
+        },
     },
     created() {
-        axios.get("/api/admin/products").then((response) => {
-            this.products = response.data
-            this.loading = false
-        })
+        this.getProducts(this.page)
     },
     mounted() {
         for (let error in this.errorList) {

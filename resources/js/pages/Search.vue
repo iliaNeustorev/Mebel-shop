@@ -7,7 +7,11 @@
         Результат поиска:
         <ul v-if="result.length > 0">
             <li v-for="elem in result" :key="elem.id">
-                <router-link to=""
+                <router-link
+                    :to="{
+                        name: 'ShowProduct',
+                        params: { id: elem.id, name: elem.name },
+                    }"
                     ><h2>{{ elem.name }}</h2></router-link
                 >
                 <div>

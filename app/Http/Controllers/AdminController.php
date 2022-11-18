@@ -81,7 +81,7 @@ class AdminController extends Controller
 
     public function index ()
     {
-        return Category::with('products')->get();
+        return Category::with('products')->paginate(5);
     }
 
     //create new category , return categories
@@ -169,7 +169,7 @@ class AdminController extends Controller
     // get all products
 
     public function getProducts () {
-       return Product::get();
+       return Product::paginate(10);
     }
 
     public function getProduct ($id) {
@@ -179,7 +179,7 @@ class AdminController extends Controller
     // get products by category_id
     public function getProductsCategory (Category $category)
     {
-        $products = $category->products->sortBy('created_at', SORT_DESC, 3)->values()->all();
+        $products = Product::where('category_id', $category->id)->orderByDesc('created_at')->paginate(5);
         return [
             'products' => $products, 
             'categoryName' => $category->name, 
