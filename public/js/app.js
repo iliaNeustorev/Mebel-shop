@@ -5687,10 +5687,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [_mixins_base_input_js__WEBPACK_IMPORTED_MODULE_0__["default"]],
-  mounted: function mounted() {
-    console.log(this.name);
-  }
+  mixins: [_mixins_base_input_js__WEBPACK_IMPORTED_MODULE_0__["default"]]
 });
 
 /***/ }),
@@ -8124,6 +8121,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vform__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vform */ "./node_modules/vform/dist/vform.es.js");
 /* harmony import */ var _mixins_add_element_Bd_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../mixins/add-element-Bd.js */ "./resources/js/mixins/add-element-Bd.js");
+//
+//
+//
+//
+//
 //
 //
 //
@@ -46542,6 +46544,14 @@ var render = function () {
                 autocomplete: "current-password",
               },
               on: { validationFiled: _vm.fieldValid },
+            }),
+            _vm._v(" "),
+            _c("form-checkbox-component", {
+              attrs: {
+                label: "Запомнить меня",
+                name: "remember",
+                form: _vm.loginData,
+              },
             }),
             _vm._v(" "),
             _c("div", { staticClass: "row mb-0" }, [

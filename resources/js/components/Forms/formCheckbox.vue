@@ -19,8 +19,5 @@
 import baseInput from "../../mixins/base-input.js"
 export default {
     mixins: [baseInput],
-    mounted() {
-        console.log(this.name)
-    },
 }
 </script>

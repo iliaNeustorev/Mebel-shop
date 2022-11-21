@@ -25,6 +25,11 @@
                         autocomplete="current-password"
                         @validationFiled="fieldValid"
                     />
+                    <form-checkbox-component
+                        label="Запомнить меня"
+                        name="remember"
+                        :form="loginData"
+                    />
                     <div class="row mb-0">
                         <div class="col-md-8 offset-md-2">
                             <span
