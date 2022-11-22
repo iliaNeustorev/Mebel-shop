@@ -46,6 +46,20 @@ npm install vue-router ^3
 ~~~
 npm install vuex ^3
 ~~~
+Установка vform 
+~~~
+npm install axios vform
+~~~
+Установка pusher
+~~~
+1) composer require pusher/pusher-php-server
+2) npm install --save-dev laravel-echo pusher-js
+~~~
+Установка soketi
+~~~
+1) npm install -g @soketi/soketi
+2) npm install --save-dev laravel-echo pusher-js
+~~~
 
 ## Настройка соединения с базой данных
 
@@ -63,14 +77,18 @@ DB_DATABASE=Laravel
 DB_USERNAME=root
 DB_PASSWORD=root
 
-MAIL_MAILER=smtp
-MAIL_HOST=smtp.googlemail.com
-MAIL_PORT=465
-MAIL_USERNAME=jjnn95555@gmail.com
-MAIL_PASSWORD="12312341324141"
-MAIL_ENCRYPTION=ssl
-MAIL_FROM_ADDRESS=jjnn95555@gmail.com
-MAIL_FROM_NAME="${APP_NAME}"
+BROADCAST_DRIVER=pusher
+CACHE_DRIVER=file
+FILESYSTEM_DRIVER=local
+QUEUE_CONNECTION=database
+SESSION_DRIVER=file
+SESSION_LIFETIME=120
+
+PUSHER_APP_KEY=app-key
+PUSHER_APP_ID=app-id
+PUSHER_APP_SECRET=app-secret
+PUSHER_HOST=127.0.0.1
+PUSHER_PORT=6001
 ```
 ## Запуск проекта на локальном сервере(OpenServer v5.4.0)
   Перейти в папку с проектом и в консоли openServer или windows ввести команду
@@ -82,4 +100,8 @@ php artisan serve
 Запуск компилятора фронтенда vuejs
 ~~~
 npm run watch
+~~~
+Запуск socketi
+~~~
+soketi start
 ~~~
