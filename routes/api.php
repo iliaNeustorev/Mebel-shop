@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AddressController;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\MainController as AdminMainController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BasketController;
@@ -9,7 +11,6 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
-use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -83,28 +84,28 @@ Route::prefix('home')->middleware('auth')->group(function() {
 
 Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function()
 {
-    Route::post('/showRegUsers', [AdminController::class, 'showRegUsers']);
-    Route::get('/enterAsUser/{userId}', [AdminController::class, 'enterAsUser']);
-    Route::post('/exportCategories', [AdminController::class, 'exportCategories']);
-    Route::post('/exportProducts', [AdminController::class, 'exportProducts']);
-    Route::post('/importCategories', [AdminController::class, 'importCategories']);
-    Route::post('/importProducts', [AdminController::class, 'importProducts']);
+    Route::post('/showRegUsers', [AdminMainController::class, 'showRegUsers']);
+    Route::get('/enterAsUser/{userId}', [AdminMainController::class, 'enterAsUser']);
+    Route::post('/exportCategories', [AdminMainController::class, 'exportCategories']);
+    Route::post('/exportProducts', [AdminMainController::class, 'exportProducts']);
+    Route::post('/importCategories', [AdminMainController::class, 'importCategories']);
+    Route::post('/importProducts', [AdminMainController::class, 'importProducts']);
 
     Route::prefix('/categories')->group(function() {
-        Route::get('/', [AdminController::class, 'index']);
-        Route::post('/create', [AdminController::class, 'store']);
-        Route::delete('/category/{categoryId}', [AdminController::class, 'destroy']);
-        Route::get('/category/{category}/edit', [AdminController::class, 'edit']);
-        Route::post('/category/update', [AdminController::class, 'update']);
-        Route::get('{category}/getProductsCategory', [AdminController::class, 'getProductsCategory']);
+        Route::get('/', [AdminCategoryController::class, 'index']);
+        Route::post('/create', [AdminCategoryController::class, 'store']);
+        Route::delete('/category/{categoryId}', [AdminCategoryController::class, 'destroy']);
+        Route::get('/category/{category}/edit', [AdminCategoryController::class, 'edit']);
+        Route::post('/category/update', [AdminCategoryController::class, 'update']);
+        Route::get('{category}/getProductsCategory', [AdminCategoryController::class, 'getProductsCategory']);
     });
 
     Route::prefix('/products')->group(function() {
-        Route::get('/', [AdminController::class, 'getProducts']);
-        Route::get('/product/{id}', [AdminController::class, 'getProduct']);
-        Route::post('/addProduct', [AdminController::class, 'addProduct']);
-        Route::post('/updProduct', [AdminController::class, 'updProduct']);
-        Route::post('/delProducts', [AdminController::class, 'delProducts']);
+        Route::get('/', [AdminProductController::class, 'getProducts']);
+        Route::get('/product/{id}', [AdminProductController::class, 'getProduct']);
+        Route::post('/addProduct', [AdminProductController::class, 'addProduct']);
+        Route::post('/updProduct', [AdminProductController::class, 'updProduct']);
+        Route::post('/delProducts', [AdminProductController::class, 'delProducts']);
     });   
 });
 
