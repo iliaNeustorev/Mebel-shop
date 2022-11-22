@@ -50,6 +50,10 @@ npm install vuex ^3
 ~~~
 npm install axios vform
 ~~~
+Установка плагина algalia/scout для поиска
+~~~
+1) composer require laravel/scout
+~~~
 Установка pusher
 ~~~
 1) composer require pusher/pusher-php-server
