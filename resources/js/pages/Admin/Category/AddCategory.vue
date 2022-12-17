@@ -73,10 +73,10 @@ export default {
         this.$refs.first.$refs.firstInp.focus()
     },
     methods: {
-        async sendForm() {
+        sendForm() {
             if (this.validationForm) {
                 axios
-                await this.category
+                this.category
                     .post("/api/admin/categories/create")
                     .then(() => {
                         this.$swal({

@@ -119,10 +119,10 @@ export default {
             })
     },
     methods: {
-        async sendForm() {
+        sendForm() {
             if (this.validationForm) {
                 axios
-                await this.category
+                this.category
                     .post("/api/admin/categories/category/update")
                     .then(() => {
                         this.$swal({
