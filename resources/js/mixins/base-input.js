@@ -31,7 +31,7 @@ export default {
     methods: {
         valid() {
             let res = this.emptyFiled && this.checkedValuesField
-            this.$emit("validationFiled", { res: res, name: this.name })
+            this.$emit("validation-filed", { res: res, name: this.name })
         },
     },
 }

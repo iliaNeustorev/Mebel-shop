@@ -8,21 +8,21 @@
                 name="name"
                 :form="product"
                 placeholder="Введите имя продукта"
-                @validationFiled="fieldValid"
+                @validation-filed="fieldValid"
             />
             <form-textarea-component
                 label="Описание продукта"
                 name="description"
                 :form="product"
                 placeholder="Введите описание продукта"
-                @validationFiled="fieldValid"
+                @validation-filed="fieldValid"
             />
             <form-input-component
                 label="Цена"
                 name="price"
                 :form="product"
                 placeholder="Введите цену"
-                @validationFiled="fieldValid"
+                @validation-filed="fieldValid"
             />
             <form-file-component
                 label=" Выберите картинку для продукта"
@@ -32,7 +32,7 @@
             <form-select-component
                 label="Категория"
                 name="category_id"
-                @validationFiled="fieldValid"
+                @validation-filed="fieldValid"
                 :form="product"
                 :options="categories"
             />
@@ -41,7 +41,7 @@
             :validation-form="validationForm"
             name-button-accepted="Добавить продукт в категорию"
             name-button-denied="Заполните поля"
-            @acceptedForm="sendForm()"
+            @accepted-form="sendForm()"
         >
             <template v-slot:mainModal>
                 <div class="container">

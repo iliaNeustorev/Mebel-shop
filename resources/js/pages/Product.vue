@@ -16,7 +16,7 @@
                         <button-change-cart-component
                             :id="product.id"
                             :quantity="product.quantity"
-                            @newQuantity="changeQuantity"
+                            @new-quantity="changeQuantity"
                             ><span class="card-counter">
                                 {{ product.quantity }}
                             </span>

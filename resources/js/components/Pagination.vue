@@ -49,7 +49,7 @@ export default {
             if (page == this.current) {
                 return false
             }
-            this.$emit("changePage", page)
+            this.$emit("change-page", page)
         },
     },
 }

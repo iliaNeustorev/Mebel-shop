@@ -24,7 +24,7 @@
                 <button-back-component />
                 <template v-if="showFormImport"
                     ><import-component
-                        @cancelDownload="showFormImport = false"
+                        @cancel-download="showFormImport = false"
                         name="Категории"
                         uri="/api/admin/importCategories"
                         channel="categories-import-finish"
@@ -112,7 +112,7 @@
                 :elems="categories"
                 :links="links"
                 :current="currentPage"
-                @changePage="getCategories"
+                @change-page="getCategories"
             />
         </div>
     </div>

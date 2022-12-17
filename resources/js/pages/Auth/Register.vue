@@ -9,7 +9,7 @@
                         name="name"
                         placeholder="Введите имя"
                         :form="registerData"
-                        @validationFiled="fieldValid"
+                        @validation-filed="fieldValid"
                     />
                     <form-input-component
                         label="Почта"
@@ -17,7 +17,7 @@
                         type="email"
                         placeholder="Введите почту"
                         :form="registerData"
-                        @validationFiled="fieldValid"
+                        @validation-filed="fieldValid"
                     />
                     <form-input-component
                         label="Пароль"
@@ -25,7 +25,7 @@
                         name="password"
                         placeholder="Введите пароль"
                         :form="registerData"
-                        @validationFiled="fieldValid"
+                        @validation-filed="fieldValid"
                     />
                     <form-input-component
                         label="Повторите пароль"
@@ -33,7 +33,7 @@
                         name="password_confirmation"
                         placeholder="Повторите пароль"
                         :form="registerData"
-                        @validationFiled="fieldValid"
+                        @validation-filed="fieldValid"
                     />
 
                     <div :disabled="!validationForm" class="row mb-0">

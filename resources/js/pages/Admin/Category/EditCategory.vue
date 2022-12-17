@@ -9,8 +9,8 @@
                     name="name"
                     :form="category"
                     placeholder="Введите имя категории"
-                    :oldValue="oldData.name"
-                    @validationFiled="fieldValid"
+                    :old-value="oldData.name"
+                    @validation-filed="fieldValid"
                 />
 
                 <form-textarea-component
@@ -18,8 +18,8 @@
                     name="description"
                     placeholder="Введите описание категории"
                     :form="category"
-                    :oldValue="oldData.description"
-                    @validationFiled="fieldValid"
+                    :old-value="oldData.description"
+                    @validation-filed="fieldValid"
                 />
                 <img
                     class="avatar"
@@ -29,15 +29,15 @@
                     label=" Выберите картинку для категории"
                     name="picture"
                     :form="category"
-                    :checkFile="checkFile"
-                    @changeCheckFile="changedPicture"
+                    :check-file="checkFile"
+                    @change-check-file="changedPicture"
                 />
             </form>
             <button-send-form-component
                 :validation-form="validationForm"
                 name-button-accepted="Принять изменения"
                 name-button-denied="Внесите изменения"
-                @acceptedForm="sendForm()"
+                @accepted-form="sendForm()"
                 ><template v-slot:mainModal>
                     <div class="container">
                         <table class="table table-bordered text-center">

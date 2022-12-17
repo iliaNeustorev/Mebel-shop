@@ -16,8 +16,8 @@
                 class="btn btn-link btn-xl mb-2"
                 :validation-form="validationForm"
                 :count-items="countProducts"
-                @clearDeleted="clearCheckedDelete()"
-                @acceptedDelete="deleteProducts()"
+                @clear-deleted="clearCheckedDelete()"
+                @accepted-delete="deleteProducts()"
             >
             </button-mass-delete-component>
             <router-link to="AddProduct">
@@ -29,7 +29,7 @@
         </div>
         <template v-if="showFormImport"
             ><import-component
-                @cancelDownload="showFormImport = false"
+                @cancel-download="showFormImport = false"
                 name="Продукты"
                 uri="/api/admin/importProducts"
                 channel="products-import-finish"
@@ -101,7 +101,7 @@
                 :elems="products"
                 :links="links"
                 :current="currentPage"
-                @changePage="getProducts"
+                @change-page="getProducts"
             />
         </div>
     </div>

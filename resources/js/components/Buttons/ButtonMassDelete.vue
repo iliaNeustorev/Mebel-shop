@@ -6,7 +6,7 @@
             name-button-denied="Выберите необходимое для удаления"
             class-button-denied="btn-warning "
             class-button-accepted="btn-danger position-fixed top-50 start-0"
-            @acceptedForm="confirmDelete()"
+            @accepted-form="confirmDelete()"
             ><template v-if="countItems" v-slot:textModalBtn
                 ><span>({{ countItems }})</span></template
             >
@@ -19,7 +19,7 @@
         </button-send-form-component>
         <button
             v-if="countItems"
-            @click="$emit('clearDeleted')"
+            @click="$emit('clear-deleted')"
             class="btn btn-warning position-fixed bottom-0 start-0"
         >
             Очистить выбраное
@@ -35,7 +35,7 @@ export default {
     },
     methods: {
         confirmDelete() {
-            this.$emit("acceptedDelete")
+            this.$emit("accepted-delete")
         },
     },
 }

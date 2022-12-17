@@ -82,7 +82,7 @@ export default {
             }
         },
         cancel() {
-            this.$emit("cancelDownload")
+            this.$emit("cancel-download")
         },
         hiddenAlert() {
             this.result = null

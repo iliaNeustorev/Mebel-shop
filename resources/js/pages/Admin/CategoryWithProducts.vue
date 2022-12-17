@@ -13,7 +13,7 @@
                 class="itemButtonGroups"
                 :validation-form="validationForm"
                 :count-items="countProducts"
-                @acceptedDelete="deleteProducts()"
+                @accepted-delete="deleteProducts()"
             ></button-mass-delete-component>
             <button-back-component class="itemButtonGroups" />
         </div>
@@ -80,7 +80,7 @@
                 :elems="products"
                 :links="links"
                 :current="currentPage"
-                @changePage="getCategory"
+                @change-page="getCategory"
             />
         </div>
     </div>

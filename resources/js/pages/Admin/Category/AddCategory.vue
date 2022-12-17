@@ -8,14 +8,14 @@
                 name="name"
                 placeholder="Введите имя категории"
                 :form="category"
-                @validationFiled="fieldValid"
+                @validation-filed="fieldValid"
             />
             <form-textarea-component
                 label="Описание категории"
                 name="description"
                 placeholder="Введите описание категории"
                 :form="category"
-                @validationFiled="fieldValid"
+                @validation-filed="fieldValid"
             />
             <form-file-component
                 label=" Выберите картинку для категории"
@@ -27,7 +27,7 @@
             :validation-form="validationForm"
             name-button-accepted="Добавить категорию"
             name-button-denied="Заполните поля"
-            @acceptedForm="sendForm()"
+            @accepted-form="sendForm()"
             ><template v-slot:mainModal>
                 <div class="container">
                     <table class="table table-bordered text-center">

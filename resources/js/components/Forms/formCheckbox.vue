@@ -6,7 +6,7 @@
             type="checkbox"
             :class="inputClasses"
             :name="name"
-            v-model.trim="form[name]"
+            v-model="form[name]"
             @change="valid()"
         />
         <div v-if="hasError" class="invalid-feedback">

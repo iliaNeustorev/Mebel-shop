@@ -8,15 +8,15 @@
                 name="email"
                 type="email"
                 :form="userCurrent"
-                :oldValue="oldData.email"
-                @validationFiled="fieldValid"
+                :old-value="oldData.email"
+                @validation-filed="fieldValid"
             />
             <form-input-component
                 label="Имя"
                 name="name"
                 :form="userCurrent"
-                :oldValue="oldData.name"
-                @validationFiled="fieldValid"
+                :old-value="oldData.name"
+                @validation-filed="fieldValid"
             />
             <div class="mb-3">
                 <button
@@ -60,7 +60,7 @@
                 <address-list-component
                     v-show="showAddress"
                     :addresses-list="addressesList"
-                    @eventAdressList="changeAdressList"
+                    @event-adress-list="changeAdressList"
                 />
             </transition>
             <br />

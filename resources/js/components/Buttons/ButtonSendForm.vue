@@ -79,10 +79,10 @@ export default {
     },
     methods: {
         sendForm() {
-            this.$emit("acceptedForm")
+            this.$emit("accepted-form")
         },
         cancelSend() {
-            this.$emit("cancelSend")
+            this.$emit("cancel-send")
         },
     },
 }

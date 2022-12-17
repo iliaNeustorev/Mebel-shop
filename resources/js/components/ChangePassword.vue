@@ -6,21 +6,21 @@
                 name="current"
                 type="password"
                 :form="passwordChange"
-                @validationFiled="fieldValid"
+                @validation-filed="fieldValid"
             />
             <form-input-component
                 label="Новый пароль"
                 name="password"
                 type="password"
                 :form="passwordChange"
-                @validationFiled="fieldValid"
+                @validation-filed="fieldValid"
             />
             <form-input-component
                 label="Повторите пароль"
                 name="password_confirmation"
                 type="password"
                 :form="passwordChange"
-                @validationFiled="fieldValid"
+                @validation-filed="fieldValid"
             />
             <button :disabled="!validationForm" class="btn btn-success">
                 ОК

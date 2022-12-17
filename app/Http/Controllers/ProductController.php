@@ -15,7 +15,7 @@ class ProductController extends Controller
 
     public function getProducts (Category $category) 
     {
-        $products = Product::where('category_id',$category->id)->orderByDesc('created_at')->paginate(2);
+        $products = Product::where('category_id',$category->id)->orderByDesc('created_at')->paginate(5);
         $this->getQuantity($products);
         return $products;
         

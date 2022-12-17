@@ -33,7 +33,7 @@
             :elems="categories"
             :links="links"
             :current="currentPage"
-            @changePage="getCategories"
+            @change-page="getCategories"
         />
     </div>
 </template>

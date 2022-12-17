@@ -72,7 +72,7 @@ export default {
                         icon: "success",
                         title: "Адрес добавлен",
                     })
-                    this.$emit("eventAdressList", {
+                    this.$emit("event-adress-list", {
                         newAddressesList: response.data,
                     })
                 })
@@ -90,7 +90,7 @@ export default {
                         icon: "success",
                         title: "Адрес удален",
                     })
-                    this.$emit("eventAdressList", {
+                    this.$emit("event-adress-list", {
                         newAddressesList: response.data,
                     })
                 })
@@ -107,7 +107,7 @@ export default {
                         icon: "success",
                         title: "Основной адрес изменен",
                     })
-                    this.$emit("eventAdressList", {
+                    this.$emit("event-adress-list", {
                         newAddressesList: response.data,
                     })
                 })

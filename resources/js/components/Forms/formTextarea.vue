@@ -2,7 +2,6 @@
     <div class="mb-3">
         <label class="form-label" :for="id"> {{ label }} </label>
         <textarea
-            required
             :id="id"
             class="form-control w-50"
             :class="inputClasses"

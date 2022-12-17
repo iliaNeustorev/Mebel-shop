@@ -29,7 +29,7 @@ export default {
             axios
                 .post(`/api/basket/product/${method}`, params)
                 .then(({ data }) => {
-                    this.$emit("newQuantity", {
+                    this.$emit("new-quantity", {
                         quantityProduct: data.quantity,
                         allQuantityCart: data.basketProductsQuantity,
                     })

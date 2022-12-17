@@ -9,24 +9,24 @@
                     name="name"
                     :form="product"
                     placeholder="Введите имя продукта"
-                    :oldValue="oldData.name"
-                    @validationFiled="fieldValid"
+                    :old-value="oldData.name"
+                    @validation-filed="fieldValid"
                 />
                 <form-textarea-component
                     label="Описание продукта"
                     name="description"
                     :form="product"
                     placeholder="Введите описание продукта"
-                    :oldValue="oldData.description"
-                    @validationFiled="fieldValid"
+                    :old-value="oldData.description"
+                    @validation-filed="fieldValid"
                 />
                 <form-input-component
                     label="Цена"
                     name="price"
                     :form="product"
                     placeholder="Введите цену"
-                    :oldValue="oldData.price"
-                    @validationFiled="fieldValid"
+                    :old-value="oldData.price"
+                    @validation-filed="fieldValid"
                 />
                 <img
                     class="avatar"
@@ -35,16 +35,16 @@
                 <form-file-component
                     label=" Выберите картинку для продукта"
                     name="picture"
-                    :checkFile="checkFile"
-                    @changeCheckFile="changedPicture"
+                    :check-file="checkFile"
+                    @change-check-file="changedPicture"
                     :form="product"
                 />
                 <form-select-component
                     label="Категория"
                     name="category_id"
                     :form="product"
-                    @validationFiled="fieldValid"
-                    :oldValue="oldData.category_id"
+                    @validation-filed="fieldValid"
+                    :old-value="oldData.category_id"
                     :options="categories"
                 />
             </form>
@@ -52,7 +52,7 @@
                 :validation-form="validationForm"
                 name-button-accepted="Принять изменения"
                 name-button-denied="Внесите изменения"
-                @acceptedForm="sendForm()"
+                @accepted-form="sendForm()"
             >
                 <template v-slot:mainModal>
                     <div class="container">

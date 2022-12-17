@@ -5293,7 +5293,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.post("/api/basket/product/".concat(method), params).then(function (_ref) {
         var data = _ref.data;
 
-        _this.$emit("newQuantity", {
+        _this.$emit("new-quantity", {
           quantityProduct: data.quantity,
           allQuantityCart: data.basketProductsQuantity
         });
@@ -5357,7 +5357,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     confirmDelete: function confirmDelete() {
-      this.$emit("acceptedDelete");
+      this.$emit("accepted-delete");
     }
   }
 });
@@ -5466,10 +5466,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     sendForm: function sendForm() {
-      this.$emit("acceptedForm");
+      this.$emit("accepted-form");
     },
     cancelSend: function cancelSend() {
-      this.$emit("cancelSend");
+      this.$emit("cancel-send");
     }
   }
 });
@@ -5756,7 +5756,7 @@ __webpack_require__.r(__webpack_exports__);
     check: function check(element) {
       var result;
       result = element != null ? true : false;
-      this.$emit("changeCheckFile", {
+      this.$emit("change-check-file", {
         checkFile: result
       });
     }
@@ -5913,7 +5913,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mixins: [_mixins_base_input_js__WEBPACK_IMPORTED_MODULE_0__["default"]],
@@ -6031,7 +6030,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     cancel: function cancel() {
-      this.$emit("cancelDownload");
+      this.$emit("cancel-download");
     },
     hiddenAlert: function hiddenAlert() {
       this.result = null;
@@ -6300,7 +6299,7 @@ __webpack_require__.r(__webpack_exports__);
         return false;
       }
 
-      this.$emit("changePage", page);
+      this.$emit("change-page", page);
     }
   }
 });
@@ -6528,7 +6527,7 @@ __webpack_require__.r(__webpack_exports__);
           title: "Адрес добавлен"
         });
 
-        _this.$emit("eventAdressList", {
+        _this.$emit("event-adress-list", {
           newAddressesList: response.data
         });
       })["catch"](function () {});
@@ -6545,7 +6544,7 @@ __webpack_require__.r(__webpack_exports__);
           title: "Адрес удален"
         });
 
-        _this2.$emit("eventAdressList", {
+        _this2.$emit("event-adress-list", {
           newAddressesList: response.data
         });
       })["catch"](function () {});
@@ -6562,7 +6561,7 @@ __webpack_require__.r(__webpack_exports__);
           title: "Основной адрес изменен"
         });
 
-        _this3.$emit("eventAdressList", {
+        _this3.$emit("event-adress-list", {
           newAddressesList: response.data
         });
       })["catch"](function () {});
@@ -9430,7 +9429,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     valid: function valid() {
       var res = this.emptyFiled && this.checkedValuesField;
-      this.$emit("validationFiled", {
+      this.$emit("validation-filed", {
         res: res,
         name: this.name
       });
@@ -15009,7 +15008,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.card-basket-buttons[data-v-9507cef2] {\r\n    display: flex;\r\n    justify-content: space-between;\n}\n.card-counter[data-v-9507cef2] {\r\n    line-height: 34px;\n}\n.card-price[data-v-9507cef2] {\r\n    font-size: 130%;\r\n    border-bottom: 2px solid gray;\n}\n.card-text[data-v-9507cef2] {\r\n    height: 70px;\n}\n.card-title[data-v-9507cef2] {\r\n    height: 45px;\r\n    text-align: center;\r\n    font-weight: bold;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.card-basket-buttons[data-v-9507cef2] {\r\n    display: flex;\r\n    justify-content: space-between;\n}\n.card-counter[data-v-9507cef2] {\r\n    line-height: 34px;\n}\n.card-price[data-v-9507cef2] {\r\n    font-size: 130%;\r\n    border-bottom: 2px solid gray;\n}\n.card-title[data-v-9507cef2] {\r\n    height: 45px;\r\n    text-align: center;\r\n    font-weight: bold;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -43084,7 +43083,7 @@ var render = function () {
           "class-button-accepted": "btn-danger position-fixed top-50 start-0",
         },
         on: {
-          acceptedForm: function ($event) {
+          "accepted-form": function ($event) {
             return _vm.confirmDelete()
           },
         },
@@ -43126,7 +43125,7 @@ var render = function () {
               staticClass: "btn btn-warning position-fixed bottom-0 start-0",
               on: {
                 click: function ($event) {
-                  return _vm.$emit("clearDeleted")
+                  return _vm.$emit("clear-deleted")
                 },
               },
             },
@@ -43299,7 +43298,7 @@ var render = function () {
             type: "password",
             form: _vm.passwordChange,
           },
-          on: { validationFiled: _vm.fieldValid },
+          on: { "validation-filed": _vm.fieldValid },
         }),
         _vm._v(" "),
         _c("form-input-component", {
@@ -43309,7 +43308,7 @@ var render = function () {
             type: "password",
             form: _vm.passwordChange,
           },
-          on: { validationFiled: _vm.fieldValid },
+          on: { "validation-filed": _vm.fieldValid },
         }),
         _vm._v(" "),
         _c("form-input-component", {
@@ -43319,7 +43318,7 @@ var render = function () {
             type: "password",
             form: _vm.passwordChange,
           },
-          on: { validationFiled: _vm.fieldValid },
+          on: { "validation-filed": _vm.fieldValid },
         }),
         _vm._v(" "),
         _c(
@@ -43438,10 +43437,9 @@ var render = function () {
       directives: [
         {
           name: "model",
-          rawName: "v-model.trim",
+          rawName: "v-model",
           value: _vm.form[_vm.name],
           expression: "form[name]",
-          modifiers: { trim: true },
         },
       ],
       class: _vm.inputClasses,
@@ -43811,7 +43809,6 @@ var render = function () {
       staticClass: "form-control w-50",
       class: _vm.inputClasses,
       attrs: {
-        required: "",
         id: _vm.id,
         name: _vm.name,
         rows: _vm.row,
@@ -44636,7 +44633,7 @@ var render = function () {
                       event: "ImportCategoriesCounter",
                     },
                     on: {
-                      cancelDownload: function ($event) {
+                      "cancel-download": function ($event) {
                         _vm.showFormImport = false
                       },
                     },
@@ -44790,7 +44787,7 @@ var render = function () {
               links: _vm.links,
               current: _vm.currentPage,
             },
-            on: { changePage: _vm.getCategories },
+            on: { "change-page": _vm.getCategories },
           }),
         ],
         1
@@ -44888,10 +44885,10 @@ var render = function () {
               "count-items": _vm.countProducts,
             },
             on: {
-              clearDeleted: function ($event) {
+              "clear-deleted": function ($event) {
                 return _vm.clearCheckedDelete()
               },
-              acceptedDelete: function ($event) {
+              "accepted-delete": function ($event) {
                 return _vm.deleteProducts()
               },
             },
@@ -44918,7 +44915,7 @@ var render = function () {
                 event: "ImportProductsCounter",
               },
               on: {
-                cancelDownload: function ($event) {
+                "cancel-download": function ($event) {
                   _vm.showFormImport = false
                 },
               },
@@ -45074,7 +45071,7 @@ var render = function () {
               links: _vm.links,
               current: _vm.currentPage,
             },
-            on: { changePage: _vm.getProducts },
+            on: { "change-page": _vm.getProducts },
           }),
         ],
         1
@@ -45172,7 +45169,7 @@ var render = function () {
               "count-items": _vm.countProducts,
             },
             on: {
-              acceptedDelete: function ($event) {
+              "accepted-delete": function ($event) {
                 return _vm.deleteProducts()
               },
             },
@@ -45303,7 +45300,7 @@ var render = function () {
               links: _vm.links,
               current: _vm.currentPage,
             },
-            on: { changePage: _vm.getCategory },
+            on: { "change-page": _vm.getCategory },
           }),
         ],
         1
@@ -45372,7 +45369,7 @@ var render = function () {
               placeholder: "Введите имя категории",
               form: _vm.category,
             },
-            on: { validationFiled: _vm.fieldValid },
+            on: { "validation-filed": _vm.fieldValid },
           }),
           _vm._v(" "),
           _c("form-textarea-component", {
@@ -45382,7 +45379,7 @@ var render = function () {
               placeholder: "Введите описание категории",
               form: _vm.category,
             },
-            on: { validationFiled: _vm.fieldValid },
+            on: { "validation-filed": _vm.fieldValid },
           }),
           _vm._v(" "),
           _c("form-file-component", {
@@ -45403,7 +45400,7 @@ var render = function () {
           "name-button-denied": "Заполните поля",
         },
         on: {
-          acceptedForm: function ($event) {
+          "accepted-form": function ($event) {
             return _vm.sendForm()
           },
         },
@@ -45504,9 +45501,9 @@ var render = function () {
                       name: "name",
                       form: _vm.category,
                       placeholder: "Введите имя категории",
-                      oldValue: _vm.oldData.name,
+                      "old-value": _vm.oldData.name,
                     },
-                    on: { validationFiled: _vm.fieldValid },
+                    on: { "validation-filed": _vm.fieldValid },
                   }),
                   _vm._v(" "),
                   _c("form-textarea-component", {
@@ -45515,9 +45512,9 @@ var render = function () {
                       name: "description",
                       placeholder: "Введите описание категории",
                       form: _vm.category,
-                      oldValue: _vm.oldData.description,
+                      "old-value": _vm.oldData.description,
                     },
-                    on: { validationFiled: _vm.fieldValid },
+                    on: { "validation-filed": _vm.fieldValid },
                   }),
                   _vm._v(" "),
                   _c("img", {
@@ -45532,9 +45529,9 @@ var render = function () {
                       label: " Выберите картинку для категории",
                       name: "picture",
                       form: _vm.category,
-                      checkFile: _vm.checkFile,
+                      "check-file": _vm.checkFile,
                     },
-                    on: { changeCheckFile: _vm.changedPicture },
+                    on: { "change-check-file": _vm.changedPicture },
                   }),
                 ],
                 1
@@ -45547,7 +45544,7 @@ var render = function () {
                   "name-button-denied": "Внесите изменения",
                 },
                 on: {
-                  acceptedForm: function ($event) {
+                  "accepted-form": function ($event) {
                     return _vm.sendForm()
                   },
                 },
@@ -45757,7 +45754,7 @@ var render = function () {
               form: _vm.product,
               placeholder: "Введите имя продукта",
             },
-            on: { validationFiled: _vm.fieldValid },
+            on: { "validation-filed": _vm.fieldValid },
           }),
           _vm._v(" "),
           _c("form-textarea-component", {
@@ -45767,7 +45764,7 @@ var render = function () {
               form: _vm.product,
               placeholder: "Введите описание продукта",
             },
-            on: { validationFiled: _vm.fieldValid },
+            on: { "validation-filed": _vm.fieldValid },
           }),
           _vm._v(" "),
           _c("form-input-component", {
@@ -45777,7 +45774,7 @@ var render = function () {
               form: _vm.product,
               placeholder: "Введите цену",
             },
-            on: { validationFiled: _vm.fieldValid },
+            on: { "validation-filed": _vm.fieldValid },
           }),
           _vm._v(" "),
           _c("form-file-component", {
@@ -45795,7 +45792,7 @@ var render = function () {
               form: _vm.product,
               options: _vm.categories,
             },
-            on: { validationFiled: _vm.fieldValid },
+            on: { "validation-filed": _vm.fieldValid },
           }),
         ],
         1
@@ -45808,7 +45805,7 @@ var render = function () {
           "name-button-denied": "Заполните поля",
         },
         on: {
-          acceptedForm: function ($event) {
+          "accepted-form": function ($event) {
             return _vm.sendForm()
           },
         },
@@ -45931,9 +45928,9 @@ var render = function () {
                       name: "name",
                       form: _vm.product,
                       placeholder: "Введите имя продукта",
-                      oldValue: _vm.oldData.name,
+                      "old-value": _vm.oldData.name,
                     },
-                    on: { validationFiled: _vm.fieldValid },
+                    on: { "validation-filed": _vm.fieldValid },
                   }),
                   _vm._v(" "),
                   _c("form-textarea-component", {
@@ -45942,9 +45939,9 @@ var render = function () {
                       name: "description",
                       form: _vm.product,
                       placeholder: "Введите описание продукта",
-                      oldValue: _vm.oldData.description,
+                      "old-value": _vm.oldData.description,
                     },
-                    on: { validationFiled: _vm.fieldValid },
+                    on: { "validation-filed": _vm.fieldValid },
                   }),
                   _vm._v(" "),
                   _c("form-input-component", {
@@ -45953,9 +45950,9 @@ var render = function () {
                       name: "price",
                       form: _vm.product,
                       placeholder: "Введите цену",
-                      oldValue: _vm.oldData.price,
+                      "old-value": _vm.oldData.price,
                     },
-                    on: { validationFiled: _vm.fieldValid },
+                    on: { "validation-filed": _vm.fieldValid },
                   }),
                   _vm._v(" "),
                   _c("img", {
@@ -45969,10 +45966,10 @@ var render = function () {
                     attrs: {
                       label: " Выберите картинку для продукта",
                       name: "picture",
-                      checkFile: _vm.checkFile,
+                      "check-file": _vm.checkFile,
                       form: _vm.product,
                     },
-                    on: { changeCheckFile: _vm.changedPicture },
+                    on: { "change-check-file": _vm.changedPicture },
                   }),
                   _vm._v(" "),
                   _c("form-select-component", {
@@ -45980,10 +45977,10 @@ var render = function () {
                       label: "Категория",
                       name: "category_id",
                       form: _vm.product,
-                      oldValue: _vm.oldData.category_id,
+                      "old-value": _vm.oldData.category_id,
                       options: _vm.categories,
                     },
-                    on: { validationFiled: _vm.fieldValid },
+                    on: { "validation-filed": _vm.fieldValid },
                   }),
                 ],
                 1
@@ -45996,7 +45993,7 @@ var render = function () {
                   "name-button-denied": "Внесите изменения",
                 },
                 on: {
-                  acceptedForm: function ($event) {
+                  "accepted-form": function ($event) {
                     return _vm.sendForm()
                   },
                 },
@@ -46531,7 +46528,7 @@ var render = function () {
                 form: _vm.loginData,
                 autocomplete: "email",
               },
-              on: { validationFiled: _vm.fieldValid },
+              on: { "validation-filed": _vm.fieldValid },
             }),
             _vm._v(" "),
             _c("form-input-component", {
@@ -46543,7 +46540,7 @@ var render = function () {
                 form: _vm.loginData,
                 autocomplete: "current-password",
               },
-              on: { validationFiled: _vm.fieldValid },
+              on: { "validation-filed": _vm.fieldValid },
             }),
             _vm._v(" "),
             _c("form-checkbox-component", {
@@ -46634,7 +46631,7 @@ var render = function () {
                 placeholder: "Введите имя",
                 form: _vm.registerData,
               },
-              on: { validationFiled: _vm.fieldValid },
+              on: { "validation-filed": _vm.fieldValid },
             }),
             _vm._v(" "),
             _c("form-input-component", {
@@ -46645,7 +46642,7 @@ var render = function () {
                 placeholder: "Введите почту",
                 form: _vm.registerData,
               },
-              on: { validationFiled: _vm.fieldValid },
+              on: { "validation-filed": _vm.fieldValid },
             }),
             _vm._v(" "),
             _c("form-input-component", {
@@ -46656,7 +46653,7 @@ var render = function () {
                 placeholder: "Введите пароль",
                 form: _vm.registerData,
               },
-              on: { validationFiled: _vm.fieldValid },
+              on: { "validation-filed": _vm.fieldValid },
             }),
             _vm._v(" "),
             _c("form-input-component", {
@@ -46667,7 +46664,7 @@ var render = function () {
                 placeholder: "Повторите пароль",
                 form: _vm.registerData,
               },
-              on: { validationFiled: _vm.fieldValid },
+              on: { "validation-filed": _vm.fieldValid },
             }),
             _vm._v(" "),
             _c(
@@ -46791,7 +46788,7 @@ var render = function () {
                         _c("button-change-cart-component", {
                           attrs: { id: product.id, quantity: product.quantity },
                           on: {
-                            newQuantity: function ($event) {
+                            "new-quantity": function ($event) {
                               return _vm.changeQuantity(product.id, $event)
                             },
                           },
@@ -47074,7 +47071,7 @@ var render = function () {
                                       quantity: product.quantity,
                                     },
                                     on: {
-                                      newQuantity: function ($event) {
+                                      "new-quantity": function ($event) {
                                         return _vm.changeQuantity(
                                           product.id,
                                           $event
@@ -47123,7 +47120,7 @@ var render = function () {
                   links: _vm.links,
                   current: _vm.currentPage,
                 },
-                on: { changePage: _vm.getProducts },
+                on: { "change-page": _vm.getProducts },
               }),
             ],
             2
@@ -47238,7 +47235,7 @@ var render = function () {
           links: _vm.links,
           current: _vm.currentPage,
         },
-        on: { changePage: _vm.getCategories },
+        on: { "change-page": _vm.getCategories },
       }),
     ],
     1
@@ -47449,7 +47446,7 @@ var render = function () {
                           id: _vm.product.id,
                           quantity: _vm.product.quantity,
                         },
-                        on: { newQuantity: _vm.changeQuantity },
+                        on: { "new-quantity": _vm.changeQuantity },
                       },
                       [
                         _c("span", { staticClass: "card-counter" }, [
@@ -47561,9 +47558,9 @@ var render = function () {
                   name: "email",
                   type: "email",
                   form: _vm.userCurrent,
-                  oldValue: _vm.oldData.email,
+                  "old-value": _vm.oldData.email,
                 },
-                on: { validationFiled: _vm.fieldValid },
+                on: { "validation-filed": _vm.fieldValid },
               }),
               _vm._v(" "),
               _c("form-input-component", {
@@ -47571,9 +47568,9 @@ var render = function () {
                   label: "Имя",
                   name: "name",
                   form: _vm.userCurrent,
-                  oldValue: _vm.oldData.name,
+                  "old-value": _vm.oldData.name,
                 },
-                on: { validationFiled: _vm.fieldValid },
+                on: { "validation-filed": _vm.fieldValid },
               }),
               _vm._v(" "),
               _c(
@@ -47690,7 +47687,7 @@ var render = function () {
                       },
                     ],
                     attrs: { "addresses-list": _vm.addressesList },
-                    on: { eventAdressList: _vm.changeAdressList },
+                    on: { "event-adress-list": _vm.changeAdressList },
                   }),
                 ],
                 1

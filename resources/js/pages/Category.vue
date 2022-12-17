@@ -40,7 +40,7 @@
                             <button-change-cart-component
                                 :id="product.id"
                                 :quantity="product.quantity"
-                                @newQuantity="
+                                @new-quantity="
                                     changeQuantity(product.id, $event)
                                 "
                                 ><div class="card-counter">
@@ -58,7 +58,7 @@
                     :elems="products"
                     :links="links"
                     :current="currentPage"
-                    @changePage="getProducts"
+                    @change-page="getProducts"
                 />
             </div>
         </div>
@@ -129,10 +129,6 @@ export default {
 .card-price {
     font-size: 130%;
     border-bottom: 2px solid gray;
-}
-
-.card-text {
-    height: 70px;
 }
 
 .card-title {

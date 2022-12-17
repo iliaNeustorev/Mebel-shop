@@ -46,7 +46,7 @@ export default {
         check(element) {
             let result
             result = element != null ? true : false
-            this.$emit("changeCheckFile", { checkFile: result })
+            this.$emit("change-check-file", { checkFile: result })
         },
     },
 }

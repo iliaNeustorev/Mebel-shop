@@ -13,7 +13,7 @@
                         placeholder="Введите почту"
                         :form="loginData"
                         autocomplete="email"
-                        @validationFiled="fieldValid"
+                        @validation-filed="fieldValid"
                     />
 
                     <form-input-component
@@ -23,7 +23,7 @@
                         placeholder="Введите пароль"
                         :form="loginData"
                         autocomplete="current-password"
-                        @validationFiled="fieldValid"
+                        @validation-filed="fieldValid"
                     />
                     <form-checkbox-component
                         label="Запомнить меня"

@@ -28,7 +28,7 @@
                         <button-change-cart-component
                             :id="product.id"
                             :quantity="product.quantity"
-                            @newQuantity="changeQuantity(product.id, $event)"
+                            @new-quantity="changeQuantity(product.id, $event)"
                         />
                     </td>
                 </tr>
