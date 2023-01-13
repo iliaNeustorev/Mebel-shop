@@ -41,6 +41,7 @@ Route::post('/tokens/create', function(Request $request) {
     $token = $request->user()->createToken('api')->plainTextToken;
     return ['token' => $token];
 });
+
 Route::get('/search', [HomeController::class, 'search']);
 
 Route::prefix('categories')->group(function () {
